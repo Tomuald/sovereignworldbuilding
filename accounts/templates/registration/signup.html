@@ -1,8 +1,8 @@
 {% extends "SovereignWebsite/base_generic.html" %}
 
+{% block content %}
 
 {% if user.is_authenticated %}
-{% block content %}
 <h2>Sign Up</h2>
 <form method="post">
   {% csrf_token %}
@@ -11,10 +11,10 @@
   <button class="btn btn-primary" type="submit">Sign Up</button>
 </form>
 
-{% endblock %}
-
 {% else %}
-{% block content %}
-  <p>Registrations are closed for the moment. Check back later</p>
-{% endblock content %}
+<p> Registrations are closed for the moment. Please check back later.</p>
+
 {% endif%}
+
+{% endblock content %}
+
