@@ -1,0 +1,89 @@
+{% extends "SovereignWebsite/base_generic.html" %}
+
+{% block leftsidebar %}
+{% endblock leftsidebar %}
+
+{% block content %}
+  <div class="page-title">
+    <h1>{{ faction.name }}</h1>
+    <a title="Edit" href="{% url 'faction-update' in_universe=faction.in_universe.id pk=faction.pk %}">
+      <i title="Delete" class="cil-pencil"></i>
+    </a>
+    <a title="Delete" href="{% url 'faction-delete' pk=faction.pk %}"><i class="cil-x"></i></a>
+  </div> <!-- page-title and icons -->
+  
+  <hr class="page-title-hr">
+  
+  <p>{{ faction.description }}</p>
+  
+  <div class="table-title">
+    <h2>Members</h2>
+    <a title="Add" href="{% url 'npc-create' in_universe=faction.in_universe.id in_faction=faction.id %}">
+      <i class="cil-plus"></i>
+    </a>
+  </div>
+  
+  <table class="table table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Alignment</th>
+      </tr>
+    </thead>
+    </tbody>
+    {% for npc in faction.npc_set.all %}
+      <tr>
+        <td><a href="{{ npc.get_absolute_url }}">{{ npc.name }}</a></td>
+        <td>{{ npc.get_npc_type_display }}</td>
+        <td>{{ npc.get_alignment_display }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  
+{% endblock content %}
+
+{% block rightsidebar %}
+  <table class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <th colspan="2" class="sidebar-table">{{ faction.name }}</th>
+    </thead>
+    <tr>
+      <th>Universe</th>
+      <td><a href="{{ faction.in_universe.get_absolute_url }}">{{ faction.in_universe }}</a></td>
+    </tr>
+    <tr>
+      <th>Role</th>
+      <td>{{ faction.faction_role }}</td>
+    </tr>
+    <tr>
+      <th>Alignment</th>
+      <td>{{ faction.get_alignment_display }}</td>
+    </tr>
+    <tr>
+      {% if faction.leaders.all.count > 1 %}
+        <th>Leaders</th>
+      {% else %}
+        <th>Leader</th>
+      {% endif %}
+      <td>
+        <ul>
+        {% for npc in faction.leaders.all %}
+          <li><a href="{{ npc.get_absolute_url }}">{{ npc.name }}</a></li>
+        {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <th>Faiths</th>
+      <td>
+        <ul>
+        {% for god in faction.faiths.all %}
+          <li><a href="{{ god.get_absolute_url }}">{{ god.name }}</a></li>
+        {% endfor %}
+        </ul>
+      </td>
+    </tr>
+  </table>
+{% endblock rightsidebar %}

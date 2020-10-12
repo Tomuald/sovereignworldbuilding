@@ -1,0 +1,26 @@
+{% extends 'SovereignWebsite/base_generic.html' %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+  <h2 class="page-title">Logged in</h2>
+  <hr class="page-title-hr">
+  <p>Welcome, {{ user.username }}. You're already logged in. Head on over to 
+    <a href="{% url 'project-list' %}">The Alchemist</a>.
+  </p>
+  <p>Alternatively, you can 
+    <a style="font-weight: bold;" class="text-danger" href="{% url 'logout' %}">Log Out</a>.
+  </p>
+
+{% else %}
+  <h2 class="page-title">Log In</h2>
+  <hr class="page-title-hr">
+  <form method="post">
+    {% csrf_token %}
+    {% load crispy_forms_tags %}
+    {{ form|crispy }}
+    <button class="btn btn-primary" type="submit">Log In</button>
+  </form>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,215 @@
+{% extends "SovereignWebsite/base_generic.html" %}
+
+{% block additionalstatic %}
+  <!-- Datatables CSS -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+  {% load static %}
+  <link rel="text/javascript" href="{% static 'js/datatables.js' %}">
+{% endblock additionalstatic %}
+
+{% block content %}
+
+  <h1 class="page-title">Universe Index</h1>
+  
+  <hr class="page-title-hr">
+  
+  <!-- EMPIRES --> 
+  
+  <h2 class="table-title">Empires</h2>
+  
+  <table id="empires" class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Empire</th>
+        <th>Regions</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for empire in empires %}
+      <tr>
+        <td><a href="{{ empire.get_absolute_url }}">{{ empire.name }}</a></td>
+        <td>
+          <ul>
+          {% for region in empire.regions.all %}
+            <li>{{ region.name }}</li>
+          {% endfor %}
+          </ul>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  
+  <h2 class="table-title">Regions</h2>
+  
+  <table id="regions" class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Region</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for region in regions %}
+      <tr>
+        <td><a href="{{ empire.get_absolute_url }}">{{ region.name }}</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  
+  <h2 class="table-title">Areas</h2>
+  
+  <table id="areas" class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Area</th>
+        <th>In Region</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for area in areas %}
+      <tr>
+        <td><a href="{{ area.get_absolute_url }}">{{ area.name }}</a></td>
+        <td>{{ area.in_region }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  
+  <h2 class="table-title">Locations</h2>
+  
+  <table id="locations" class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Location</th>
+        <th>In Area</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for location in locations %}
+      <tr>
+        <td><a href="{{ location.get_absolute_url }}">{{ location.name }}</a></td>
+        <td>{{ location.in_area }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  
+  <h2 class="table-title">Dungeons</h2>
+  
+  <table id="dungeons" class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Dungeon</th>
+        <th>In Area</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for dungeon in dungeons %}
+      <tr>
+        <td><a href="{{ dungeon.get_absolute_url }}">{{ dungeon.title }}</a></td>
+        <td>{{ dungeon.in_area }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  
+  <h2 class="table-title">Factions</h2>
+  
+  <table id="factions" class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Faction</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for faction in factions %}
+      <tr>
+        <td><a href="{{ faction.get_absolute_url }}">{{ faction.name }}</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <h2 class="table-title">NPCs</h2>
+  
+  <table id="npcs" class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>NPCs</th>
+        <th>Faction</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for npc in npcs %}
+      <tr>
+        <td><a href="{{ npc.get_absolute_url }}">{{ npc.name }}</a></td>
+        <td>{{ npc.in_faction }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  
+  <h2 class="table-title">Pantheons</h2>
+  
+  <table id="pantheons" class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Pantheon</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for pantheon in pantheons %}
+      <tr>
+        <td><a href="{{ pantheon.get_absolute_url }}">{{ pantheon.name }}</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  
+  <h2 class="table-title">Gods</h2>
+  
+  <table id="gods" class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>God</th>
+        <th>Alignment</th>
+        <th>Pantheon</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for god in gods %}
+      <tr>
+        <td><a href="{{ god.get_absolute_url }}">{{ god.name }}</a></td>
+        <td>{{ god.get_alignment_display }}</td>
+        <td>{{ god.in_pantheon.name }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock content %}
+
+{% block rightsidebar %}
+  <table class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th colspan="2">Universe Index</th>
+      </tr>
+    </thead>
+    <tr>
+      <th>Project</th>
+      <td><a href="{{ universe.in_project.get_absolute_url }}">{{ universe.in_project }}</a></td>
+    </tr>
+    <tr>
+      <th>Universe</th>
+      <td><a href="{{ universe.get_absolute_url }}">{{ universe.name }}</a></td>
+    </tr>
+  </table>
+{% endblock rightsidebar %}
+
+{% block additionalscripts %}
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js">
+  </script>
+  <script type="text/javascript" src="{% static 'js/datatables.js' %}"></script>
+{% endblock additionalscripts %}

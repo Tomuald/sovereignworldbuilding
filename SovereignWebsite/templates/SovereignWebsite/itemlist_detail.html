@@ -1,0 +1,70 @@
+{% extends "SovereignWebsite/base_generic.html" %}
+
+{% block additionalstatic %}
+  <!-- Datatables CSS -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+  {% load static %}
+  <link rel="text/javascript" href="{% static 'js/datatables.js' %}">
+{% endblock additionalstatic %}
+
+
+{% block leftsidebar %}
+{% endblock leftsidebar %}
+
+{% block content %}
+  <div class="page-title">
+    <h1>{{ itemlist.name }}</h1>
+    <a title="Edit" href="{% url 'itemlist-update' in_project=itemlist.in_project.id pk=itemlist.pk %}">
+      <i class="cil-pencil"></i>
+    </a>
+    <a title="Delete" href="{% url 'itemlist-delete' pk=itemlist.pk %}"><i class="cil-x"></i></a>
+  </div>
+  
+  <hr class="page-title-hr">
+  
+  <p>{{ itemlist.description }}</p>
+  
+  <div class="table-title">
+    <h2>Items</h2>
+    <a title="Add" href="{% url 'item-create' in_itemlist=itemlist.id %}"><i class="cil-plus"></i></a>
+  </div>
+  
+  <table id="itemlist" class="table table-hover table-sm">
+    <thead class="thead-dark">
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Cost</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for item in itemlist.item_set.all %}
+      <tr>
+        <td><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></td>
+        <td>{{ item.item_type }}</td>
+        <td>{{ item.item_cost }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock content %}
+
+{% block rightsidebar %}
+  <table class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <th colspan="2" class="sidebar-table">{{ itemlist.name }}</th>
+    </thead>
+    <tr>
+      <th>Project</th>
+      <td><a href="{{ itemlist.in_project.get_absolute_url }}">{{ itemlist.in_project.title }}</a></td>
+    </tr>
+  </table>
+{% endblock rightsidebar %}
+
+
+{% block additionalscripts %}
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js">
+  </script>
+  <script type="text/javascript" src="{% static 'js/datatables.js' %}"></script>
+{% endblock additionalscripts %}

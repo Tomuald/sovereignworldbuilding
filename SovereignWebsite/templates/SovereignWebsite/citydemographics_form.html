@@ -1,0 +1,33 @@
+{% extends "SovereignWebsite/base_generic.html" %}
+
+{% block content %}
+  <form action="" method="post">
+    {% csrf_token %}
+    {% load crispy_forms_tags %}
+    <table class="table table-sm">
+      {{ formset.management_form|crispy }}
+
+      {% for form in formset.forms %}
+        <tr>
+          {% for field in form.visible_fields %}
+            <td>
+              {% if forloop.first %}
+                {% for hidden in form.hidden_fields %}
+                  {{ hidden }}
+                {% endfor %}
+              {% endif %}
+              {{ fields.errors.as_ul }}
+              {{ field|as_crispy_field }}
+          </td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </table>
+
+    <input class="btn btn-secondary" type="submit" value="Back" onclick="window.history.go(-1)">
+    <input class="btn btn-success float-right" type="submit" value="Create">
+  </form>
+{% endblock content %}
+
+{% block footer %}
+{% endblock footer%}

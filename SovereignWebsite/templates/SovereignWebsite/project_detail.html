@@ -1,0 +1,61 @@
+{% extends "SovereignWebsite/base_generic.html" %}
+
+{% block leftsidebar %}
+{% endblock leftsidebar %}
+
+{% block content %}
+  <div class="page-title">
+    <h1>{{ project.title }}</h1>
+    <a href="{% url 'project-update' pk=project.pk %}"><i class="cil-pencil"></i></a>
+    <a title="Delete" href="{% url 'project-delete' pk=project.pk %}"><i class="cil-x"></i></a>
+  </div> <!-- page-title and icons -->
+  
+  <hr class="page-title-hr">
+    
+  <div class="row">
+    <div class="col-6">
+      <div class="section-title">
+        <h2>Campaign</h2>
+        {% if campaigns.count == 0 %}
+          <a title="Add" href="{% url 'campaign-create' in_project=project.id %}">
+            <i class="cil-plus"></i>
+          </a>
+        {% endif %}
+      </div> <!-- section-title and icons -->
+      <ul>
+      {% for campaign in campaigns %}
+        <li><a href="{{ campaign.get_absolute_url }}">{{ campaign.title }}</a></li>
+      {% endfor %}
+      </ul>
+    </div> <!-- col-6 -->
+    
+    <div class="col-6">
+      <div class="section-title">
+        <h2>Universe</h2>
+        {% if universes.count == 0 %}
+          <a title="Add" href="{% url 'universe-create' in_project=project.id %}"><i class="cil-plus"></i></a>
+        {% endif %}
+      </div> <!-- section-title and icons -->
+      <ul>
+      {% for universe in universes %}
+        <li><a href="{{ universe.get_absolute_url }}">{{ universe.name }}</a></li>
+      {% endfor %}
+      </ul>
+    </div> <!-- col-6 -->
+    
+    <div class="col-6">
+      <div class="section-title">
+        <h2>Itemlists</h2>
+        <a title="Add" href="{% url 'itemlist-create' in_project=project.id %}"><i class="cil-plus"></i></a>
+      </div> <!-- section-title and icons -->
+      <ul>
+      {% for itemlist in itemlists %}
+        <li><a href="{{ itemlist.get_absolute_url }}">{{ itemlist.name }}</a></li>
+      {% endfor %}
+      </ul>
+    </div> <!-- col-6 -->
+  </div> <!-- row -->
+
+  
+{% endblock content %}
+

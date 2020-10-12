@@ -1,0 +1,115 @@
+{% extends "SovereignWebsite/base_generic.html" %}
+
+{% block leftsidebar %}
+{% endblock leftsidebar %}
+
+{% block content %}
+  <div class="page-title">
+    <h1>{{ quest.title }}</h1>
+    <a title="Edit" href="{% url 'quest-update' in_chapter=quest.in_chapter.id pk=quest.pk %}">
+      <i class="cil-pencil"></i>
+    </a>
+    <a title="Delete" href="{% url 'quest-delete' pk=quest.pk %}"><i class="cil-x"></i></a>
+  </div> <!-- page-title and icons -->
+  <hr class="page-title-hr">
+  
+  <p>{{ quest.summary }}</p>
+  
+  <div class="table-title">
+    <h2>Encounters</h2>
+    <a title="Add" href="{% url 'questencounter-create' in_quest=quest.id %}"><i class="cil-plus"></i></a>
+  </div> <!-- table-title -->
+  
+  <table class="table table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>#</th>
+        <th>Encounter Title</th>
+        <th>Type</th>
+        <th>Location</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for encounter in quest.questencounter_set.all %}
+    <tr>
+      <td>{{ encounter.encounter_num }}</td>
+      <td><a href="{{ encounter.get_absolute_url }}">{{ encounter.title }}</td>
+      <td>{{ encounter.get_encounter_type_display }}</td>
+      {% if encounter.in_location %}
+        <td>
+          <a href="{{ encounter.in_location.get_absolute_url }}">{{ encounter.in_location }}
+          </a>
+        </td>
+      {% elif encounter.in_dungeon_room %}
+        <td>
+          <a href="{{ encounter.in_dungeon_room.get_absolute_url}}">{{ encounter.in_dungeon_room }}</a>
+        </td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock content %}
+
+{% block rightsidebar %}
+  <table class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <th colspan="2" class="sidebar-table">{{ quest.title }}</th>
+    </thead>
+    <tr>
+      <th>Chapter</th>
+      <td>
+        <a href="{{ quest.in_chapter.get_absolute_url }}">{{ quest.in_chapter }}</a>
+      </td>
+    </tr>
+    <tr>
+      <th>Type</th>
+      <td>{{ quest.get_quest_type_display }}
+    </tr>
+    {% if quest.in_area %}
+      <tr>
+        <th>Area</th>
+        <td>
+          <a href="{{ quest.in_area.get_absolute_url }}">{{ quest.in_area }}</a>
+        </td>
+      </tr>
+    {% elif quest.in_city %}
+      <tr>
+        <th>City</th>
+        <td>
+          <a href="{{ quest.in_city.get_absolute_url }}">{{ quest.in_city }}</a>
+        </td>
+      </tr>
+    {% endif %}
+    <tr>
+      <th>Preceded By</th>
+      <td>
+        <ul>
+        {% for previous in preceded_by %}
+          <li><a href="{{ previous.get_absolute_url }}">{{ previous.title }}</a></li>
+        {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <th>Followed By</th>
+      <td>
+        <ul>
+        {% for next in followed_by %}
+          <li><a href="{{ next.get_absolute_url }}">{{ next.title }}</a></li>
+        {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <th>NPCs</th>
+      <td>
+        <ul>
+        {% for npc in quest.involved_npcs.all %}
+          <li><a href="{{ npc.get_absolute_url }}">{{ npc.name }}</a></li>
+        {% endfor %}
+        </ul>
+      </td>
+    </tr>
+  </table>
+{% endblock rightsidebar %}

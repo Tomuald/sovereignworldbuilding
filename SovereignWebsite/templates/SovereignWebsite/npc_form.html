@@ -1,0 +1,13 @@
+{% extends 'SovereignWebsite/base_generic.html' %}
+
+{% block content %}
+   
+  <h1 class="page-title">Add/Edit NPC</h1>
+  <hr class="page-title-hr">
+  
+  {% csrf_token %}
+  {% load crispy_forms_tags %}
+  {% crispy form form.helper %}
+
+{% endblock content %}
+
