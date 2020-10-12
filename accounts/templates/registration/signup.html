@@ -1,5 +1,7 @@
 {% extends "SovereignWebsite/base_generic.html" %}
 
+
+{% if user.is_authenticated %}
 {% block content %}
 <h2>Sign Up</h2>
 <form method="post">
@@ -10,3 +12,8 @@
 </form>
 
 {% endblock %}
+
+{% else %}
+{% block content %}
+{% endblock content %}
+{% endif%}
