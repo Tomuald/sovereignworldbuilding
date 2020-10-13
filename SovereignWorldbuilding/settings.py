@@ -153,6 +153,7 @@ TINYMCE_DEFAULT_CONFIG = {
 }
 
 TINYMCE_SPELLCHECKER = True
+TINYMCE_COMPRESSOR = True
 
 # django_heroku
 django_heroku.settings(locals())
