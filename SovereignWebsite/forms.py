@@ -130,6 +130,7 @@ class AreaModelForm(ModelForm):
 		
 		self.helper.layout = Layout(
 			Field('name'),
+			Field('area_type'),
 			Field('description'),
 			Field('flavor_text'),
 			InlineCheckboxes('factions'),
