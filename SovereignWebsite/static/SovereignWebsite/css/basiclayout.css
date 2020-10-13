@@ -40,6 +40,10 @@ a {
   color: #07689f;
 }
 
+caption {
+  caption-side: top;
+}
+
 /* -------------------------------------- */
 /* OTHER THINGS TO GROUP UNDER CATEGORIES */
 /* -------------------------------------- */
@@ -143,7 +147,9 @@ a {
   font-size: 1em;
 }
 
+/* -------------------- */
 /* IMAGE MODAL & IMAGES */
+/* -------------------- */
 
 #image {
   border-radius: 5px;
