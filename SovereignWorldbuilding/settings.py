@@ -152,7 +152,7 @@ TINYMCE_DEFAULT_CONFIG = {
 	'browser_spellcheck': 'true',
 }
 
-TINYMCE_JS_URL = os.path.join(MEDIA_URL, '/app/statifiles/tinymce/tinymce.min.js')
+TINYMCE_JS_URL = '/app/statifiles/tinymce/tinymce.min.js'
 TINYMCE_SPELLCHECKER = True
 TINYMCE_COMPRESSOR = True
 
