@@ -1,9 +1,5 @@
 {% extends "SovereignWebsite/base_generic.html" %}
 
-{% block leftsidebar %}
-{% endblock leftsidebar %}
-
-
 {% block content %}
   <div class="page-title">
     <h1>{{ region.name }}</h1>
@@ -63,8 +59,7 @@
     {% endfor %}
     </tbody>
   </table>
-    
-      
+   
 {% endblock content %}
 
 {% block rightsidebar %}
@@ -102,3 +97,8 @@
     </tr>
   </table>
 {% endblock rightsidebar %}
+
+{% block additionalscripts %}
+  {% load static %}
+  <script type="text/javascript" src="{% static 'js/imagemodals.js' %}"></script>
+{% endblock additionalscripts %} 
