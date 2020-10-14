@@ -1,5 +1,9 @@
 {% extends "SovereignWebsite/base_generic.html" %}
 
+{% block title %}
+  <title>{{ campaign.title }}</title>
+{% endblock title %}
+
 {% block content %}
   <div class="page-title">
     <a title="Index" class="storage-icon" href="{{ campaign.get_absolute_index_url }}">

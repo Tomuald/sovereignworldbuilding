@@ -1,5 +1,9 @@
 {% extends "SovereignWebsite/base_generic.html" %}
 
+{% block title %}
+  <title>{{ campaign.title }} Index</title>
+{% endblock title %}
+
 {% block additionalstatic %}
   <!-- Datatables CSS -->
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">

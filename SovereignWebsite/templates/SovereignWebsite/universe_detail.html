@@ -1,5 +1,9 @@
 {% extends "SovereignWebsite/base_generic.html" %}
 
+{% block title %}
+  <title>{{ universe.name }}</title>
+{% endblock title %}
+
 {% block content %}
   <div class="page-title">
     <a title="Index" class="storage-icon" href="{% url 'universe-index' pk=universe.id%}">
