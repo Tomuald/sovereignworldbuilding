@@ -145,7 +145,7 @@ STATICFILES_DIRS = [
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 # TinyMce Configuration
-TINYMCE_JS_ROOT = "/app/staticfiles/tinymce"
+TINYMCE_JS_ROOT = "staticfiles/tinymce"
 TINYMCE_JS_URL = os.path.join(TINYMCE_JS_ROOT, 'tinymce.min.js')
 TINYMCE_DEFAULT_CONFIG = {
 	"plugins": "table, lists, link, spellchecker",
