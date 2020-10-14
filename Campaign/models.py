@@ -38,6 +38,9 @@ class Chapter(models.Model):
 	
 	regions = models.ManyToManyField(Region, blank=True)
 	
+	class Meta:
+		ordering = ['chapter_num', ]
+	
 	def get_absolute_url(self):
 		return reverse('chapter-detail', args=[str(self.id)])
 	
@@ -108,6 +111,7 @@ class QuestEncounterLoot(models.Model):
 	
 	class Meta:
 		verbose_name_plural = "Quest Encounter Loot"
+		order_with_respect_to = 'name'
 	
 	def __str__(self):
 		return self.name.name

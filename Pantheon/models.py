@@ -13,6 +13,9 @@ class Pantheon(models.Model):
 
 	def get_absolute_url(self):
 		return reverse('pantheon-detail', args=[str(self.id)])
+		
+	class Meta:
+		ordering = ['name', ]
 	
 	def __str__(self):
 		return self.name
@@ -37,6 +40,9 @@ class God(models.Model):
 	in_pantheon = models.ForeignKey(Pantheon, on_delete=models.CASCADE)
 	
 	background = models.TextField(max_length=2500, blank=True, null=True)
+	
+	class Meta:
+		ordering = ['name', ]
 	
 	def get_absolute_url(self):
 		return reverse('god-detail', args=[str(self.id)])

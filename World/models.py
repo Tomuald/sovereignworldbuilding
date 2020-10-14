@@ -14,6 +14,9 @@ class Universe(models.Model):
 	in_project = models.OneToOneField(Project, on_delete=models.CASCADE)
 	description = HTMLField(blank=True, null=True)
 	
+	class Meta:
+		ordering = ['name', ]
+	
 	def get_absolute_url(self):
 		return reverse('universe-detail', args=[str(self.id)])
 		
@@ -33,6 +36,9 @@ class Empire(models.Model):
 	regions = models.ManyToManyField('Region', blank=True)
 	
 	faiths = models.ManyToManyField(God, blank=True)
+	
+	class Meta:
+		ordering = ['name', ]
 	
 	def get_absolute_url(self):
 		return reverse('empire-detail', args=[str(self.id)])
@@ -58,6 +64,9 @@ class Region(models.Model):
 	
 	description = HTMLField(blank=True, null=True)
 	
+	class Meta:
+		ordering = ['name', ]
+	
 	def get_absolute_url(self):
 		return reverse('region-detail', args=[str(self.id)])
 	
@@ -78,6 +87,9 @@ class Area(models.Model):
 	description = HTMLField(blank=True, null=True)
 	flavor_text = models.TextField(blank=True, null=True)
 	
+	class Meta:
+		ordering = ['name', ]
+	
 	def get_absolute_url(self):
 		return reverse('area-detail', args=[str(self.id)])
 	
@@ -97,6 +109,7 @@ class City(models.Model):
 	
 	class Meta:
 		verbose_name_plural = "Cities"
+		ordering = ['name', ]
 	
 	def get_absolute_url(self):
 		return reverse('city-detail', args=[str(self.id)])
@@ -115,6 +128,7 @@ class CityQuarter(models.Model):
 	
 	class Meta:
 		verbose_name_plural = 'City Quarters'
+		ordering = ['name', ]
 		
 	def get_absolute_url(self):
 		return reverse('cityquarter-detail', args=[str(self.id)])
@@ -139,6 +153,9 @@ class Location(models.Model):
 	
 	exit_points = models.ManyToManyField('Location', blank=True)
 	
+	class Meta:
+		ordering = ['name', ]
+	
 	def get_absolute_url(self):
 		return reverse('location-detail', args=[str(self.id)])
 	
@@ -152,6 +169,7 @@ class LocationLoot(models.Model):
 	
 	class Meta:
 		verbose_name_plural = "Location Loot"
+		order_with_respect_to = 'name'
 	
 	def __str__(self):
 		return self.name.name
@@ -179,6 +197,9 @@ class NPC(models.Model):
 	faiths = models.ManyToManyField(God, blank=True)
 	
 	description = HTMLField(blank=True, null=True)
+	
+	class Meta:
+		ordering = ['name', ]
 	
 	def get_absolute_url(self):
 		return reverse('npc-detail', args=[str(self.id)])
@@ -209,6 +230,9 @@ class Faction(models.Model):
 	description = HTMLField(blank=True, null=True)
 	leaders = models.ManyToManyField(NPC, blank=True)
 	
+	class Meta:
+		ordering = ['name', ]
+	
 	def get_absolute_url(self):
 		return reverse('faction-detail', args=[str(self.id)])
 	
@@ -227,8 +251,8 @@ class CityDemographics(Demographics):
 	in_city = models.ForeignKey(City, on_delete=models.CASCADE)
 	
 	class Meta:
-		ordering = ('-percent', )
 		verbose_name_plural = 'City Demographics'
+		ordering = ('-percent', )
 	
 	def __str__(self):
 		return self.race
@@ -270,6 +294,7 @@ class WorldEncounterLoot(models.Model):
 	
 	class Meta:
 		verbose_name_plural = "World Encounter Loot"
+		order_with_respect_to = 'name'
 	
 	def __str__(self):
 		return self.name.name
