@@ -364,6 +364,7 @@ class DungeonModelForm(ModelForm):
 		
 		self.helper.layout = Layout(
 			Field('title'),
+			Field('landscape'),
 			Field('description'),
 			Field('in_area', type="hidden"),
 		)
