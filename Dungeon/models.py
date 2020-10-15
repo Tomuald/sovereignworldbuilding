@@ -14,7 +14,7 @@ class Dungeon(models.Model):
 	Dungeons are basically well-defined locations."""
 	
 	title = models.CharField(max_length=125)
-	landscape = URLField(max_length=255, blank=True, null=True, help_text="Provide a URL to an image file. Preferably, to the actual file, and not a link to a search engine.")
+	landscape = models.URLField(max_length=255, blank=True, null=True, help_text="Provide a URL to an image file. Preferably, to the actual file, and not a link to a search engine.")
 	in_area = models.ForeignKey(Area, on_delete=models.CASCADE)
 	
 	description = HTMLField(blank=True, null=True)
