@@ -153,6 +153,7 @@ caption {
 
 #image {
   border-radius: 5px;
+  max-height: 300px;
   cursor: pointer;
   transition: 0.3s;
 }
