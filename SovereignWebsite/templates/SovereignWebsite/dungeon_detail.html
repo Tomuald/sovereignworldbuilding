@@ -48,6 +48,17 @@
         <th colspan="2" class="sidebar-table">{{ dungeon.title }}</th>
       </tr>
     </thead>
+    <tbody>
+      {% if dungeon.landscape %}
+      <td colspan="2">
+        <img id="image" src="{{ dungeon.landscape }}" class="img-fluid mx-auto d-block">
+        <div id="imageModal" class="modal">
+          <span class="close">&times;</span>
+          <img class="modal-content" id="modalImage">
+        </div>
+      </td>
+      {% endif %}
+    </tbody>
     <tr>
       <th>Area</th>
       <td><a href="{{ dungeon.in_area.get_absolute_url }}">{{ dungeon.in_area }}</a></td>
@@ -55,3 +66,8 @@
     
   </table>
 {% endblock rightsidebar %}
+
+{% block additionalscripts %}
+  {% load static %}
+  <script type="text/javascript" src="{% static 'js/imagemodals.js' %}"></script>
+{% endblock additionalscripts %}  
