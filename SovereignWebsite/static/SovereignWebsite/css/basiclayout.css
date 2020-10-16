@@ -177,8 +177,10 @@ caption {
 .modal-content {
   margin: auto;
   display: block;
-  max-width: 80%;
+  height: auto;
+  width: auto;
   max-height: 80%;
+  max-width: 80%;
 }
 
 .modal-content {
