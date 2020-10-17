@@ -928,7 +928,8 @@ def room_create(request, in_roomset, pk=None):
 	else:
 		room = Room()
 	
-	rooms = Room.objects.filter(in_roomset=in_roomset.id).exclude(id=room.id)
+	rooms_raw = Room.objects.filter(in_roomset=in_roomset.id)
+	rooms = rooms_raw.exclude(id=room.id)
 	
 	form = RoomModelForm(rooms,
 						 roomsets,
