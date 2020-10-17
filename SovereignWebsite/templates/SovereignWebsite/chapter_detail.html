@@ -58,7 +58,7 @@
       <tr>
         <td>{{ quest.quest_num }}</td>
         <td><a href="{{ quest.get_absolute_url }}">{{ quest.title}}</a></td>
-        <td>{{ quest.encounter_set.all.count }}</td>
+        <td>{{ quest.questencounter_set.all.count }}</td>
       </tr>
     {% endfor %}
     </tbody>
