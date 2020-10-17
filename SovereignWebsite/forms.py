@@ -193,11 +193,12 @@ class LocationModelForm(ModelForm):
 		model = Location
 		fields = '__all__'
 		
-	def __init__(self, in_area, *args, **kwargs):
+	def __init__(self, *args, **kwargs):
 		self.npcs = kwargs.pop('npcs')
+		self.exit_points = kwargs.pop('exit_points')
 		super(LocationModelForm, self).__init__(*args, **kwargs)
 		self.fields['NPCs'].queryset = self.npcs
-		self.fields['exit_points'].queryset = Location.objects.filter(in_area=in_area)
+		self.fields['exit_points'].queryset = self.exit_points
 		
 		self.helper = FormHelper()
 		self.helper.form_method = 'post'

@@ -620,10 +620,11 @@ def location_create(request, in_area=None, in_cityquarter=None, pk=None):
 	if in_area:
 		in_area = Area.objects.get(id=in_area)
 		npcs = NPC.objects.filter(in_universe=in_area.in_region.in_universe)
+		exit_points = Location.objects.filter(in_area=in_area).exclude(id=location.id)
 		
-		form = LocationModelForm(in_area,
-								 request.POST or None,
+		form = LocationModelForm(request.POST or None,
 								 npcs=npcs,
+								 exit_points=exit_points,
 								 initial={'in_area': in_area,},
 								 instance=location
 								)
@@ -631,10 +632,11 @@ def location_create(request, in_area=None, in_cityquarter=None, pk=None):
 	if in_cityquarter:
 		in_cityquarter = CityQuarter.objects.get(id=in_cityquarter)
 		npcs = NPC.objects.filter(in_universe=in_cityquarter.in_city.in_region.in_universe)
+		exit_points = Location.objects.filter(in_cityquarter=in_cityquarter).exclude(id=location.id)
 		
-		form = LocationModelForm(in_area,
-								 request.POST or None,
+		form = LocationModelForm(request.POST or None,
 								 npcs=npcs,
+								 exit_points=exit_points,
 								 initial={'in_cityquarter': in_cityquarter,},
 								 instance=location
 								)
@@ -928,8 +930,7 @@ def room_create(request, in_roomset, pk=None):
 	else:
 		room = Room()
 	
-	rooms_raw = Room.objects.filter(in_roomset=in_roomset.id)
-	rooms = rooms_raw.exclude(id=room.id)
+	rooms = Room.objects.filter(in_roomset=in_roomset.id).exclude(id=room.id)
 	
 	form = RoomModelForm(rooms,
 						 roomsets,
