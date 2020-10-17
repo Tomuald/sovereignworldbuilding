@@ -922,12 +922,13 @@ def roomset_delete(request, pk):
 def room_create(request, in_roomset, pk=None):
 	in_roomset = Roomset.objects.get(id=in_roomset)
 	roomsets = Roomset.objects.filter(in_dungeon=in_roomset.in_dungeon)
-	rooms = Room.objects.filter(in_roomset=in_roomset.id)
 	
 	if pk:
 		room = get_object_or_404(Room, pk=pk)
 	else:
 		room = Room()
+	
+	rooms = Room.objects.filter(in_roomset=in_roomset.id).exclude(id=room.id)
 	
 	form = RoomModelForm(rooms,
 						 roomsets,
