@@ -406,7 +406,7 @@ class RoomModelForm(ModelForm):
 	def __init__(self, rooms, connected_to, *args, **kwargs):
 		super(RoomModelForm, self).__init__(*args, **kwargs)
 		self.fields['exits'].initial = connected_to
-		initial['exits'] = [room.pk for room in connected_to]
+		self.initial['exits'] = [room.pk for room in connected_to]
 		self.fields['exits'].queryset = rooms
 		
 		self.helper = FormHelper()
