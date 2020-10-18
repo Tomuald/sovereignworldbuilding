@@ -930,10 +930,8 @@ def room_create(request, in_roomset, pk=None):
 		room = Room()
 	
 	rooms = Room.objects.filter(in_roomset=in_roomset.id).exclude(id=room.id)
-	connected_to = Room.objects.filter(in_roomset=in_roomset).filter(exits=room.id)
 	
 	form = RoomModelForm(rooms,
-						 connected_to,
 						 request.POST or None,
 						 initial={'in_roomset': in_roomset},
 						 instance=room
