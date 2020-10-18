@@ -403,9 +403,10 @@ class RoomModelForm(ModelForm):
 		model = Room
 		fields = '__all__'
 	
-	def __init__(self, rooms, *args, **kwargs):
+	def __init__(self, rooms, connected_to, *args, **kwargs):
 		super(RoomModelForm, self).__init__(*args, **kwargs)
 		self.fields['exits'].queryset = rooms
+		self.fields['exits'].initial = [room.id for room in connected_to]
 		
 		self.helper = FormHelper()
 		self.helper.form_method = 'post'
