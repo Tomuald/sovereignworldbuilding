@@ -403,9 +403,9 @@ class RoomModelForm(ModelForm):
 		model = Room
 		fields = '__all__'
 	
-	def __init__(self, rooms, roomsets, *args, **kwargs):
+	def __init__(self, rooms, connected_to, *args, **kwargs):
 		super(RoomModelForm, self).__init__(*args, **kwargs)
-		self.fields['in_roomset'].queryset = roomsets
+		self.fields['exits'].initial = connected_to
 		self.fields['exits'].queryset = rooms
 		
 		self.helper = FormHelper()

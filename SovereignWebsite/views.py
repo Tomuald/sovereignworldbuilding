@@ -923,7 +923,6 @@ def roomset_delete(request, pk):
 @login_required	
 def room_create(request, in_roomset, pk=None):
 	in_roomset = Roomset.objects.get(id=in_roomset)
-	roomsets = Roomset.objects.filter(in_dungeon=in_roomset.in_dungeon)
 	
 	if pk:
 		room = get_object_or_404(Room, pk=pk)
@@ -931,9 +930,10 @@ def room_create(request, in_roomset, pk=None):
 		room = Room()
 	
 	rooms = Room.objects.filter(in_roomset=in_roomset.id).exclude(id=room.id)
+	connected_to = Room.objects.filter(in_roomset=in_roomset.id).filter(exits=room.id)
 	
 	form = RoomModelForm(rooms,
-						 roomsets,
+						 connected_to,
 						 request.POST or None,
 						 initial={'in_roomset': in_roomset},
 						 instance=room
