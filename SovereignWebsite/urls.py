@@ -1,5 +1,24 @@
 from django.urls import path
 from . import views
+from Project.views import project_list, project_detail, project_create, project_delete
+from Campaign.views import campaign_detail, campaign_index, campaign_create, campaign_delete
+from Campaign.views import chapter_detail, chapter_create, chapter_delete
+from Campaign.views import quest_detail, quest_create, quest_delete
+from Campaign.views import questencounter_detail, questencounter_create, questencounter_delete
+from Campaign.views import questencounterloot_create, questencounterloot_delete
+
+from Dungeon.views import dungeon_detail, dungeon_create, dungeon_delete
+from Dungeon.views import roomset_detail, roomset_create, roomset_delete
+from Dungeon.views import room_detail, room_create, room_delete
+from Dungeon.views import roomloot_create, roomloot_delete
+
+from Pantheon.views import pantheon_detail, pantheon_create, pantheon_delete
+from Pantheon.views import god_detail, god_create, god_delete
+
+from ItemList.views import itemlist_detail, itemlist_create, itemlist_delete
+from ItemList.views import item_detail, item_create, item_delete
+
+from World import views
 
 urlpatterns = []
 
@@ -9,15 +28,15 @@ urlpatterns = []
 
 urlpatterns += [
 	# Project
-	path('worldbuilder/', views.project_list, name="project-list"),
-	path('worldbuilder/project/<int:pk>/', views.project_detail, name="project-detail"),
+	path('worldbuilder/', project_list, name="project-list"),
+	path('worldbuilder/project/<int:pk>/', project_detail, name="project-detail"),
 	
 	# Campaign
-	path('worldbuilder/campaign/<int:pk>/index/', views.campaign_index, name="campaign-index"),
-	path('worldbuilder/campaign/<int:pk>/', views.campaign_detail, name="campaign-detail"),
-	path('worldbuilder/campaign/chapter/<int:pk>/', views.chapter_detail, name="chapter-detail"),
-	path('worldbuilder/campaign/quest/<int:pk>/', views.quest_detail, name="quest-detail"),
-	path('worldbuilder/campaign/questencounter/<int:pk>/', views.questencounter_detail, name="questencounter-detail"),
+	path('worldbuilder/campaign/<int:pk>/index/', campaign_index, name="campaign-index"),
+	path('worldbuilder/campaign/<int:pk>/', campaign_detail, name="campaign-detail"),
+	path('worldbuilder/campaign/chapter/<int:pk>/', chapter_detail, name="chapter-detail"),
+	path('worldbuilder/campaign/quest/<int:pk>/', quest_detail, name="quest-detail"),
+	path('worldbuilder/campaign/questencounter/<int:pk>/', questencounter_detail, name="questencounter-detail"),
 	
 	
 	# Universe
@@ -34,17 +53,17 @@ urlpatterns += [
 	path('worldbuilder/universe/npc/<int:pk>/', views.npc_detail, name="npc-detail"),
 	
 	# Dungeons
-	path('worldbuilder/universe/dungeon/<int:pk>/', views.dungeon_detail, name="dungeon-detail"),
-	path('worldbuilder/universe/dungeon/roomset/<int:pk>', views.roomset_detail, name="roomset-detail"),
-	path('worldbuilder/universe/dungeon/room/<int:pk>/', views.room_detail, name="room-detail"),
+	path('worldbuilder/universe/dungeon/<int:pk>/', dungeon_detail, name="dungeon-detail"),
+	path('worldbuilder/universe/dungeon/roomset/<int:pk>', roomset_detail, name="roomset-detail"),
+	path('worldbuilder/universe/dungeon/room/<int:pk>/', room_detail, name="room-detail"),
 	
 	# Itemlist
-	path('worldbuilder/itemlist/<int:pk>/', views.itemlist_detail, name="itemlist-detail"),
-	path('worldbuilder/itemlist/item/<int:pk>/', views.item_detail, name="item-detail"),
+	path('worldbuilder/itemlist/<int:pk>/', itemlist_detail, name="itemlist-detail"),
+	path('worldbuilder/itemlist/item/<int:pk>/', item_detail, name="item-detail"),
 	
 	# Pantheons
-	path('worldbuilder/universe/pantheon/<int:pk>/', views.pantheon_detail, name="pantheon-detail"),
-	path('worldbuilder/universe/pantheon/god/<int:pk>/', views.god_detail, name="god-detail"),
+	path('worldbuilder/universe/pantheon/<int:pk>/', pantheon_detail, name="pantheon-detail"),
+	path('worldbuilder/universe/pantheon/god/<int:pk>/', god_detail, name="god-detail"),
 ]
 
 ##########################
@@ -53,9 +72,9 @@ urlpatterns += [
 
 # PROJECT FORMS
 urlpatterns += [
-	path('worldbuilder/project/create/', views.project_create, name="project-create"),
-	path('worldbuilder/project/update/<int:pk>/', views.project_create, name="project-update"),
-	path('worldbuilder/project/delete/<int:pk>/', views.project_delete, name="project-delete"),
+	path('worldbuilder/project/create/', project_create, name="project-create"),
+	path('worldbuilder/project/update/<int:pk>/', project_create, name="project-update"),
+	path('worldbuilder/project/delete/<int:pk>/', project_delete, name="project-delete"),
 ]
 
 # WORLD FORMS
@@ -132,77 +151,77 @@ urlpatterns += [
 
 urlpatterns += [
 	# Dungeons
-	path('worldbuilder/area/<int:in_area>/create/dungeon/', views.dungeon_create, name="dungeon-create"),
-	path('worldbuilder/area/<int:in_area>/update/dungeon/<int:pk>/', views.dungeon_create, name="dungeon-update"),
-	path('worldbuilder/dungeon/delete/<int:pk>/', views.dungeon_delete, name="dungeon-delete"),
+	path('worldbuilder/area/<int:in_area>/create/dungeon/', dungeon_create, name="dungeon-create"),
+	path('worldbuilder/area/<int:in_area>/update/dungeon/<int:pk>/', dungeon_create, name="dungeon-update"),
+	path('worldbuilder/dungeon/delete/<int:pk>/', dungeon_delete, name="dungeon-delete"),
 	
 	# Roomsets
-	path('worldbuilder/dungeon/<int:in_dungeon>/create/roomset/', views.roomset_create, name="roomset-create"),
-	path('worldbuilder/dungeon/<int:in_dungeon>/update/roomset/<int:pk>/', views.roomset_create, name="roomset-update"),
-	path('worldbuilder/roomset/delete/<int:pk>/', views.roomset_delete, name="roomset-delete"),
+	path('worldbuilder/dungeon/<int:in_dungeon>/create/roomset/', roomset_create, name="roomset-create"),
+	path('worldbuilder/dungeon/<int:in_dungeon>/update/roomset/<int:pk>/', roomset_create, name="roomset-update"),
+	path('worldbuilder/roomset/delete/<int:pk>/', roomset_delete, name="roomset-delete"),
 	
 	# Rooms
-	path('worldbuilder/dungeon/roomset/<int:in_roomset>/create/room/', views.room_create, name="room-create"),
-	path('worldbuilder/dungeon/roomset/<int:in_roomset>/create/room/<int:pk>/', views.room_create, name="room-update"),
-	path('worldbuilder/room/delete/<int:pk>/', views.room_delete, name="room-delete"),
+	path('worldbuilder/dungeon/roomset/<int:in_roomset>/create/room/', room_create, name="room-create"),
+	path('worldbuilder/dungeon/roomset/<int:in_roomset>/create/room/<int:pk>/', room_create, name="room-update"),
+	path('worldbuilder/room/delete/<int:pk>/', room_delete, name="room-delete"),
 	
 	# Room Loot
-	path('worldbuilder/dungeon/room/<int:in_room>/loot/create/', views.roomloot_create, name="roomloot-create"),
-	path('worldbuilder/dungeon/roomloot/delete/<int:pk>/', views.roomloot_delete, name="roomloot-delete"),
+	path('worldbuilder/dungeon/room/<int:in_room>/loot/create/', roomloot_create, name="roomloot-create"),
+	path('worldbuilder/dungeon/roomloot/delete/<int:pk>/', roomloot_delete, name="roomloot-delete"),
 ]
 
 # CAMPAIGN FORMS
 
 urlpatterns += [
 	# Campaigns
-	path('worldbuilder/<int:in_project>/create/campaign/', views.campaign_create, name="campaign-create"),
-	path('worldbuilder/<int:in_project>/update/campaign/<int:pk>/', views.campaign_create, name="campaign-update"),
-	path('worldbuilder/campaign/delete/<int:pk>/', views.campaign_delete, name="campaign-delete"),
+	path('worldbuilder/<int:in_project>/create/campaign/', campaign_create, name="campaign-create"),
+	path('worldbuilder/<int:in_project>/update/campaign/<int:pk>/', campaign_create, name="campaign-update"),
+	path('worldbuilder/campaign/delete/<int:pk>/', campaign_delete, name="campaign-delete"),
 	
 	# Chapters
-	path('worldbuilder/campaign/<int:in_campaign>/create/chapter/', views.chapter_create, name="chapter-create"),
-	path('worldbuilder/campaign/<int:in_campaign>/update/chapter/<int:pk>/', views.chapter_create, name="chapter-update"),
-	path('worldbuilder/chapter/<int:pk>/', views.chapter_delete, name="chapter-delete"),
+	path('worldbuilder/campaign/<int:in_campaign>/create/chapter/', chapter_create, name="chapter-create"),
+	path('worldbuilder/campaign/<int:in_campaign>/update/chapter/<int:pk>/', chapter_create, name="chapter-update"),
+	path('worldbuilder/chapter/<int:pk>/', chapter_delete, name="chapter-delete"),
 	
 	# Quests
-	path('worldbuilder/chapter/<int:in_chapter>/create/quest/', views.quest_create, name="quest-create"),
-	path('worldbuilder/chapter/<int:in_chapter>/update/quest/<int:pk>', views.quest_create, name="quest-update"),
-	path('worldbuilder/quest/delete/<int:pk>/', views.quest_delete, name="quest-delete"),
+	path('worldbuilder/chapter/<int:in_chapter>/create/quest/', quest_create, name="quest-create"),
+	path('worldbuilder/chapter/<int:in_chapter>/update/quest/<int:pk>', quest_create, name="quest-update"),
+	path('worldbuilder/quest/delete/<int:pk>/', quest_delete, name="quest-delete"),
 	
 	# Quest Encounters
-	path('worldbuilder/quest/<int:in_quest>/encounter/create/', views.questencounter_create, name="questencounter-create"),
-	path('worldbuilder/quest/<int:in_quest>/encounter/update/<int:pk>/', views.questencounter_create, name="questencounter-update"),
-	path('worldbuilder/questencounter/delete/<int:pk>/', views.questencounter_delete, name="questencounter-delete"),
+	path('worldbuilder/quest/<int:in_quest>/encounter/create/', questencounter_create, name="questencounter-create"),
+	path('worldbuilder/quest/<int:in_quest>/encounter/update/<int:pk>/', questencounter_create, name="questencounter-update"),
+	path('worldbuilder/questencounter/delete/<int:pk>/', questencounter_delete, name="questencounter-delete"),
 	
 	# Quest Encounter Loot
-	path('worldbuilder/questencounter/<int:in_questencounter>/encounterloot/create/', views.questencounterloot_create, name="questencounterloot-create"),
-	path('worldbuilder/questencounter/encounterloot/delete/<int:pk>/', views.questencounterloot_delete, name="questencounterloot-delete"),
+	path('worldbuilder/questencounter/<int:in_questencounter>/encounterloot/create/', questencounterloot_create, name="questencounterloot-create"),
+	path('worldbuilder/questencounter/encounterloot/delete/<int:pk>/', questencounterloot_delete, name="questencounterloot-delete"),
 ]
 
 # ITEMLIST FORMS
 
 urlpatterns += [
 	# Itemlists
-	path('worldbuilder/project/<int:in_project>/itemlist/create/', views.itemlist_create, name="itemlist-create"),
-	path('worldbuilder/project/<int:in_project>/itemlist/update/<int:pk>/', views.itemlist_create, name="itemlist-update"),
-	path('worldbuilder/itemlist/delete/<int:pk>/', views.itemlist_delete, name="itemlist-delete"),
+	path('worldbuilder/project/<int:in_project>/itemlist/create/', itemlist_create, name="itemlist-create"),
+	path('worldbuilder/project/<int:in_project>/itemlist/update/<int:pk>/', itemlist_create, name="itemlist-update"),
+	path('worldbuilder/itemlist/delete/<int:pk>/', itemlist_delete, name="itemlist-delete"),
 	
 	# Items
-	path('worldbuilder/itemlist/<int:in_itemlist>/create/item/', views.item_create, name="item-create"),
-	path('worldbuilder/itemlist/<int:in_itemlist>/update/item/<int:pk>/', views.item_create, name="item-update"),
-	path('worldbuilder/item/delete/<int:pk>/', views.item_delete, name="item-delete"),
+	path('worldbuilder/itemlist/<int:in_itemlist>/create/item/', item_create, name="item-create"),
+	path('worldbuilder/itemlist/<int:in_itemlist>/update/item/<int:pk>/', item_create, name="item-update"),
+	path('worldbuilder/item/delete/<int:pk>/', item_delete, name="item-delete"),
 ]
 
 # PANTHEON FORMS
 
 urlpatterns += [
 	# Pantheons
-	path('worldbuilder/universe/<int:in_universe>/create/pantheon/', views.pantheon_create, name="pantheon-create"),
-	path('worldbuilder/universe/<int:in_universe>/update/pantheon/<int:pk>/', views.pantheon_create, name="pantheon-update"),
-	path('worldbuilder/pantheon/delete/<int:pk>/', views.pantheon_delete, name="pantheon-delete"),
+	path('worldbuilder/universe/<int:in_universe>/create/pantheon/', pantheon_create, name="pantheon-create"),
+	path('worldbuilder/universe/<int:in_universe>/update/pantheon/<int:pk>/', pantheon_create, name="pantheon-update"),
+	path('worldbuilder/pantheon/delete/<int:pk>/', pantheon_delete, name="pantheon-delete"),
 	
 	# Gods
-	path('worldbuilder/universe/pantheon/<int:in_pantheon>/create/god/', views.god_create, name="god-create"),
-	path('worldbuilder/universe/pantheon/<int:in_pantheon>/update/god/<int:pk>/', views.god_create, name="god-update"),
-	path('worldbuilder/god/delete/<int:pk>/', views.god_delete, name="god-delete"),
+	path('worldbuilder/universe/pantheon/<int:in_pantheon>/create/god/', god_create, name="god-create"),
+	path('worldbuilder/universe/pantheon/<int:in_pantheon>/update/god/<int:pk>/', god_create, name="god-update"),
+	path('worldbuilder/god/delete/<int:pk>/', god_delete, name="god-delete"),
 ]

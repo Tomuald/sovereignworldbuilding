@@ -2,5 +2,6 @@
 from __future__ import unicode_literals
 
 from django.test import TestCase
+from accounts.models import CustomUser
 
-# Create your tests here.
+# Add your tests here.
