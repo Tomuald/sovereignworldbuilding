@@ -145,6 +145,8 @@ STATICFILES_DIRS = [
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 # TinyMce Configuration
+TINYMCE_JS_URL = os.path.join(STATIC_ROOT, 'tinymce/tinymce.min.js')
+
 TINYMCE_DEFAULT_CONFIG = {
 	"plugins": "table, lists, link, spellchecker",
 	"toolbar": "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link",
@@ -152,6 +154,7 @@ TINYMCE_DEFAULT_CONFIG = {
 }
 
 TINYMCE_SPELLCHECKER = True
+TINYMCE_COMPRESSOR = True
 
 # django_heroku
 django_heroku.settings(locals())

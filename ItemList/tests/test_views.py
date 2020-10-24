@@ -13,13 +13,13 @@ class ItemlistViewTests(TestCase):
 		project = Project.objects.create(title="Test Project", created_by=user)
 		self.itemlist = Itemlist.objects.create(name="Test Itemlist", in_project=project)
 	
-	def test_not_logged_in_redirects(self):
+	def test_detail_view_not_logged_in_redirects(self):
 		response = self.client.get(self.itemlist.get_absolute_url())
 		self.assertEqual(response.status_code, 302)
 		expected_url = '/accounts/login/?next=/worldbuilder/itemlist/%d/' % self.itemlist.id
 		self.assertRedirects(response, expected_url)
 	
-	def test_logged_in_renders(self):
+	def test_detail_view_logged_in_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
 		response = self.client.get(self.itemlist.get_absolute_url())
 		self.assertEqual(response.status_code, 200)
@@ -31,13 +31,13 @@ class ItemViewTests(TestCase):
 		self.itemlist = Itemlist.objects.create(name="Test Itemlist", in_project=project)
 		self.item = Item.objects.create(name="Test Item", in_itemlist=self.itemlist)
 		
-	def test_not_logged_in_redirects(self):
+	def test_detail_view_not_logged_in_redirects(self):
 		response = self.client.get(self.item.get_absolute_url())
 		self.assertEqual(response.status_code, 302)
 		expected_url = '/accounts/login/?next=/worldbuilder/itemlist/item/%d/' % self.item.id
 		self.assertRedirects(response, expected_url)
 		
-	def test_logged_in_renders(self):
+	def test_detail_view_logged_in_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
 		response = self.client.get(self.item.get_absolute_url())
 		self.assertEqual(response.status_code, 200)
