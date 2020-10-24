@@ -152,6 +152,7 @@ TINYMCE_DEFAULT_CONFIG = {
 	'browser_spellcheck': 'true',
 }
 
+TINYMCE_COMPRESSOR = True
 TINYMCE_SPELLCHECKER = True
 
 # django_heroku
