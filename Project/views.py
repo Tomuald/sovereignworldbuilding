@@ -15,6 +15,8 @@ from Campaign.models import Campaign
 from World.models import Universe
 from ItemList.models import Itemlist
 
+from Project.decorators import project_in_user_library
+
 
 ##################
 ###   #VIEWS   ###
@@ -32,6 +34,7 @@ def project_list(request):
 	return render(request, "SovereignWebsite/project_list.html", context=context)
 
 @login_required
+@project_in_user_library
 def project_detail(request, pk):
 	project = get_object_or_404(Project, pk=pk)
 	

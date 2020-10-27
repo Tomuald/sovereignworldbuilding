@@ -14,11 +14,14 @@ from Dungeon.models import Dungeon, Roomset, Room
 from World.models import Area
 from ItemList.models import Item
 
+from Dungeon.decorators import dungeon_in_user_library, roomset_in_user_library, room_in_user_library
+
 ##################
 ###   #VIEWS   ###
 ##################
 
 @login_required
+@dungeon_in_user_library
 def dungeon_detail(request, pk):
 	dungeon = Dungeon.objects.get(pk=pk)
 	
@@ -29,6 +32,7 @@ def dungeon_detail(request, pk):
 	return render(request, 'SovereignWebsite/dungeon_detail.html', context)
 	
 @login_required
+@roomset_in_user_library
 def roomset_detail(request, pk):
 	roomset = Roomset.objects.get(pk=pk)
 	
@@ -36,7 +40,8 @@ def roomset_detail(request, pk):
 	
 	return render(request, 'SovereignWebsite/roomset_detail.html', context)
 	
-@login_required	
+@login_required
+@room_in_user_library
 def room_detail(request, pk):
 	room = Room.objects.get(pk=pk)
 	

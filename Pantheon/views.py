@@ -13,11 +13,14 @@ from Pantheon.forms import PantheonModelForm, GodModelForm
 from Pantheon.models import Pantheon, God
 from World.models import Universe, Faction, NPC
 
+from Pantheon.decorators import pantheon_in_user_library, god_in_user_library
+
 ##################
 ###   #VIEWS   ###
 ##################
 
 @login_required
+@pantheon_in_user_library
 def pantheon_detail(request, pk):
 	pantheon = Pantheon.objects.get(pk=pk)
 	
@@ -26,6 +29,7 @@ def pantheon_detail(request, pk):
 	return render(request, "SovereignWebsite/pantheon_detail.html", context)
 
 @login_required
+@god_in_user_library
 def god_detail(request, pk):
 	god = God.objects.get(pk=pk)
 	worshipped_by_npcs = NPC.objects.filter(faiths=god)

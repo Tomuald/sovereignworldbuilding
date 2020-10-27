@@ -17,11 +17,14 @@ from Pantheon.models import Pantheon, God
 from Dungeon.models import Dungeon, Room
 from ItemList.models import Item
 
+from World import decorators
+
 ##################
 ###   #VIEWS   ###
 ##################
 
 @login_required
+@decorators.universe_in_user_library
 def universe_detail(request, pk):
 	universe = Universe.objects.get(pk=pk)
 	empires = Empire.objects.filter(in_universe=universe.id)
@@ -41,7 +44,8 @@ def universe_detail(request, pk):
 	
 	return render(request, "SovereignWebsite/universe_detail.html", context)
 
-@login_required	
+@login_required
+@decorators.universe_in_user_library
 def universe_index(request, pk):
 	universe = Universe.objects.get(pk=pk)
 	
@@ -70,17 +74,8 @@ def universe_index(request, pk):
 	
 	return render(request, "SovereignWebsite/universe_index.html", context=context)
 
-@login_required	
-def empire_detail(request, pk):
-	empire = Empire.objects.get(pk=pk)
-	
-	context = {
-		'empire': empire,
-	}
-	
-	return render(request, "SovereignWebsite/empire_detail.html", context)
-
 @login_required
+@decorators.region_in_user_library
 def region_detail(request, pk):
 	region = Region.objects.get(pk=pk)
 	
@@ -89,7 +84,9 @@ def region_detail(request, pk):
 	}
 	
 	return render(request, 'SovereignWebsite/region_detail.html', context)
-@login_required	
+
+@login_required
+@decorators.area_in_user_library
 def area_detail(request, pk):
 	area = Area.objects.get(pk=pk)
 	npcs = NPC.objects.filter(location__in_area=area.id).distinct()
@@ -102,6 +99,7 @@ def area_detail(request, pk):
 	return render(request, 'SovereignWebsite/area_detail.html', context)
 
 @login_required
+@decorators.city_in_user_library
 def city_detail(request, pk):
 	city = City.objects.get(pk=pk)
 	city_quarters = CityQuarter.objects.filter(in_city=city)
@@ -113,7 +111,8 @@ def city_detail(request, pk):
 	
 	return render(request, 'SovereignWebsite/city_detail.html', context)
 
-@login_required	
+@login_required
+@decorators.cityquarter_in_user_library
 def cityquarter_detail(request, pk):
 	cityquarter = CityQuarter.objects.get(pk=pk)
 	
@@ -124,6 +123,7 @@ def cityquarter_detail(request, pk):
 	return render(request, 'SovereignWebsite/cityquarter_detail.html', context)
 
 @login_required	
+@decorators.location_in_user_library
 def location_detail(request, pk):
 	location = Location.objects.get(pk=pk)
 	
@@ -132,7 +132,9 @@ def location_detail(request, pk):
 	}
 	
 	return render(request, 'SovereignWebsite/location_detail.html', context)
-@login_required	
+
+@login_required
+@decorators.worldencounter_in_user_library
 def worldencounter_detail(request, pk):
 	worldencounter = WorldEncounter.objects.get(pk=pk)
 	
@@ -142,7 +144,19 @@ def worldencounter_detail(request, pk):
 	
 	return render(request, "SovereignWebsite/worldencounter_detail.html", context)
 
+@login_required
+@decorators.empire_in_user_library
+def empire_detail(request, pk):
+	empire = Empire.objects.get(pk=pk)
+	
+	context = {
+		'empire': empire,
+	}
+	
+	return render(request, "SovereignWebsite/empire_detail.html", context)
+
 @login_required	
+@decorators.faction_in_user_library
 def faction_detail(request, pk):
 	faction = Faction.objects.get(pk=pk)
 	
@@ -152,7 +166,8 @@ def faction_detail(request, pk):
 	
 	return render(request, 'SovereignWebsite/faction_detail.html', context)
 
-@login_required	
+@login_required
+@decorators.npc_in_user_library
 def npc_detail(request, pk):
 	npc = NPC.objects.get(pk=pk)
 	locations = Location.objects.filter(NPCs__id=npc.id)

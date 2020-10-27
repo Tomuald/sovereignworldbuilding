@@ -16,12 +16,15 @@ from World.models import Universe, Region, Area, City, Location, NPC
 from Dungeon.models import Room
 from ItemList.models import Item
 
+from Campaign import decorators
+
 
 ##################
 ###   #VIEWS   ###
 ##################
 
 @login_required
+@decorators.campaign_in_user_library
 def campaign_detail(request, pk):
 	campaign = Campaign.objects.get(pk=pk)
 	chapters = Chapter.objects.filter(in_campaign=campaign.id)
@@ -34,6 +37,7 @@ def campaign_detail(request, pk):
 	return render(request, "SovereignWebsite/campaign_detail.html", context)
 	
 @login_required	
+@decorators.campaign_in_user_library
 def campaign_index(request, pk):
 	campaign = Campaign.objects.get(pk=pk)
 	
@@ -51,6 +55,7 @@ def campaign_index(request, pk):
 	return render(request, "SovereignWebsite/campaign_index.html", context)
 	
 @login_required
+@decorators.chapter_in_user_library
 def chapter_detail(request, pk):
 	chapter = Chapter.objects.get(pk=pk)
 	main_quests = Quest.objects.filter(in_chapter=pk, quest_type='mq')
@@ -73,7 +78,8 @@ def chapter_detail(request, pk):
 	
 	return render(request, "SovereignWebsite/chapter_detail.html", context)
 	
-@login_required	
+@login_required
+@decorators.quest_in_user_library
 def quest_detail(request, pk):
 	quest = Quest.objects.get(pk=pk)
 	preceded_by = Quest.objects.filter(quest_num=quest.quest_num - 1,
@@ -94,6 +100,7 @@ def quest_detail(request, pk):
 	return render(request, "SovereignWebsite/quest_detail.html", context)
 	
 @login_required	
+@decorators.questencounter_in_user_library
 def questencounter_detail(request, pk):
 	questencounter = QuestEncounter.objects.get(pk=pk)
 	

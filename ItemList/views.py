@@ -13,11 +13,14 @@ from ItemList.forms import ItemlistModelForm, ItemModelForm
 from ItemList.models import Itemlist, Item
 from Project.models import Project
 
+from ItemList.decorators import itemlist_in_user_library, item_in_user_library
+
 ##################
 ###   #VIEWS   ###
 ##################
 
 @login_required
+@itemlist_in_user_library
 def itemlist_detail(request, pk):
 	itemlist = Itemlist.objects.get(pk=pk)
 	
@@ -26,6 +29,7 @@ def itemlist_detail(request, pk):
 	return render(request, 'SovereignWebsite/itemlist_detail.html', context)
 
 @login_required
+@item_in_user_library
 def item_detail(request, pk):
 	item = Item.objects.get(pk=pk)
 	
