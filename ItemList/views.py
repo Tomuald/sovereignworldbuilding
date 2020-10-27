@@ -59,7 +59,8 @@ def itemlist_create(request, in_project, pk=None):
 		
 	return render(request, 'SovereignWebsite/itemlist_form.html', {'form': form})
 
-@login_required	
+@login_required
+@itemlist_in_user_library
 def itemlist_delete(request, pk):
 	itemlist = get_object_or_404(Itemlist, pk=pk)
 	
@@ -87,7 +88,8 @@ def item_create(request, in_itemlist, pk=None):
 	
 	return render(request, 'SovereignWebsite/item_form.html', {'form': form})
 
-@login_required	
+@login_required
+@item_in_user_library
 def item_delete(request, pk):
 	item = get_object_or_404(Item, pk=pk)
 	

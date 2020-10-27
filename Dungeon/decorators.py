@@ -1,5 +1,5 @@
 from django.core.exceptions import PermissionDenied
-from Dungeon.models import Dungeon, Roomset, Room
+from Dungeon.models import Dungeon, Roomset, Room, RoomLoot
 
 # Checks if this dungeon's project is in the current user's library.
 def dungeon_in_user_library(function):
@@ -39,3 +39,16 @@ def room_in_user_library(function):
 			raise PermissionDenied
 	
 	return test_room_in_user_library
+	
+# Checks if this roomloot's project is in the current user's library.
+def roomloot_in_user_library(function):
+	def test_roomloot_in_user_library(request, pk, *args, **kwargs):
+		roomloot = RoomLoot.objects.get(pk=pk)
+		project = roomloot.in_room.in_roomset.in_dungeon.in_area.in_region.in_universe.in_project
+
+		if project in request.user.user_library.all():
+			return function(request, pk, *args, **kwargs)
+		else:
+			raise PermissionDenied
+	
+	return test_roomloot_in_user_library

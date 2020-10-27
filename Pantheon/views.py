@@ -70,7 +70,8 @@ def pantheon_create(request, in_universe, pk=None):
 		
 	return render(request, 'SovereignWebsite/pantheon_form.html', {'form': form})
 
-@login_required	
+@login_required
+@pantheon_in_user_library
 def pantheon_delete(request, pk):
 	pantheon = get_object_or_404(Pantheon, pk=pk)
 	
@@ -103,7 +104,8 @@ def god_create(request, in_pantheon, pk=None):
 	
 	return render(request, 'SovereignWebsite/god_form.html', {'form': form})
 
-@login_required	
+@login_required
+@god_in_user_library
 def god_delete(request, pk):
 	god = get_object_or_404(God, pk=pk)
 	

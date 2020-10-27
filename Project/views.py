@@ -76,6 +76,7 @@ def project_create(request, pk=None):
 	return render(request, "SovereignWebsite/project_form.html", {'form': form})
 
 @login_required
+@project_in_user_library
 def project_delete(request, pk):
 	project = get_object_or_404(Project, pk=pk)
 	user = CustomUser.objects.get(username=request.user.username)

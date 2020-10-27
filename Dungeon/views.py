@@ -10,11 +10,11 @@ from django.shortcuts import get_object_or_404
 
 from Dungeon.forms import DungeonModelForm, RoomsetModelForm, RoomModelForm, RoomLootModelForm
 
-from Dungeon.models import Dungeon, Roomset, Room
+from Dungeon.models import Dungeon, Roomset, Room, RoomLoot
 from World.models import Area
 from ItemList.models import Item
 
-from Dungeon.decorators import dungeon_in_user_library, roomset_in_user_library, room_in_user_library
+from Dungeon.decorators import dungeon_in_user_library, roomset_in_user_library, room_in_user_library, roomloot_in_user_library
 
 ##################
 ###   #VIEWS   ###
@@ -78,7 +78,8 @@ def dungeon_create(request, in_area, pk=None):
 	
 	return render(request, 'SovereignWebsite/dungeon_form.html', {'form': form})
 
-@login_required	
+@login_required
+@dungeon_in_user_library
 def dungeon_delete(request, pk):
 	dungeon = get_object_or_404(Dungeon, pk=pk)
 	
@@ -108,6 +109,7 @@ def roomset_create(request, in_dungeon, pk=None):
 	return render(request, 'SovereignWebsite/roomset_form.html', {'form': form})
 
 @login_required
+@roomset_in_user_library
 def roomset_delete(request, pk):
 	roomset = get_object_or_404(Roomset, pk=pk)
 	
@@ -142,6 +144,7 @@ def room_create(request, in_roomset, pk=None):
 	return render(request, 'SovereignWebsite/room_form.html', {'form': form})
 
 @login_required
+@room_in_user_library
 def room_delete(request, pk):
 	room = get_object_or_404(Room, pk=pk)
 	
@@ -169,7 +172,8 @@ def roomloot_create(request, in_room):
 	
 	return render(request, 'SovereignWebsite/roomloot_form.html', {'form': form})
 
-@login_required	
+@login_required
+@roomloot_in_user_library
 def roomloot_delete(request, pk):
 	roomloot = RoomLoot.objects.get(pk=pk)
 	
