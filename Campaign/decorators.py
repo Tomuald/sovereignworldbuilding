@@ -1,5 +1,5 @@
 from django.core.exceptions import PermissionDenied
-from Campaign.models import Campaign, Chapter, Quest, QuestEncounter
+from Campaign.models import Campaign, Chapter, Quest, QuestEncounter, QuestEncounterLoot
 
 # Checks if this campaign's project is in the current user's library.
 def campaign_in_user_library(function):
@@ -52,3 +52,16 @@ def questencounter_in_user_library(function):
 			raise PermissionDenied
 	
 	return test_questencounter_in_user_library
+	
+# Checks if this questencounterloot's project is in the current user's library.
+def questencounterloot_in_user_library(function):
+	def test_questencounterloot_in_user_library(request, pk, *args, **kwargs):
+		questencounterloot = QuestEncounterLoot.objects.get(pk=pk)
+		project = questencounterloot.in_questencounter.in_quest.in_chapter.in_campaign.in_project
+		
+		if project in request.user.user_library.all():
+			return function(request, pk, *args, **kwargs)
+		else:
+			raise PermissionDenied
+	
+	return test_questencounterloot_in_user_library

@@ -10,7 +10,7 @@ from accounts.models import CustomUser
 from Project.models import Project
 from Dungeon.models import Dungeon, Roomset, Room
 
-class UniverseViewTests(TestCase):
+class UniverseDetailViewTests(TestCase):
 	def setUp(self):
 		user = CustomUser.objects.create_user(username="TestUser", password="T3stP4ssword")
 		project = Project.objects.create(title="Test Project", created_by=user)
@@ -39,7 +39,36 @@ class UniverseViewTests(TestCase):
 		response = self.client.get(second_universe.get_absolute_url())
 		self.assertEqual(response.status_code, 403)
 		
-class RegionViewTests(TestCase):
+class UniverseDeleteViewTests(TestCase):
+	def setUp(self):
+		user = CustomUser.objects.create_user(username="TestUser", password="T3stP4ssword")
+		project = Project.objects.create(title="Test Project", created_by=user)
+		user.user_library.add(project)
+		
+		self.universe = Universe.objects.create(name="Test Universe", in_project=project)
+	
+	def test_not_logged_in_redirects(self):
+		response = self.client.get(reverse('universe-delete', args=[str(self.universe.id)]))
+		self.assertEqual(response.status_code, 302)
+		expected_url = "/accounts/login/?next=/worldbuilder/universe/delete/%d/" % self.universe.id
+		self.assertRedirects(response, expected_url)
+		
+	def test_logged_in_universe_in_user_library_renders(self):
+		self.client.login(username="TestUser", password="T3stP4ssword")
+		response = self.client.get(reverse('universe-delete', args=[str(self.universe.id)]))
+		self.assertEqual(response.status_code, 200)
+	
+	def test_delete_universe_not_in_user_library_view_forbidden(self):
+		second_user = CustomUser.objects.create_user(username="SecondTestUser", password="T3stP4ssword")
+		second_project = Project.objects.create(title="Second Test Project", created_by=second_user)
+		second_user.user_library.add(second_project)
+		second_universe = Universe.objects.create(name="Second Test Universe", in_project=second_project)
+		
+		self.client.login(username="TestUser", password="T3stP4ssword")
+		response = self.client.get(reverse('universe-delete', args=[str(second_universe.id)]))
+		self.assertEqual(response.status_code, 403)
+		
+class RegionDetailViewTests(TestCase):
 	def setUp(self):
 		user = CustomUser.objects.create_user(username="TestUser", password="T3stP4ssword")
 		project = Project.objects.create(title="Test Project", created_by=user)
@@ -70,7 +99,38 @@ class RegionViewTests(TestCase):
 		response = self.client.get(second_region.get_absolute_url())
 		self.assertEqual(response.status_code, 403)
 		
-class AreaViewTests(TestCase):
+class RegionDeleteViewTests(TestCase):
+	def setUp(self):
+		user = CustomUser.objects.create_user(username="TestUser", password="T3stP4ssword")
+		project = Project.objects.create(title="Test Project", created_by=user)
+		user.user_library.add(project)
+		universe = Universe.objects.create(name="Test Universe", in_project=project)
+		
+		self.region = Region.objects.create(name="Test Region", in_universe=universe)
+	
+	def test_not_logged_in_redirects(self):
+		response = self.client.get(reverse('region-delete', args=[str(self.region.id)]))
+		self.assertEqual(response.status_code, 302)
+		expected_url = "/accounts/login/?next=/worldbuilder/region/delete/%d/" % self.region.id
+		self.assertRedirects(response, expected_url)
+		
+	def test_logged_in_and_region_in_user_library_renders(self):
+		self.client.login(username="TestUser", password="T3stP4ssword")
+		response = self.client.get(reverse('region-delete', args=[str(self.region.id)]))
+		self.assertEqual(response.status_code, 200)
+		
+	def test_delete_region_not_in_user_library_view_forbidden(self):
+		second_user = CustomUser.objects.create_user(username="SecondTestUser", password="T3stP4ssword")
+		second_project = Project.objects.create(title="Second Test Project", created_by=second_user)
+		second_user.user_library.add(second_project)
+		second_universe = Universe.objects.create(name="Second Test Universe", in_project=second_project)
+		second_region = Region.objects.create(name="Second Test Region", in_universe=second_universe)
+		
+		self.client.login(username="TestUser", password="T3stP4ssword")
+		response = self.client.get(reverse('region-delete', args=[str(second_region.id)]))
+		self.assertEqual(response.status_code, 403)
+		
+class AreaDetailViewTests(TestCase):
 	def setUp(self):
 		user = CustomUser.objects.create_user(username="TestUser", password="T3stP4ssword")
 		project = Project.objects.create(title="Test Project", created_by=user)
@@ -102,8 +162,41 @@ class AreaViewTests(TestCase):
 		self.client.login(username="TestUser", password="T3stP4ssword")
 		response = self.client.get(second_area.get_absolute_url())
 		self.assertEqual(response.status_code, 403)
+
+class AreaDeleteViewTests(TestCase):
+	def setUp(self):
+		user = CustomUser.objects.create_user(username="TestUser", password="T3stP4ssword")
+		project = Project.objects.create(title="Test Project", created_by=user)
+		user.user_library.add(project)
+		universe = Universe.objects.create(name="Test Universe", in_project=project)
+		region = Region.objects.create(name="Test Region", in_universe=universe)
 		
-class CityViewTests(TestCase):
+		self.area = Area.objects.create(name="Test Area", in_region=region)
+	
+	def test_detail_view_not_logged_in_redirects(self):
+		response = self.client.get(reverse('area-delete', args=[str(self.area.id)]))
+		self.assertEqual(response.status_code, 302)
+		expected_url = "/accounts/login/?next=/worldbuilder/area/delete/%d/" % self.area.id
+		self.assertRedirects(response, expected_url)
+		
+	def test_logged_in_and_area_in_user_library_renders(self):
+		self.client.login(username="TestUser", password="T3stP4ssword")
+		response = self.client.get(reverse('area-delete', args=[str(self.area.id)]))
+		self.assertEqual(response.status_code, 200)
+		
+	def test_area_not_in_user_library_view_forbidden(self):
+		second_user = CustomUser.objects.create_user(username="SecondTestUser", password="T3stP4ssword")
+		second_project = Project.objects.create(title="Second Test Project", created_by=second_user)
+		second_user.user_library.add(second_project)
+		second_universe = Universe.objects.create(name="Second Test Universe", in_project=second_project)
+		second_region = Region.objects.create(name="Second Test Region", in_universe=second_universe)
+		second_area = Area.objects.create(name="Second Test Area", in_region=second_region)
+		
+		self.client.login(username="TestUser", password="T3stP4ssword")
+		response = self.client.get(reverse('area-delete', args=[str(second_area.id)]))
+		self.assertEqual(response.status_code, 403)
+		
+class CityDetailViewTests(TestCase):
 	def setUp(self):
 		user = CustomUser.objects.create_user(username="TestUser", password="T3stP4ssword")
 		project = Project.objects.create(title="Test Project", created_by=user)
@@ -136,7 +229,40 @@ class CityViewTests(TestCase):
 		response = self.client.get(second_city.get_absolute_url())
 		self.assertEqual(response.status_code, 403)
 		
-class CityQuarterViewTests(TestCase):
+class CityDeleteViewTests(TestCase):
+	def setUp(self):
+		user = CustomUser.objects.create_user(username="TestUser", password="T3stP4ssword")
+		project = Project.objects.create(title="Test Project", created_by=user)
+		user.user_library.add(project)
+		universe = Universe.objects.create(name="Test Universe", in_project=project)
+		region = Region.objects.create(name="Test Region", in_universe=universe)
+		
+		self.city = City.objects.create(name="Test City", in_region=region)
+	
+	def test_not_logged_in_redirects(self):
+		response = self.client.get(reverse('city-delete', args=[str(self.city.id)]))
+		self.assertEqual(response.status_code, 302)
+		expected_url = "/accounts/login/?next=/worldbuilder/city/delete/%d/" % self.city.id
+		self.assertRedirects(response, expected_url)
+		
+	def test_logged_in_and_city_in_user_library_renders(self):
+		self.client.login(username="TestUser", password="T3stP4ssword")
+		response = self.client.get(reverse('city-delete', args=[str(self.city.id)]))
+		self.assertEqual(response.status_code, 200)
+		
+	def test_city_not_in_user_library_view_forbidden(self):
+		second_user = CustomUser.objects.create_user(username="SecondTestUser", password="T3stP4ssword")
+		second_project = Project.objects.create(title="Second Test Project", created_by=second_user)
+		second_user.user_library.add(second_project)
+		second_universe = Universe.objects.create(name="Second Test Universe", in_project=second_project)
+		second_region = Region.objects.create(name="Second Test Region", in_universe=second_universe)
+		second_city = City.objects.create(name="Second Test City", in_region=second_region)
+		
+		self.client.login(username="TestUser", password="T3stP4ssword")
+		response = self.client.get(reverse('city-delete', args=[str(second_city.id)]))
+		self.assertEqual(response.status_code, 403)
+		
+class CityQuarterDetailViewTests(TestCase):
 	def setUp(self):
 		user = CustomUser.objects.create_user(username="TestUser", password="T3stP4ssword")
 		project = Project.objects.create(title="Test Project", created_by=user)
@@ -170,8 +296,43 @@ class CityQuarterViewTests(TestCase):
 		self.client.login(username="TestUser", password="T3stP4ssword")
 		response = self.client.get(second_cityquarter.get_absolute_url())
 		self.assertEqual(response.status_code, 403)
+
+class CityQuarterDeleteViewTests(TestCase):
+	def setUp(self):
+		user = CustomUser.objects.create_user(username="TestUser", password="T3stP4ssword")
+		project = Project.objects.create(title="Test Project", created_by=user)
+		user.user_library.add(project)
+		universe = Universe.objects.create(name="Test Universe", in_project=project)
+		region = Region.objects.create(name="Test Region", in_universe=universe)
+		city = City.objects.create(name="Test City", in_region=region)
 		
-class LocationViewTests(TestCase):
+		self.cityquarter = CityQuarter.objects.create(name="Test CityQuarter", in_city=city)
+	
+	def test_detail_view_not_logged_in_redirects(self):
+		response = self.client.get(reverse('cityquarter-delete', args=[str(self.cityquarter.id)]))
+		self.assertEqual(response.status_code, 302)
+		expected_url = "/accounts/login/?next=/worldbuilder/cityquarter/delete/%d/" % self.cityquarter.id
+		self.assertRedirects(response, expected_url)
+		
+	def test_logged_in_and_cityquarter_in_user_library_renders(self):
+		self.client.login(username="TestUser", password="T3stP4ssword")
+		response = self.client.get(reverse('cityquarter-delete', args=[str(self.cityquarter.id)]))
+		self.assertEqual(response.status_code, 200)
+		
+	def test_cityquarter_not_in_user_library_view_forbidden(self):
+		second_user = CustomUser.objects.create_user(username="SecondTestUser", password="T3stP4ssword")
+		second_project = Project.objects.create(title="Second Test Project", created_by=second_user)
+		second_user.user_library.add(second_project)
+		second_universe = Universe.objects.create(name="Second Test Universe", in_project=second_project)
+		second_region = Region.objects.create(name="Second Test Region", in_universe=second_universe)
+		second_city = City.objects.create(name="Second Test City", in_region=second_region)
+		second_cityquarter = CityQuarter.objects.create(name="Second Test CQ", in_city=second_city)
+		
+		self.client.login(username="TestUser", password="T3stP4ssword")
+		response = self.client.get(reverse('cityquarter-delete', args=[str(second_cityquarter.id)]))
+		self.assertEqual(response.status_code, 403)
+		
+class LocationDetailViewTests(TestCase):
 	def setUp(self):
 		user = CustomUser.objects.create_user(username="TestUser", password="T3stP4ssword")
 		project = Project.objects.create(title="Test Project", created_by=user)
@@ -231,8 +392,68 @@ class LocationViewTests(TestCase):
 		response = self.client.get(cq_loc.get_absolute_url())
 		self.assertEqual(response.status_code, 403)
 		
+class LocationDeleteViewTests(TestCase):
+	def setUp(self):
+		user = CustomUser.objects.create_user(username="TestUser", password="T3stP4ssword")
+		project = Project.objects.create(title="Test Project", created_by=user)
+		user.user_library.add(project)
+		universe = Universe.objects.create(name="Test Universe", in_project=project)
+		region = Region.objects.create(name="Test Region", in_universe=universe)
+		area = Area.objects.create(name="Test Area", in_region=region)
+		city = City.objects.create(name="Test City", in_region=region)
+		cityquarter = CityQuarter.objects.create(name="Test CityQuarter", in_city=city)
 		
-class EmpireViewTests(TestCase):
+		self.area_location = Location.objects.create(name="Test AreaLoc", in_area=area)
+		self.cq_location = Location.objects.create(name="Test CQLoc", in_cityquarter=cityquarter)
+	
+	def test_not_logged_in_redirects(self):
+		# Test for an Area Location
+		response = self.client.get(reverse('location-delete', args=[str(self.area_location.id)]))
+		self.assertEqual(response.status_code, 302)
+		expected_url = "/accounts/login/?next=/worldbuilder/location/delete/%d/" % self.area_location.id
+		self.assertRedirects(response, expected_url)
+		
+		# Test for an CityQuarter Location
+		response = self.client.get(reverse('location-delete', args=[str(self.cq_location.id)]))
+		self.assertEqual(response.status_code, 302)
+		expected_url = "/accounts/login/?next=/worldbuilder/location/delete/%d/" % self.cq_location.id
+		self.assertRedirects(response, expected_url)
+		
+	def test_logged_in_and_location_in_user_library_renders(self):
+		# Test for Area Location.
+		self.client.login(username="TestUser", password="T3stP4ssword")
+		response = self.client.get(reverse('location-delete', args=[str(self.area_location.id)]))
+		self.assertEqual(response.status_code, 200)
+		
+		# Test for CityQuarter Location.
+		self.client.login(username="TestUser", password="T3stP4ssword")
+		response = self.client.get(reverse('location-delete', args=[str(self.cq_location.id)]))
+		self.assertEqual(response.status_code, 200)
+	
+	def test_location_not_in_user_library_view_forbidden(self):
+		second_user = CustomUser.objects.create_user(username="SecondTestUser", password="T3stP4ssword")
+		second_project = Project.objects.create(title="Second Test Project", created_by=second_user)
+		second_user.user_library.add(second_project)
+		second_universe = Universe.objects.create(name="Second Test Universe", in_project=second_project)
+		second_region = Region.objects.create(name="Second Test Region", in_universe=second_universe)
+		second_area = Area.objects.create(name="Second Test Area", in_region=second_region)
+		area_loc = Location.objects.create(name="Second Test Location", in_area=second_area)
+		second_city = City.objects.create(name="Second Test City", in_region=second_region)
+		second_cityquarter = CityQuarter.objects.create(name="Second Test CQ", in_city=second_city)
+		cq_loc = Location.objects.create(name="Second Test Location", in_cityquarter=second_cityquarter)
+		
+		# Test for Area Location.
+		self.client.login(username="TestUser", password="T3stP4ssword")
+		response = self.client.get(reverse('location-delete', args=[str(area_loc.id)]))
+		self.assertEqual(response.status_code, 403)
+		
+		# Test for CityQuarter Location
+		self.client.login(username="TestUser", password="T3stP4ssword")
+		response = self.client.get(reverse('location-delete', args=[str(cq_loc.id)]))
+		self.assertEqual(response.status_code, 403)
+		
+		
+class EmpireDetailViewTests(TestCase):
 	def setUp(self):
 		user = CustomUser.objects.create_user(username="TestUser", password="T3stP4ssword")
 		project = Project.objects.create(title="Test Project", created_by=user)
@@ -262,8 +483,39 @@ class EmpireViewTests(TestCase):
 		self.client.login(username="TestUser", password="T3stP4ssword")
 		response = self.client.get(second_empire.get_absolute_url())
 		self.assertEqual(response.status_code, 403)
+
+class EmpireDeleteViewTests(TestCase):
+	def setUp(self):
+		user = CustomUser.objects.create_user(username="TestUser", password="T3stP4ssword")
+		project = Project.objects.create(title="Test Project", created_by=user)
+		user.user_library.add(project)
+		universe = Universe.objects.create(name="Test Universe", in_project=project)
 		
-class FactionViewTests(TestCase):
+		self.empire = Empire.objects.create(name="Test Empire", in_universe=universe)
+	
+	def test_not_logged_in_redirects(self):
+		response = self.client.get(reverse('empire-delete', args=[str(self.empire.id)]))
+		self.assertEqual(response.status_code, 302)
+		expected_url = "/accounts/login/?next=/worldbuilder/empire/delete/%d/" % self.empire.id
+		self.assertRedirects(response, expected_url)
+		
+	def test_logged_in_and_empire_in_user_library_renders(self):
+		self.client.login(username="TestUser", password="T3stP4ssword")
+		response = self.client.get(reverse('empire-delete', args=[str(self.empire.id)]))
+		self.assertEqual(response.status_code, 200)
+	
+	def test_delete_empire_not_in_user_library_view_forbidden(self):
+		second_user = CustomUser.objects.create_user(username="SecondTestUser", password="T3stP4ssword")
+		second_project = Project.objects.create(title="Second Test Project", created_by=second_user)
+		second_user.user_library.add(second_project)
+		second_universe = Universe.objects.create(name="Second Test Universe", in_project=second_project)
+		second_empire = Empire.objects.create(name="Second Test Empire", in_universe=second_universe)
+		
+		self.client.login(username="TestUser", password="T3stP4ssword")
+		response = self.client.get(reverse('empire-delete', args=[str(second_empire.id)]))
+		self.assertEqual(response.status_code, 403)
+		
+class FactionDetailViewTests(TestCase):
 	def setUp(self):
 		user = CustomUser.objects.create_user(username="TestUser", password="T3stP4ssword")
 		project = Project.objects.create(title="Test Project", created_by=user)
@@ -294,7 +546,38 @@ class FactionViewTests(TestCase):
 		response = self.client.get(second_faction.get_absolute_url())
 		self.assertEqual(response.status_code, 403)
 		
-class NPCViewTests(TestCase):
+class FactionDeleteViewTests(TestCase):
+	def setUp(self):
+		user = CustomUser.objects.create_user(username="TestUser", password="T3stP4ssword")
+		project = Project.objects.create(title="Test Project", created_by=user)
+		user.user_library.add(project)
+		universe = Universe.objects.create(name="Test Universe", in_project=project)
+		
+		self.faction = Faction.objects.create(name="Test Faction", in_universe=universe)
+	
+	def test_not_logged_in_redirects(self):
+		response = self.client.get(reverse('faction-delete', args=[str(self.faction.id)]))
+		self.assertEqual(response.status_code, 302)
+		expected_url = "/accounts/login/?next=/worldbuilder/faction/delete/%d/" % self.faction.id
+		self.assertRedirects(response, expected_url)
+		
+	def test_logged_in_and_faction_in_user_library_renders(self):
+		self.client.login(username="TestUser", password="T3stP4ssword")
+		response = self.client.get(reverse('faction-delete', args=[str(self.faction.id)]))
+		self.assertEqual(response.status_code, 200)
+	
+	def test_faction_not_in_user_library_view_forbidden(self):
+		second_user = CustomUser.objects.create_user(username="SecondTestUser", password="T3stP4ssword")
+		second_project = Project.objects.create(title="Second Test Project", created_by=second_user)
+		second_user.user_library.add(second_project)
+		second_universe = Universe.objects.create(name="Second Test Universe", in_project=second_project)
+		second_faction = Faction.objects.create(name="Second Test Faction", in_universe=second_universe)
+		
+		self.client.login(username="TestUser", password="T3stP4ssword")
+		response = self.client.get(reverse('faction-delete', args=[str(second_faction.id)]))
+		self.assertEqual(response.status_code, 403)
+		
+class NPCDetailViewTests(TestCase):
 	def setUp(self):
 		user = CustomUser.objects.create_user(username="TestUser", password="T3stP4ssword")
 		project = Project.objects.create(title="Test Project", created_by=user)
@@ -323,6 +606,37 @@ class NPCViewTests(TestCase):
 		
 		self.client.login(username="TestUser", password="T3stP4ssword")
 		response = self.client.get(second_npc.get_absolute_url())
+		self.assertEqual(response.status_code, 403)
+		
+class NPCDeleteViewTests(TestCase):
+	def setUp(self):
+		user = CustomUser.objects.create_user(username="TestUser", password="T3stP4ssword")
+		project = Project.objects.create(title="Test Project", created_by=user)
+		user.user_library.add(project)
+		universe = Universe.objects.create(name="Test Universe", in_project=project)
+		
+		self.npc = NPC.objects.create(name="Test NPC", in_universe=universe)
+	
+	def test_not_logged_in_redirects(self):
+		response = self.client.get(reverse('npc-delete', args=[str(self.npc.id)]))
+		self.assertEqual(response.status_code, 302)
+		expected_url = "/accounts/login/?next=/worldbuilder/npc/delete/%d/" % self.npc.id
+		self.assertRedirects(response, expected_url)
+		
+	def test_logged_in_and_npc_in_user_library_renders(self):
+		self.client.login(username="TestUser", password="T3stP4ssword")
+		response = self.client.get(reverse('npc-delete', args=[str(self.npc.id)]))
+		self.assertEqual(response.status_code, 200)
+	
+	def test_npc_not_in_user_library_view_forbidden(self):
+		second_user = CustomUser.objects.create_user(username="SecondTestUser", password="T3stP4ssword")
+		second_project = Project.objects.create(title="Second Test Project", created_by=second_user)
+		second_user.user_library.add(second_project)
+		second_universe = Universe.objects.create(name="Second Test Universe", in_project=second_project)
+		second_npc = NPC.objects.create(name="Second Test NPC", in_universe=second_universe)
+		
+		self.client.login(username="TestUser", password="T3stP4ssword")
+		response = self.client.get(reverse('npc-delete', args=[str(second_npc.id)]))
 		self.assertEqual(response.status_code, 403)
 		
 class WorldEncounterViewTests(TestCase):

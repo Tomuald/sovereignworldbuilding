@@ -138,6 +138,7 @@ def campaign_create(request, in_project, pk=None):
 	return render(request, 'SovereignWebsite/campaign_form.html', {'form': form})
 
 @login_required
+@decorators.campaign_in_user_library
 def campaign_delete(request, pk):
 	campaign = get_object_or_404(Campaign, pk=pk)
 	
@@ -175,6 +176,7 @@ def chapter_create(request, in_campaign, pk=None):
 	return render(request, 'SovereignWebsite/chapter_form.html', {'form': form, 'in_campaign': in_campaign})
 	
 @login_required
+@decorators.chapter_in_user_library
 def chapter_delete(request, pk):
 	chapter = get_object_or_404(Chapter, pk=pk)
 	
@@ -213,7 +215,8 @@ def quest_create(request, in_chapter, pk=None):
 	
 	return render(request, 'SovereignWebsite/quest_form.html', {'form': form, 'in_chapter': in_chapter})
 
-@login_required	
+@login_required
+@decorators.quest_in_user_library
 def quest_delete(request, pk):
 	quest = get_object_or_404(Quest, pk=pk)
 	
@@ -251,6 +254,7 @@ def questencounter_create(request, in_quest, pk=None):
 	return render(request, "SovereignWebsite/questencounter_form.html", {'form': form})
 
 @login_required
+@decorators.questencounter_in_user_library
 def questencounter_delete(request, pk):
 	questencounter = get_object_or_404(QuestEncounter, pk=pk)
 	
@@ -275,7 +279,8 @@ def questencounterloot_create(request, in_questencounter):
 	
 	return render(request, "SovereignWebsite/questencounterloot_form.html", {'form': form})
 
-@login_required	
+@login_required
+@decorators.questencounterloot_in_user_library
 def questencounterloot_delete(request, pk):
 	questencounterloot = get_object_or_404(QuestEncounterLoot, pk=pk)
 	questencounter = questencounterloot.in_questencounter

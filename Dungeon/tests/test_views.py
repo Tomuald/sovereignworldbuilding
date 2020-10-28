@@ -245,7 +245,7 @@ class RoomlootDeleteViewTests(TestCase):
 		response = self.client.get(reverse('roomloot-delete', args=[str(self.roomloot.id)]))
 		self.assertEqual(response.status_code, 200)
 		
-	def test_delete_room_not_in_user_library_view_forbidden(self):
+	def test_delete_roomloot_not_in_user_library_view_forbidden(self):
 		second_user = CustomUser.objects.create_user(username="SecondTestUser", password="T3stP4ssword")
 		second_project = Project.objects.create(title="Second Test Project", created_by=second_user)
 		second_user.user_library.add(second_project)

@@ -202,6 +202,7 @@ def universe_create(request, in_project, pk=None):
 	return render(request, 'SovereignWebsite/universe_form.html', {'form': form})
 
 @login_required
+@decorators.universe_in_user_library
 def universe_delete(request, pk):
 	universe = get_object_or_404(Universe, pk=pk)
 	
@@ -235,6 +236,7 @@ def region_create(request, in_universe, pk=None):
 	return render(request, 'SovereignWebsite/region_form.html', {'form': form})
 
 @login_required	
+@decorators.region_in_user_library
 def region_delete(request, pk):
 	region = get_object_or_404(Region, pk=pk)
 	
@@ -271,6 +273,7 @@ def empire_create(request, in_universe, pk=None):
 	return render(request, 'SovereignWebsite/empire_form.html', {'form': form})
 
 @login_required
+@decorators.empire_in_user_library
 def empire_delete(request, pk):
 	empire = get_object_or_404(Empire, pk=pk)
 	
@@ -306,6 +309,7 @@ def area_create(request, in_region, pk=None):
 	return render(request, 'SovereignWebsite/area_form.html', {'form': form, 'in_region': in_region})
 
 @login_required
+@decorators.area_in_user_library
 def area_delete(request, pk):
 	area = get_object_or_404(Area, pk=pk)
 	
@@ -314,6 +318,36 @@ def area_delete(request, pk):
 		return HttpResponseRedirect(reverse('region-detail', args=[str(area.in_region.id)]))
 	
 	return render(request, "SovereignWebsite/area_confirm_delete.html", context={'area': area})
+
+@login_required	
+def city_create(request, in_region, pk=None):
+	in_region = Region.objects.get(id=in_region)
+	regions = Region.objects.filter(in_universe=in_region.in_universe)
+	
+	if pk:
+		city = get_object_or_404(City, pk=pk)
+	else:
+		city = City()
+	
+	form = CityModelForm(regions, request.POST or None, initial={'in_region': in_region}, instance=city)
+	
+	if request.method == 'POST':
+		if form.is_valid():
+			form.save()
+			return HttpResponseRedirect(reverse('city-detail', args=[str(city.id)]))
+	
+	return render(request, 'SovereignWebsite/city_form.html', {'form': form, 'in_region': in_region})
+
+@login_required	
+@decorators.city_in_user_library
+def city_delete(request, pk):
+	city = get_object_or_404(City, pk=pk)
+	
+	if request.method == 'POST':
+		city.delete()
+		return HttpResponseRedirect(reverse('region-detail', args=[str(city.in_region.id)]))
+	
+	return render(request, "SovereignWebsite/city_confirm_delete.html", context={'city': city})
 
 @login_required	
 def cityquarter_create(request, in_city, pk=None):
@@ -340,6 +374,7 @@ def cityquarter_create(request, in_city, pk=None):
 	return render(request, 'SovereignWebsite/cityquarter_form.html', {'form': form, 'in_city': in_city})
 
 @login_required
+@decorators.cityquarter_in_user_library
 def cityquarter_delete(request, pk):
 	cityquarter = get_object_or_404(CityQuarter, pk=pk)
 	
@@ -348,35 +383,6 @@ def cityquarter_delete(request, pk):
 		return HttpResponseRedirect(reverse('city-detail', args=[str(cityquarter.in_city.id)]))
 	
 	return render(request, "SovereignWebsite/cityquarter_confirm_delete.html", context={'cityquarter': cityquarter})
-
-@login_required	
-def city_create(request, in_region, pk=None):
-	in_region = Region.objects.get(id=in_region)
-	regions = Region.objects.filter(in_universe=in_region.in_universe)
-	
-	if pk:
-		city = get_object_or_404(City, pk=pk)
-	else:
-		city = City()
-	
-	form = CityModelForm(regions, request.POST or None, initial={'in_region': in_region}, instance=city)
-	
-	if request.method == 'POST':
-		if form.is_valid():
-			form.save()
-			return HttpResponseRedirect(reverse('city-detail', args=[str(city.id)]))
-	
-	return render(request, 'SovereignWebsite/city_form.html', {'form': form, 'in_region': in_region})
-
-@login_required	
-def city_delete(request, pk):
-	city = get_object_or_404(City, pk=pk)
-	
-	if request.method == 'POST':
-		city.delete()
-		return HttpResponseRedirect(reverse('region-detail', args=[str(city.in_region.id)]))
-	
-	return render(request, "SovereignWebsite/city_confirm_delete.html", context={'city': city})
 
 @login_required
 def citydemographics_create(request, in_city):
@@ -434,6 +440,7 @@ def location_create(request, in_area=None, in_cityquarter=None, pk=None):
 	return render(request, 'SovereignWebsite/location_form.html', {'form': form})
 
 @login_required
+@decorators.location_in_user_library
 def location_delete(request, pk):
 	location = get_object_or_404(Location, pk=pk)
 	
@@ -477,6 +484,7 @@ def npc_create(request, in_universe, in_faction=None, pk=None):
 	return render(request, 'SovereignWebsite/npc_form.html', {'form': form})
 
 @login_required
+@decorators.npc_in_user_library
 def npc_delete(request, pk):
 	npc = get_object_or_404(NPC, pk=pk)
 	
@@ -517,6 +525,7 @@ def faction_create(request, in_universe, pk=None):
 	return render(request, 'SovereignWebsite/faction_form.html', {'form': form, 'leaders': leaders})
 
 @login_required
+@decorators.faction_in_user_library
 def faction_delete(request, pk):
 	faction = get_object_or_404(Faction, pk=pk)
 	

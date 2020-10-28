@@ -82,7 +82,7 @@ urlpatterns += [
 	# Universes
 	path('worldbuilder/project/<int:in_project>/create/universe/', views.universe_create, name="universe-create"),
 	path('worldbuilder/project/<int:in_project>/update/universe/<int:pk>/', views.universe_create, name="universe-update"),
-	path('worldbuilder/delete/universe/<int:pk>/', views.universe_delete, name="universe-delete"),
+	path('worldbuilder/universe/delete/<int:pk>/', views.universe_delete, name="universe-delete"),
 	
 	# Regions
 	path('worldbuilder/universe/<int:in_universe>/create/region/', views.region_create, name="region-create"),
@@ -181,7 +181,7 @@ urlpatterns += [
 	# Chapters
 	path('worldbuilder/campaign/<int:in_campaign>/create/chapter/', chapter_create, name="chapter-create"),
 	path('worldbuilder/campaign/<int:in_campaign>/update/chapter/<int:pk>/', chapter_create, name="chapter-update"),
-	path('worldbuilder/chapter/<int:pk>/', chapter_delete, name="chapter-delete"),
+	path('worldbuilder/chapter/delete/<int:pk>/', chapter_delete, name="chapter-delete"),
 	
 	# Quests
 	path('worldbuilder/chapter/<int:in_chapter>/create/quest/', quest_create, name="quest-create"),
