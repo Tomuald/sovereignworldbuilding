@@ -140,8 +140,7 @@ urlpatterns += [
 	path('worldbuilder/universe/dungeon/room/<int:in_dungeon_room>/worldencounter/update/<int:pk>/', views.worldencounter_create, name="worldencounter-update"),
 	path('worldbuilder/universe/location/<int:in_location>/worldencounter/create/', views.worldencounter_create, name="worldencounter-create"),
 	path('worldbuilder/universe/location/<int:in_location>/worldencounter/update/<int:pk>/', views.worldencounter_create, name="worldencounter-update"),
-	path('worldbuilder/universe/dungeon/room/<int:in_dungeon_room>/worldencounter/delete/<int:pk>/', views.worldencounter_delete, name="worldencounter-delete"),
-	path('worldbuilder/universe/location/<int:in_location>/worldencounter/delete/<int:pk>/', views.worldencounter_delete, name="worldencounter-delete"),
+	path('worldbuilder/worldencounter/delete/<int:pk>/', views.worldencounter_delete, name="worldencounter-delete"),
 	
 	# World Encounter Loot
 	path('worldbuilder/universe/encounter/<int:in_worldencounter>/encounterloot/create/', views.worldencounterloot_create, name="worldencounterloot-create"),

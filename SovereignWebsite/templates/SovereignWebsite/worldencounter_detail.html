@@ -11,14 +11,14 @@
       <a title="Edit" href="{% url 'worldencounter-update' in_dungeon_room=worldencounter.in_dungeon_room.id pk=worldencounter.pk %}">
         <i class="cil-pencil"></i>
       </a>
-      <a title="Delete" href="{% url 'worldencounter-delete' in_dungeon_room=worldencounter.in_dungeon_room.id pk=worldencounter.pk %}">
+      <a title="Delete" href="{% url 'worldencounter-delete' pk=worldencounter.pk %}">
         <i class="cil-x"></i>
       </a>
     {% else %}
       <a title="Edit" href="{% url 'worldencounter-update' in_location=worldencounter.in_location.id pk=worldencounter.pk %}">
         <i class="cil-pencil"></i>
       </a>
-      <a title="Delete" href="{% url 'worldencounter-delete' in_location=worldencounter.in_location.id pk=worldencounter.pk %}">
+      <a title="Delete" href="{% url 'worldencounter-delete' pk=worldencounter.pk %}">
         <i class="cil-x"></i>
       </a>
     {% endif %}

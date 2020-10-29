@@ -1,5 +1,5 @@
 from django.core.exceptions import PermissionDenied
-from World.models import Universe, Region, Area, City, CityQuarter, Location, WorldEncounter
+from World.models import Universe, Region, Area, City, CityQuarter, Location, WorldEncounter, WorldEncounterLoot
 from World.models import Empire, Faction, NPC
 
 # Checks if this universe's project is in the current user's library.
@@ -108,6 +108,30 @@ def worldencounter_in_user_library(function):
 			raise PermissionDenied
 	
 	return test_worldencounter_in_user_library
+
+# Checks if this worldencounterloot's project is in the current user's library.
+def worldencounterloot_in_user_library(function):
+	def test_worldencounterloot_in_user_library(request, pk, *args, **kwargs):
+		worldencounterloot = WorldEncounterLoot.objects.get(pk=pk)
+		
+		if worldencounterloot.in_worldencounter.in_location is not None:
+			if worldencounterloot.in_worldencounter.in_location.in_area is not None:
+				project = worldencounterloot.in_worldencounter.in_location.in_area.in_region.in_universe.in_project
+			elif worldencounterloot.in_worldencounter.in_location.in_cityquarter is not None:
+				project = worldencounterloot.in_worldencounter.in_location.in_cityquarter.in_city.in_region.in_universe.in_project
+			else:
+				return False
+		elif worldencounterloot.in_worldencounter.in_dungeon_room is not None:
+			project = worldencounterloot.in_worldencounter.in_dungeon_room.in_roomset.in_dungeon.in_area.in_region.in_universe.in_project
+		else:
+			return False
+
+		if project in request.user.user_library.all():
+			return function(request, pk, *args, **kwargs)
+		else:
+			raise PermissionDenied
+	
+	return test_worldencounterloot_in_user_library
 	
 # Checks if this empire's project is in the current user's library.
 def empire_in_user_library(function):

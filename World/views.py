@@ -596,16 +596,17 @@ def worldencounter_create(request, in_dungeon_room=None, in_location=None, pk=No
 	
 	return render(request, "SovereignWebsite/worldencounter_form.html", {'form': form})
 
-@login_required	
-def worldencounter_delete(request, pk, in_dungeon_room=None, in_location=None):
+@login_required
+@decorators.worldencounter_in_user_library
+def worldencounter_delete(request, pk):
 	worldencounter = WorldEncounter.objects.get(pk=pk)
 	
 	if request.method == 'POST':
 		worldencounter.delete()
-		if in_dungeon_room is not None:
-			return HttpResponseRedirect(reverse('room-detail', args=[str(in_dungeon_room)]))
-		if in_location is not None:
-			return HttpResponseRedirect(reverse('location-detail', args=[str(in_location)]))
+		if worldencounter.in_dungeon_room is not None:
+			return HttpResponseRedirect(reverse('room-detail', args=[str(worldencounter.in_dungeon_room.id)]))
+		if worldencounter.in_location is not None:
+			return HttpResponseRedirect(reverse('location-detail', args=[str(worldencounter.in_location.id)]))
 	
 	return render(request, "SovereignWebsite/worldencounter_confirm_delete.html", context={'worldencounter': worldencounter})
 
@@ -619,8 +620,7 @@ def worldencounterloot_create(request, in_worldencounter, pk=None):
 				in_itemlist__in_project=in_worldencounter.in_location.in_area.in_region.in_universe.in_project
 			)
 		if in_worldencounter.in_location.in_cityquarter:
-			items = Item.objects.filter(
-				in_itemlist__in_project=in_worldencounter.in_location.in_cityquarter.in_city.in_region.in_universe.in_project
+			items = Item.objects.filter(	in_itemlist__in_project=in_worldencounter.in_location.in_cityquarter.in_city.in_region.in_universe.in_project
 			)
 	
 	else:
@@ -640,7 +640,8 @@ def worldencounterloot_create(request, in_worldencounter, pk=None):
 			
 	return render(request, "SovereignWebsite/worldencounterloot_form.html", {'form': form})
 
-@login_required	
+@login_required
+@decorators.worldencounterloot_in_user_library
 def worldencounterloot_delete(request, pk):
 	worldencounterloot = WorldEncounterLoot.objects.get(pk=pk)
 	
