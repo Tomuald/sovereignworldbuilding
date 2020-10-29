@@ -639,7 +639,7 @@ class NPCDeleteViewTests(TestCase):
 		response = self.client.get(reverse('npc-delete', args=[str(second_npc.id)]))
 		self.assertEqual(response.status_code, 403)
 		
-class WorldEncounterViewTests(TestCase):
+class WorldEncounterDetailViewTests(TestCase):
 	def setUp(self):
 		user = CustomUser.objects.create_user(username="TestUser", password="T3stP4ssword")
 		project = Project.objects.create(title="Test Project", created_by=user)

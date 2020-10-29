@@ -6,9 +6,6 @@
     <title>SovereignWorldbuilding</title>
   {% endblock title %}
   
-  {% block formmedia %}
-  {% endblock formmedia %}
-  
   <!-- REQUIRED META TAGS -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -25,6 +22,9 @@
   {% block additionalstatic %}
   <!-- Don't forget to re-{% load static %} in extended templates! (for some arcane reason...) -->
   {% endblock additionalstatic %}
+  
+  {% block formmedia %}
+  {% endblock formmedia %}
 </head>
 
 <body>
