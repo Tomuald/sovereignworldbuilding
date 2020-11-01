@@ -31,7 +31,7 @@ def project_list(request):
 		'projects': projects,
 	}
 	
-	return render(request, "SovereignWebsite/project_list.html", context=context)
+	return render(request, "project_list.html", context=context)
 
 @login_required
 @project_in_user_library
@@ -49,7 +49,7 @@ def project_detail(request, pk):
 		'itemlists': itemlists,
 	}
 	
-	return render(request, 'SovereignWebsite/project_detail.html', context=context)
+	return render(request, 'project_detail.html', context=context)
 	
 ##################
 ###   #FORMS   ###
@@ -73,7 +73,7 @@ def project_create(request, pk=None):
 			user.save()
 			return HttpResponseRedirect(reverse('project-detail', args=[str(project.id)]))
 	
-	return render(request, "SovereignWebsite/project_form.html", {'form': form})
+	return render(request, "project_form.html", {'form': form})
 
 @login_required
 @project_in_user_library
@@ -87,4 +87,4 @@ def project_delete(request, pk):
 		project.delete()
 		return HttpResponseRedirect(reverse('project-list'))
 	
-	return render(request, "SovereignWebsite/project_confirm_delete.html", context={'project': project})
+	return render(request, "project_confirm_delete.html", context={'project': project})

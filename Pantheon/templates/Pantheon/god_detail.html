@@ -1,0 +1,60 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+  <title>{{ god.name }}</title>
+{% endblock title %}
+
+{% block content %}
+  <div class="page-title">
+    <h1>{{ god.name }}</h1>
+    <a title="Edit" href="{% url 'god-update' in_pantheon=god.in_pantheon.id pk=god.pk %}">
+      <i class="cil-pencil"></i>
+    </a>
+    <a title="Delete" href="{% url 'god-delete' pk=god.pk %}"><i class="cil-x"></i></a>
+  </div> <!-- page-title and icons -->
+  
+  <hr class="page-title-hr">
+  
+  <p>{{ god.background }}</p>
+
+{% endblock content %}
+
+{% block rightsidebar %}
+  <table class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <th colspan="2" class="sidebar-table">{{ god.name }}</th>
+    </thead>
+    <tr>
+      <th>Pantheon</th>
+      <td><a href="{{ god.in_pantheon.get_absolute_url }}">{{ god.in_pantheon }}</a></td>
+    </tr>
+    <tr>
+      <th>Alignment</th>
+      <td>{{ god.get_alignment_display }}</td>
+    </tr>
+    <tr>
+      <th>Alternative Names</th>
+      <td>{{ god.alternative_names }}</td>
+    </tr>
+    <tr>
+      <th>Worshipped by (NPCs)</th>
+      <td>
+        <ul>
+        {% for npc in worshipped_by_npcs %}
+          <li><a href="{{ npc.get_absolute_url }}">{{ npc.name }}</a></li>
+        {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <th>Worshipped by (Factions)</th>
+      <td>
+        <ul>
+        {% for faction in worshipped_by_factions %}
+          <li><a href="{{ faction.get_absolute_url }}">{{ faction.name }}</a></li>
+        {% endfor %}
+        </ul>
+      </td>
+    </tr>
+  </table>
+{% endblock rightsidebar %}

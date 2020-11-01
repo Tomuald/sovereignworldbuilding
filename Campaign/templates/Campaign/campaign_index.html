@@ -1,0 +1,125 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+  <title>{{ campaign.title }} Index</title>
+{% endblock title %}
+
+{% block additionalstatic %}
+  <!-- Datatables CSS -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+  {% load static %}
+  <link rel="text/javascript" href="{% static 'js/datatables.js' %}">
+{% endblock additionalstatic %}
+
+{% block content %}
+  <h1 class="page-title">Campaign Index</h1>
+  
+  <hr class="page-title-hr">
+  
+  <!-- CHAPTERS --> 
+  
+  <h2 class="table-title">Chapters</h2>
+  
+  <table id="chapters" class="table table-sm table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th>Chapter</th>
+        <th>Regions</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for chapter in chapters %}
+      <tr>
+        <td><a href="{{ chapter.get_absolute_url }}">{{ chapter.title }}</a></td>
+        <td>
+          <ul>
+          {% for region in chapter.regions.all %}
+            <li>{{ region.name }}</li>
+          {% endfor %}
+          </ul>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  
+  <!-- QUESTS -->
+  
+  <h2 class="table-title">Quests</h2>
+  
+  <table id="quests" class="table table-sm table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th>Quest</th>
+        <th>In Chapter</th>
+        <th>Area/City</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for quest in quests %}
+      <tr>
+        <td><a href="{{ quest.get_absolute_url }}">{{ quest.title }}</a></td>
+        <td>{{ quest.in_chapter }}</td>
+        {% if quest.in_area %}
+          <td>{{ quest.in_area }}</td>
+        {% else %}
+          <td>{{ quest.in_city }}</td>
+        {% endif %}
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  
+  <!-- ENCOUNTERS -->
+  
+  <h2 class="table-title">Encounters</h2>
+  
+  <table id="encounters" class="table table-sm table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th>Encounter</th>
+        <th>In Quest</th>
+        <th>Location</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for encounter in encounters %}
+      <tr>
+        <td><a href="{{ encounter.get_absolute_url }}">{{ encounter.title }}</a></td>
+        <td>{{ encounter.in_quest }}</td>
+        <td>{{ encounter.in_location }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock content %}
+
+{% block rightsidebar %}
+  <table class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th colspan="2">Campaign Index</th>
+      </tr>
+    </thead>
+    <tr>
+      <th>Project</th>
+      <td><a href="{{ campaign.in_project.get_absolute_url }}">{{ campaign.in_project.title }}</a></td>
+    </tr>
+    <tr>
+      <th>Campaign</th>
+      <td><a href="{{ campaign.get_absolute_url }}">{{ campaign.title }}</a></td>
+    </tr>
+    <tr>
+      <th>Universe</th>
+      <td><a href="{{ campaign.in_universe.get_absolute_url }}">{{ campaign.in_universe.name }}</a></td>
+    </tr>
+  </table>
+
+{% endblock rightsidebar %}
+
+{% block additionalscripts %}
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js">
+  </script>
+  <script type="text/javascript" src="{% static 'js/datatables.js' %}"></script>
+{% endblock additionalscripts %}

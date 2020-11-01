@@ -1,0 +1,78 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+  <title>{{ cityquarter.name }}</title>
+{% endblock title %}
+
+{% block content %}
+  <div class="page-title">
+    <h1>{{ cityquarter.name }}</h1>
+    <a title="Edit" href="{% url 'cityquarter-update' in_city=cityquarter.in_city.id pk=cityquarter.pk %}">
+      <i class="cil-pencil"></i>
+    </a>
+    <a title="Delete" href="{% url 'cityquarter-delete' pk=cityquarter.pk %}"><i class="cil-x"></i></a>
+  </div> <!-- page-title and icons -->
+  
+  <hr class="page-title-hr">
+  
+  <div class="row">
+    <div class="col-2">
+    </div> <!-- col-2 -->
+    <div class="col">
+      <p class="flavor-text">{{ cityquarter.flavor_text }}</p>
+    </div> <!-- col -->
+    <div class="col-2">
+    </div> <!-- col-2 -->
+  </div> <!-- row -->
+  
+  <hr class="page-title-hr">
+  
+  <p>{{ cityquarter.description }}</p>
+  
+  <div class="table-title">
+    <h2>Locations</h2>
+    <a title="Add" href="{% url 'location-create' in_cityquarter=cityquarter.id %}"><i class="cil-plus"></i></a>
+  </div> <!-- table-title -->
+  
+  <table class="table table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Name</th>
+        <th>Encounters</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for location in cityquarter.location_set.all %}
+      <tr>
+        <td>
+          <a href="{{ location.get_absolute_url }}">{{ location.name }}</a>
+            {% if location.dungeon_entrance %}(Dungeon){% endif %}
+          </td>
+        <td>{{ location.worldencounter_set.all.count }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock content %}
+
+{% block rightsidebar %}
+  <table class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <th colspan="2" class="sidebar-table">{{ cityquarter.name }}</th>
+    </thead>
+    <tr>
+      <th>City</th>
+      <td><a href="{{ cityquarter.in_city.get_absolute_url }}">{{ cityquarter.in_city }}</a></td>
+    </tr>
+    <tr>
+      <th>Factions</th>
+      <td>
+        <ul>
+        {% for faction in cityquarter.factions.all %}
+          <li><a href="{{ faction.get_absolute_url }}">{{ faction.name }}</a></li>
+        {% endfor %}
+        </ul>
+      </td>
+    </tr>
+  </table>
+{% endblock rightsidebar %}

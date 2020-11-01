@@ -1,0 +1,73 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+  <title>{{ dungeon.title }}</title>
+{% endblock title %}
+
+{% block content %}
+  <div class="page-title">
+    <h1>{{ dungeon.title }}</h1>
+    <a title="Edit" href="{% url 'dungeon-update' in_area=dungeon.in_area.id pk=dungeon.pk %}">
+      <i class="cil-pencil"></i>
+    </a>
+    <a title="Delete" href="{% url 'dungeon-delete' pk=dungeon.pk %}"><i class="cil-x"></i></a>
+  </div>
+  
+  <hr class="page-title-hr">
+  
+  <p>{{ dungeon.description }}</p>
+  
+  <div class="table-title">
+    <h2>Roomsets</h2>
+    <a href="{% url 'roomset-create' in_dungeon=dungeon.id %}"><i class="cil-plus"></i></a>
+  </div>
+  
+  <table class="table table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Roomset</th>
+        <th>Rooms</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for roomset in dungeon.roomset_set.all %}
+      <tr>
+        <td><a href="{{ roomset.get_absolute_url }}">{{ roomset.name }}</a></td>
+        <td>{{ roomset.room_set.all.count }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  
+{% endblock content %}
+
+{% block rightsidebar %}
+  <table class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th colspan="2" class="sidebar-table">{{ dungeon.title }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if dungeon.landscape %}
+      <td colspan="2">
+        <img id="image" src="{{ dungeon.landscape }}" class="img-fluid mx-auto d-block">
+        <div id="imageModal" class="modal">
+          <span class="close">&times;</span>
+          <img class="modal-content" id="modalImage">
+        </div>
+      </td>
+      {% endif %}
+    </tbody>
+    <tr>
+      <th>Area</th>
+      <td><a href="{{ dungeon.in_area.get_absolute_url }}">{{ dungeon.in_area }}</a></td>
+    </tr>
+    
+  </table>
+{% endblock rightsidebar %}
+
+{% block additionalscripts %}
+  {% load static %}
+  <script type="text/javascript" src="{% static 'js/imagemodals.js' %}"></script>
+{% endblock additionalscripts %}  

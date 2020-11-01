@@ -44,7 +44,7 @@ def universe_detail(request, pk):
 		'pantheons': pantheons,
 	}
 	
-	return render(request, "SovereignWebsite/universe_detail.html", context)
+	return render(request, "universe_detail.html", context)
 
 @login_required
 @decorators.universe_in_user_library
@@ -74,7 +74,7 @@ def universe_index(request, pk):
 		'gods': gods,
 	}
 	
-	return render(request, "SovereignWebsite/universe_index.html", context=context)
+	return render(request, "universe_index.html", context=context)
 
 @login_required
 @decorators.region_in_user_library
@@ -85,7 +85,7 @@ def region_detail(request, pk):
 		'region': region,
 	}
 	
-	return render(request, 'SovereignWebsite/region_detail.html', context)
+	return render(request, 'region_detail.html', context)
 
 @login_required
 @decorators.area_in_user_library
@@ -98,7 +98,7 @@ def area_detail(request, pk):
 		'npcs': npcs,
 	}
 	
-	return render(request, 'SovereignWebsite/area_detail.html', context)
+	return render(request, 'area_detail.html', context)
 
 @login_required
 @decorators.city_in_user_library
@@ -111,7 +111,7 @@ def city_detail(request, pk):
 		'city_quarters': city_quarters,
 	}
 	
-	return render(request, 'SovereignWebsite/city_detail.html', context)
+	return render(request, 'city_detail.html', context)
 
 @login_required
 @decorators.cityquarter_in_user_library
@@ -122,7 +122,7 @@ def cityquarter_detail(request, pk):
 		'cityquarter': cityquarter,
 	}
 	
-	return render(request, 'SovereignWebsite/cityquarter_detail.html', context)
+	return render(request, 'cityquarter_detail.html', context)
 
 @login_required	
 @decorators.location_in_user_library
@@ -133,7 +133,7 @@ def location_detail(request, pk):
 		'location': location,
 	}
 	
-	return render(request, 'SovereignWebsite/location_detail.html', context)
+	return render(request, 'location_detail.html', context)
 
 @login_required
 @decorators.worldencounter_in_user_library
@@ -144,7 +144,7 @@ def worldencounter_detail(request, pk):
 		'worldencounter': worldencounter,
 	}
 	
-	return render(request, "SovereignWebsite/worldencounter_detail.html", context)
+	return render(request, "worldencounter_detail.html", context)
 
 @login_required
 @decorators.empire_in_user_library
@@ -155,7 +155,7 @@ def empire_detail(request, pk):
 		'empire': empire,
 	}
 	
-	return render(request, "SovereignWebsite/empire_detail.html", context)
+	return render(request, "empire_detail.html", context)
 
 @login_required	
 @decorators.faction_in_user_library
@@ -166,7 +166,7 @@ def faction_detail(request, pk):
 		'faction': faction,
 	}
 	
-	return render(request, 'SovereignWebsite/faction_detail.html', context)
+	return render(request, 'faction_detail.html', context)
 
 @login_required
 @decorators.npc_in_user_library
@@ -179,13 +179,14 @@ def npc_detail(request, pk):
 		'locations': locations,
 	}
 	
-	return render(request, 'SovereignWebsite/npc_detail.html', context)
+	return render(request, 'npc_detail.html', context)
 	
 ##################
 ###   #FORMS   ###
 ##################
 
 @login_required
+
 def universe_create(request, in_project, pk=None):
 	in_project = Project.objects.get(id=in_project)
 	
@@ -201,7 +202,7 @@ def universe_create(request, in_project, pk=None):
 			form.save()
 			return HttpResponseRedirect(reverse('universe-detail', args=[str(universe.id)]))
 	
-	return render(request, 'SovereignWebsite/universe_form.html', {'form': form})
+	return render(request, 'universe_form.html', {'form': form})
 
 @login_required
 @decorators.universe_in_user_library
@@ -212,7 +213,7 @@ def universe_delete(request, pk):
 		universe.delete()
 		return HttpResponseRedirect(reverse('project-detail', args=[str(universe.in_project.id)]))
 	
-	return render(request, "SovereignWebsite/universe_confirm_delete.html", context={'universe': universe})
+	return render(request, "universe_confirm_delete.html", context={'universe': universe})
 
 @login_required
 def region_create(request, in_universe, pk=None):
@@ -235,7 +236,7 @@ def region_create(request, in_universe, pk=None):
 			form.save()
 			return HttpResponseRedirect(reverse('region-detail', args=[str(region.id)]))
 		
-	return render(request, 'SovereignWebsite/region_form.html', {'form': form})
+	return render(request, 'region_form.html', {'form': form})
 
 @login_required	
 @decorators.region_in_user_library
@@ -246,7 +247,7 @@ def region_delete(request, pk):
 		region.delete()
 		return HttpResponseRedirect(reverse('universe-detail', args=[str(region.in_universe.id)]))
 	
-	return render(request, "SovereignWebsite/region_confirm_delete.html", context={'region': region})
+	return render(request, "region_confirm_delete.html", context={'region': region})
 
 @login_required	
 def empire_create(request, in_universe, pk=None):
@@ -272,7 +273,7 @@ def empire_create(request, in_universe, pk=None):
 			form.save()
 			return HttpResponseRedirect(reverse('empire-detail', args=[str(empire.id)]))
 	
-	return render(request, 'SovereignWebsite/empire_form.html', {'form': form})
+	return render(request, 'empire_form.html', {'form': form})
 
 @login_required
 @decorators.empire_in_user_library
@@ -283,7 +284,7 @@ def empire_delete(request, pk):
 		empire.delete()
 		return HttpResponseRedirect(reverse('universe-detail', args=[str(empire.in_universe.id)]))
 	
-	return render(request, "SovereignWebsite/empire_confirm_delete.html", context={'empire': empire})
+	return render(request, "empire_confirm_delete.html", context={'empire': empire})
 
 @login_required
 def area_create(request, in_region, pk=None):
@@ -308,7 +309,7 @@ def area_create(request, in_region, pk=None):
 			form.save()
 			return HttpResponseRedirect(reverse('area-detail', args=[str(area.id)]))
 	
-	return render(request, 'SovereignWebsite/area_form.html', {'form': form, 'in_region': in_region})
+	return render(request, 'area_form.html', {'form': form, 'in_region': in_region})
 
 @login_required
 @decorators.area_in_user_library
@@ -319,7 +320,7 @@ def area_delete(request, pk):
 		area.delete()
 		return HttpResponseRedirect(reverse('region-detail', args=[str(area.in_region.id)]))
 	
-	return render(request, "SovereignWebsite/area_confirm_delete.html", context={'area': area})
+	return render(request, "area_confirm_delete.html", context={'area': area})
 
 @login_required	
 def city_create(request, in_region, pk=None):
@@ -338,7 +339,7 @@ def city_create(request, in_region, pk=None):
 			form.save()
 			return HttpResponseRedirect(reverse('city-detail', args=[str(city.id)]))
 	
-	return render(request, 'SovereignWebsite/city_form.html', {'form': form, 'in_region': in_region})
+	return render(request, 'city_form.html', {'form': form, 'in_region': in_region})
 
 @login_required	
 @decorators.city_in_user_library
@@ -349,7 +350,7 @@ def city_delete(request, pk):
 		city.delete()
 		return HttpResponseRedirect(reverse('region-detail', args=[str(city.in_region.id)]))
 	
-	return render(request, "SovereignWebsite/city_confirm_delete.html", context={'city': city})
+	return render(request, "city_confirm_delete.html", context={'city': city})
 
 @login_required	
 def cityquarter_create(request, in_city, pk=None):
@@ -373,7 +374,7 @@ def cityquarter_create(request, in_city, pk=None):
 			form.save()
 			return HttpResponseRedirect(reverse('cityquarter-detail', args=[str(cityquarter.id)]))
 	
-	return render(request, 'SovereignWebsite/cityquarter_form.html', {'form': form, 'in_city': in_city})
+	return render(request, 'cityquarter_form.html', {'form': form, 'in_city': in_city})
 
 @login_required
 @decorators.cityquarter_in_user_library
@@ -384,7 +385,7 @@ def cityquarter_delete(request, pk):
 		cityquarter.delete()
 		return HttpResponseRedirect(reverse('city-detail', args=[str(cityquarter.in_city.id)]))
 	
-	return render(request, "SovereignWebsite/cityquarter_confirm_delete.html", context={'cityquarter': cityquarter})
+	return render(request, "cityquarter_confirm_delete.html", context={'cityquarter': cityquarter})
 
 @login_required
 def citydemographics_create(request, in_city):
@@ -401,7 +402,7 @@ def citydemographics_create(request, in_city):
 	else:
 		formset = CityDemographicsInlineFormSet(instance=in_city)
 	
-	return render(request, 'SovereignWebsite/citydemographics_form.html', {'formset': formset})
+	return render(request, 'citydemographics_form.html', {'formset': formset})
 
 @login_required
 def location_create(request, in_area=None, in_cityquarter=None, pk=None):
@@ -439,7 +440,7 @@ def location_create(request, in_area=None, in_cityquarter=None, pk=None):
 			form.save()
 			return HttpResponseRedirect(reverse('location-detail', args=[str(location.id)]))
 		
-	return render(request, 'SovereignWebsite/location_form.html', {'form': form})
+	return render(request, 'location_form.html', {'form': form})
 
 @login_required
 @decorators.location_in_user_library
@@ -453,7 +454,7 @@ def location_delete(request, pk):
 		if location.in_cityquarter:
 			return HttpResponseRedirect(reverse('cityquarter-detail', args=[str(location.in_cityquarter.id)]))
 	
-	return render(request, "SovereignWebsite/location_confirm_delete.html", context={'location': location})
+	return render(request, "location_confirm_delete.html", context={'location': location})
 
 @login_required
 def npc_create(request, in_universe, in_faction=None, pk=None):
@@ -483,7 +484,7 @@ def npc_create(request, in_universe, in_faction=None, pk=None):
 			form.save()
 			return HttpResponseRedirect(reverse('npc-detail', args=[str(npc.id)]))
 	
-	return render(request, 'SovereignWebsite/npc_form.html', {'form': form})
+	return render(request, 'npc_form.html', {'form': form})
 
 @login_required
 @decorators.npc_in_user_library
@@ -497,7 +498,7 @@ def npc_delete(request, pk):
 		else:
 			return HttpResponseRedirect(reverse('universe-detail', args=[str(npc.in_universe.id)]))
 	
-	return render(request, "SovereignWebsite/npc_confirm_delete.html", context={'npc': npc})
+	return render(request, "npc_confirm_delete.html", context={'npc': npc})
 
 @login_required
 def faction_create(request, in_universe, pk=None):
@@ -524,7 +525,7 @@ def faction_create(request, in_universe, pk=None):
 			form.save()
 			return HttpResponseRedirect(reverse('faction-detail', args=[str(faction.id)]))
 	
-	return render(request, 'SovereignWebsite/faction_form.html', {'form': form, 'leaders': leaders})
+	return render(request, 'faction_form.html', {'form': form, 'leaders': leaders})
 
 @login_required
 @decorators.faction_in_user_library
@@ -535,7 +536,7 @@ def faction_delete(request, pk):
 		faction.delete()
 		return HttpResponseRedirect(reverse('faction-detail', args=[str(faction.in_universe.id)]))
 	
-	return render(request, "SovereignWebsite/faction_confirm_delete.html", context={'faction': faction})
+	return render(request, "faction_confirm_delete.html", context={'faction': faction})
 
 @login_required
 def locationloot_create(request, in_location):
@@ -549,7 +550,7 @@ def locationloot_create(request, in_location):
 			form.save()
 			return HttpResponseRedirect(reverse('location-detail', args=[str(in_location.id)]))
 	
-	return render(request, 'SovereignWebsite/locationloot_form.html', {'form': form})
+	return render(request, 'locationloot_form.html', {'form': form})
 
 @login_required	
 def locationloot_delete(request, pk):
@@ -560,7 +561,7 @@ def locationloot_delete(request, pk):
 		locationloot.delete()
 		return HttpResponseRedirect(reverse('location-detail', args=[str(in_location.id)]))
 	
-	return render(request, "SovereignWebsite/locationloot_confirm_delete.html", context={'locationloot': locationloot})
+	return render(request, "locationloot_confirm_delete.html", context={'locationloot': locationloot})
 
 @login_required
 def worldencounter_create(request, in_dungeon_room=None, in_location=None, pk=None):
@@ -594,7 +595,7 @@ def worldencounter_create(request, in_dungeon_room=None, in_location=None, pk=No
 			form.save()
 			return HttpResponseRedirect(reverse('worldencounter-detail', args=[str(worldencounter.id)]))
 	
-	return render(request, "SovereignWebsite/worldencounter_form.html", {'form': form})
+	return render(request, "worldencounter_form.html", {'form': form})
 
 @login_required
 @decorators.worldencounter_in_user_library
@@ -608,7 +609,7 @@ def worldencounter_delete(request, pk):
 		if worldencounter.in_location is not None:
 			return HttpResponseRedirect(reverse('location-detail', args=[str(worldencounter.in_location.id)]))
 	
-	return render(request, "SovereignWebsite/worldencounter_confirm_delete.html", context={'worldencounter': worldencounter})
+	return render(request, "worldencounter_confirm_delete.html", context={'worldencounter': worldencounter})
 
 @login_required
 def worldencounterloot_create(request, in_worldencounter, pk=None):
@@ -638,7 +639,7 @@ def worldencounterloot_create(request, in_worldencounter, pk=None):
 			form.save()
 			return HttpResponseRedirect(reverse('worldencounter-detail', args=[str(in_worldencounter.id)]))
 			
-	return render(request, "SovereignWebsite/worldencounterloot_form.html", {'form': form})
+	return render(request, "worldencounterloot_form.html", {'form': form})
 
 @login_required
 @decorators.worldencounterloot_in_user_library
@@ -649,6 +650,6 @@ def worldencounterloot_delete(request, pk):
 		worldencounterloot.delete()
 		return HttpResponseRedirect(reverse('worldencounter-detail', args=[str(worldencounterloot.in_worldencounter.id)]))
 	
-	return render(request, "SovereignWebsite/worldencounterloot_confirm_delete.html", {'worldencounterloot': worldencounterloot})
+	return render(request, "worldencounterloot_confirm_delete.html", {'worldencounterloot': worldencounterloot})
 	
 

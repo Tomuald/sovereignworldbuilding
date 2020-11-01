@@ -1,0 +1,42 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<form method="post">
+  {% csrf_token %}
+  <p>Are you sure you want to delete "{{ area }}"?</p>
+  
+  {% if area.location_set.all.count > 0 %}
+  <p>This will also delete the following locations and their attached encounters:</p>
+  <ul>
+  {% for location in area.location_set.all %}
+    <li>{{ location.name }} ({{ location.location_type }})</li>
+      <ul>
+      {% for encounter in location.encounter_set.all %}
+        <li>{{ encounter.title }}</li>
+      {% endfor %}
+      </ul>
+  {% endfor %}
+  </ul>
+  {% endif %}
+  
+  {% if area.quest_set.all.count > 0 %}
+  <p>This will also delete the following quests, and their attached encounters:</p>
+  
+  <ol>
+  {% for quest in area.quest_set.all %}
+    <li>{{ quest.title }} ({{ quest.get_quest_type_display }})</li>
+    <ul>
+    {% for encounter in quest.encounter_set.all%}
+      <li>{{ encounter.title }}</li>
+    {% endfor %}
+    </ul>
+  {% endfor %}
+  </ol>
+  {% endif %}
+  
+  <input class="btn btn-secondary" type="submit" value="Back" onclick="window.history.go(-1)">
+  <input class="btn btn-danger" type="submit" value="Delete">
+</form>
+
+{% endblock content %}

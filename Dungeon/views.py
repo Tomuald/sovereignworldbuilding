@@ -29,7 +29,7 @@ def dungeon_detail(request, pk):
 		'dungeon': dungeon,
 	}
 	
-	return render(request, 'SovereignWebsite/dungeon_detail.html', context)
+	return render(request, 'dungeon_detail.html', context)
 	
 @login_required
 @roomset_in_user_library
@@ -38,7 +38,7 @@ def roomset_detail(request, pk):
 	
 	context = {'roomset': roomset}
 	
-	return render(request, 'SovereignWebsite/roomset_detail.html', context)
+	return render(request, 'roomset_detail.html', context)
 	
 @login_required
 @room_in_user_library
@@ -49,7 +49,7 @@ def room_detail(request, pk):
 		'room': room,
 	}
 	
-	return render(request, 'SovereignWebsite/room_detail.html', context)
+	return render(request, 'room_detail.html', context)
 
 ##################
 ###   #FORMS   ###
@@ -76,7 +76,7 @@ def dungeon_create(request, in_area, pk=None):
 			form.save()
 			return HttpResponseRedirect(reverse('dungeon-detail', args=[str(dungeon.id)]))
 	
-	return render(request, 'SovereignWebsite/dungeon_form.html', {'form': form})
+	return render(request, 'dungeon_form.html', {'form': form})
 
 @login_required
 @dungeon_in_user_library
@@ -87,7 +87,7 @@ def dungeon_delete(request, pk):
 		dungeon.delete()
 		return HttpResponseRedirect(reverse('area-detail', args=[str(dungeon.in_area.id)]))
 	
-	return render(request, "SovereignWebsite/dungeon_confirm_delete.html", context={'dungeon': dungeon})
+	return render(request, "dungeon_confirm_delete.html", context={'dungeon': dungeon})
 	
 @login_required
 def roomset_create(request, in_dungeon, pk=None):
@@ -106,7 +106,7 @@ def roomset_create(request, in_dungeon, pk=None):
 			form.save()
 			return HttpResponseRedirect(reverse('roomset-detail', args=[str(roomset.id)]))
 	
-	return render(request, 'SovereignWebsite/roomset_form.html', {'form': form})
+	return render(request, 'roomset_form.html', {'form': form})
 
 @login_required
 @roomset_in_user_library
@@ -117,7 +117,7 @@ def roomset_delete(request, pk):
 		roomset.delete()
 		return HttpResponseRedirect(reverse('dungeon-detail', args=[str(roomset.in_dungeon.id)]))
 	
-	return render(request, "SovereignWebsite/roomset_confirm_delete.html", context={'roomset': roomset})
+	return render(request, "roomset_confirm_delete.html", context={'roomset': roomset})
 	
 @login_required	
 def room_create(request, in_roomset, pk=None):
@@ -141,7 +141,7 @@ def room_create(request, in_roomset, pk=None):
 			form.save()
 			return HttpResponseRedirect(reverse('room-detail', args=[str(room.id)]))
 	
-	return render(request, 'SovereignWebsite/room_form.html', {'form': form})
+	return render(request, 'room_form.html', {'form': form})
 
 @login_required
 @room_in_user_library
@@ -152,7 +152,7 @@ def room_delete(request, pk):
 		room.delete()
 		return HttpResponseRedirect(reverse('roomset-detail', args=[str(room.in_roomset.id)]))
 	
-	return render(request, "SovereignWebsite/room_confirm_delete.html", context={'room': room})
+	return render(request, "room_confirm_delete.html", context={'room': room})
 	
 @login_required
 def roomloot_create(request, in_room):
@@ -170,7 +170,7 @@ def roomloot_create(request, in_room):
 			form.save()
 			return HttpResponseRedirect(reverse('room-detail', args=[str(in_room.id)]))
 	
-	return render(request, 'SovereignWebsite/roomloot_form.html', {'form': form})
+	return render(request, 'roomloot_form.html', {'form': form})
 
 @login_required
 @roomloot_in_user_library
@@ -181,4 +181,4 @@ def roomloot_delete(request, pk):
 		roomloot.delete()
 		return HttpResponseRedirect(reverse('room-detail', args=[str(roomloot.in_room.id)]))
 	
-	return render(request, "SovereignWebsite/roomloot_confirm_delete.html", context={'roomloot': roomloot})
+	return render(request, "roomloot_confirm_delete.html", context={'roomloot': roomloot})

@@ -26,7 +26,7 @@ def itemlist_detail(request, pk):
 	
 	context = {'itemlist': itemlist}
 	
-	return render(request, 'SovereignWebsite/itemlist_detail.html', context)
+	return render(request, 'itemlist_detail.html', context)
 
 @login_required
 @item_in_user_library
@@ -35,7 +35,7 @@ def item_detail(request, pk):
 	
 	context = {'item': item}
 	
-	return render(request, 'SovereignWebsite/item_detail.html', context)
+	return render(request, 'item_detail.html', context)
 
 ##################
 ###   #FORMS   ###
@@ -57,7 +57,7 @@ def itemlist_create(request, in_project, pk=None):
 			form.save()
 			return HttpResponseRedirect(reverse('itemlist-detail', args=[str(itemlist.id)]))
 		
-	return render(request, 'SovereignWebsite/itemlist_form.html', {'form': form})
+	return render(request, 'itemlist_form.html', {'form': form})
 
 @login_required
 @itemlist_in_user_library
@@ -68,7 +68,7 @@ def itemlist_delete(request, pk):
 		itemlist.delete()
 		return HttpResponseRedirect(reverse('project-detail', args=[str(itemlist.in_project.id)]))
 	
-	return render(request, "SovereignWebsite/itemlist_confirm_delete.html", context={'itemlist': itemlist})
+	return render(request, "itemlist_confirm_delete.html", context={'itemlist': itemlist})
 
 @login_required	
 def item_create(request, in_itemlist, pk=None):
@@ -86,7 +86,7 @@ def item_create(request, in_itemlist, pk=None):
 			form.save()
 			return HttpResponseRedirect(reverse('item-detail', args=[str(item.id)]))
 	
-	return render(request, 'SovereignWebsite/item_form.html', {'form': form})
+	return render(request, 'item_form.html', {'form': form})
 
 @login_required
 @item_in_user_library
@@ -97,4 +97,4 @@ def item_delete(request, pk):
 		item.delete()
 		return HttpResponseRedirect(reverse('itemlist-detail', args=[str(item.in_itemlist.id)]))
 	
-	return render(request, "SovereignWebsite/item_confirm_delete.html", context={'item': item})
+	return render(request, "item_confirm_delete.html", context={'item': item})

@@ -70,8 +70,13 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
         	os.path.join(BASE_DIR, 'templates'),
-        	os.path.join(BASE_DIR, 'SovereignWebsite', 'templates'),
         	os.path.join(BASE_DIR, 'accounts', 'templates'),
+        	os.path.join(BASE_DIR, 'Project', 'templates', 'Project'),
+        	os.path.join(BASE_DIR, 'ItemList', 'templates', 'ItemList'),
+        	os.path.join(BASE_DIR, 'Pantheon', 'templates', 'Pantheon'),
+        	os.path.join(BASE_DIR, 'Dungeon', 'templates', 'Dungeon'),
+        	os.path.join(BASE_DIR, 'Campaign', 'templates', 'Campaign'),
+        	os.path.join(BASE_DIR, 'World', 'templates', 'World'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {

@@ -19,7 +19,12 @@ from django.urls import path
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url('', include('SovereignWebsite.urls')),
+    url('worldbuilder/', include('Project.urls')),
+    url('worldbuilder/itemlist/', include('ItemList.urls')),
+    url('worldbuilder/universe/pantheon/', include('Pantheon.urls')),
+    url('worldbuilder/universe/dungeon/', include('Dungeon.urls')),
+    url('worldbuilder/campaign/', include('Campaign.urls')),
+    url('worldbuilder/universe/', include('World.urls')),
     path('accounts/', include('accounts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     url(r'^tinymce/', include('tinymce.urls')),

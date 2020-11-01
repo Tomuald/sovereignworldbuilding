@@ -34,7 +34,7 @@ def campaign_detail(request, pk):
 		'chapters': chapters,
 	}
 	
-	return render(request, "SovereignWebsite/campaign_detail.html", context)
+	return render(request, "campaign_detail.html", context)
 	
 @login_required	
 @decorators.campaign_in_user_library
@@ -52,7 +52,7 @@ def campaign_index(request, pk):
 		'encounters': encounters,
 	}
 	
-	return render(request, "SovereignWebsite/campaign_index.html", context)
+	return render(request, "campaign_index.html", context)
 	
 @login_required
 @decorators.chapter_in_user_library
@@ -76,7 +76,7 @@ def chapter_detail(request, pk):
 		'followed_by': followed_by,
 	}
 	
-	return render(request, "SovereignWebsite/chapter_detail.html", context)
+	return render(request, "chapter_detail.html", context)
 	
 @login_required
 @decorators.quest_in_user_library
@@ -97,7 +97,7 @@ def quest_detail(request, pk):
 		'followed_by': followed_by,
 	}
 	
-	return render(request, "SovereignWebsite/quest_detail.html", context)
+	return render(request, "quest_detail.html", context)
 	
 @login_required	
 @decorators.questencounter_in_user_library
@@ -108,7 +108,7 @@ def questencounter_detail(request, pk):
 		'questencounter': questencounter,
 	}
 	
-	return render(request, 'SovereignWebsite/questencounter_detail.html', context)
+	return render(request, 'questencounter_detail.html', context)
 	
 ##################
 ###   #FORMS   ###
@@ -135,7 +135,7 @@ def campaign_create(request, in_project, pk=None):
 			form.save()
 			return HttpResponseRedirect(reverse('campaign-detail', args=[str(campaign.id)]))
 	
-	return render(request, 'SovereignWebsite/campaign_form.html', {'form': form})
+	return render(request, 'campaign_form.html', {'form': form})
 
 @login_required
 @decorators.campaign_in_user_library
@@ -146,7 +146,7 @@ def campaign_delete(request, pk):
 		campaign.delete()
 		return HttpResponseRedirect(reverse('myshelf'))
 	
-	return render(request, "SovereignWebsite/campaign_confirm_delete.html", context={'campaign': campaign})
+	return render(request, "campaign_confirm_delete.html", context={'campaign': campaign})
 	
 @login_required
 def chapter_create(request, in_campaign, pk=None):
@@ -173,7 +173,7 @@ def chapter_create(request, in_campaign, pk=None):
 			form.save()
 			return HttpResponseRedirect(reverse('chapter-detail', args=[str(chapter.id)]))	
 	
-	return render(request, 'SovereignWebsite/chapter_form.html', {'form': form, 'in_campaign': in_campaign})
+	return render(request, 'chapter_form.html', {'form': form, 'in_campaign': in_campaign})
 	
 @login_required
 @decorators.chapter_in_user_library
@@ -184,7 +184,7 @@ def chapter_delete(request, pk):
 		chapter.delete()
 		return HttpResponseRedirect(reverse('campaign-detail', args=[str(chapter.in_campaign.id)]))
 	
-	return render(request, "SovereignWebsite/chapter_confirm_delete.html", context={'chapter': chapter})
+	return render(request, "chapter_confirm_delete.html", context={'chapter': chapter})
 	
 @login_required
 def quest_create(request, in_chapter, pk=None):
@@ -213,7 +213,7 @@ def quest_create(request, in_chapter, pk=None):
 			form.save()
 			return HttpResponseRedirect(reverse('quest-detail', args=[str(quest.id)]))
 	
-	return render(request, 'SovereignWebsite/quest_form.html', {'form': form, 'in_chapter': in_chapter})
+	return render(request, 'quest_form.html', {'form': form, 'in_chapter': in_chapter})
 
 @login_required
 @decorators.quest_in_user_library
@@ -224,7 +224,7 @@ def quest_delete(request, pk):
 		quest.delete()
 		return HttpResponseRedirect(reverse('chapter-detail', args=[str(quest.in_chapter.id)]))
 	
-	return render(request, "SovereignWebsite/quest_confirm_delete.html", context={'quest': quest})
+	return render(request, "quest_confirm_delete.html", context={'quest': quest})
 	
 @login_required	
 def questencounter_create(request, in_quest, pk=None):
@@ -251,7 +251,7 @@ def questencounter_create(request, in_quest, pk=None):
 			form.save()
 			return HttpResponseRedirect(reverse('questencounter-detail', args=[str(questencounter.id)]))
 	
-	return render(request, "SovereignWebsite/questencounter_form.html", {'form': form})
+	return render(request, "questencounter_form.html", {'form': form})
 
 @login_required
 @decorators.questencounter_in_user_library
@@ -262,7 +262,7 @@ def questencounter_delete(request, pk):
 		questencounter.delete()
 		return HttpResponseRedirect(reverse('quest-detail', args=[str(questencounter.in_quest.id)]))
 	
-	return render(request, "SovereignWebsite/questencounter_confirm_delete.html", context={'questencounter': questencounter})
+	return render(request, "questencounter_confirm_delete.html", context={'questencounter': questencounter})
 	
 @login_required
 def questencounterloot_create(request, in_questencounter):
@@ -277,7 +277,7 @@ def questencounterloot_create(request, in_questencounter):
 			form.save()
 			return HttpResponseRedirect(reverse('questencounter-detail', args=[str(in_questencounter.id)]))
 	
-	return render(request, "SovereignWebsite/questencounterloot_form.html", {'form': form})
+	return render(request, "questencounterloot_form.html", {'form': form})
 
 @login_required
 @decorators.questencounterloot_in_user_library
@@ -289,4 +289,4 @@ def questencounterloot_delete(request, pk):
 		questencounterloot.delete()
 		return HttpResponseRedirect(reverse('questencounter-detail', args=[str(questencounter.id)]))
 	
-	return render(request, "SovereignWebsite/questencounterloot_confirm_delete.html", context={'questencounterloot': questencounterloot})
+	return render(request, "questencounterloot_confirm_delete.html", context={'questencounterloot': questencounterloot})

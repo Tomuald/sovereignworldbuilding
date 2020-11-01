@@ -2,6 +2,8 @@ from django.core.exceptions import PermissionDenied
 from World.models import Universe, Region, Area, City, CityQuarter, Location, WorldEncounter, WorldEncounterLoot
 from World.models import Empire, Faction, NPC
 
+### Detail and Delete View Decorators ###
+
 # Checks if this universe's project is in the current user's library.
 def universe_in_user_library(function):
 	def test_universe_in_user_library(request, pk, *args, **kwargs):
@@ -171,3 +173,6 @@ def npc_in_user_library(function):
 			raise PermissionDenied
 	
 	return test_npc_in_user_library
+	
+
+

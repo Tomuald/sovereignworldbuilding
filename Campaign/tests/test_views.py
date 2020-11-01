@@ -34,8 +34,6 @@ class CampaignViewTests(TestCase):
 	def test_detail_view_not_logged_in_redirects(self):
 		response = self.client.get(self.campaign.get_absolute_url())
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/campaign/%d/" % self.campaign.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_detail_view_logged_in_and_campaign_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -51,8 +49,6 @@ class CampaignViewTests(TestCase):
 	def test_delete_view_not_logged_in_redirects(self):
 		response = self.client.get(reverse('campaign-delete', args=[str(self.campaign.id)]))
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/campaign/delete/%d/" % self.campaign.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_delete_view_logged_in_and_campaign_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -94,8 +90,6 @@ class ChapterViewTests(TestCase):
 	def test_detail_not_logged_in_redirects(self):
 		response = self.client.get(self.chapter.get_absolute_url())
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/campaign/chapter/%d/" % self.chapter.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_detail_viewlogged_in_and_chapter_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -111,8 +105,6 @@ class ChapterViewTests(TestCase):
 	def test_delete_view_not_logged_in_redirects(self):
 		response = self.client.get(reverse('chapter-delete', args=[str(self.chapter.id)]))
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/chapter/delete/%d/" % self.chapter.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_delete_view_logged_in_and_chapter_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -155,8 +147,6 @@ class QuestViewTests(TestCase):
 	def test_detail_view_not_logged_in_redirects(self):
 		response = self.client.get(self.quest.get_absolute_url())
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/campaign/quest/%d/" % self.quest.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_detail_view_logged_in_and_quest_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -172,8 +162,6 @@ class QuestViewTests(TestCase):
 	def test_delete_view_not_logged_in_redirects(self):
 		response = self.client.get(reverse('quest-delete', args=[str(self.quest.id)]))
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/quest/delete/%d/" % self.quest.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_delete_view_logged_in_and_quest_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -218,8 +206,6 @@ class QuestEncounterDetailViewTests(TestCase):
 	def test_detail_view_not_logged_in_redirects(self):
 		response = self.client.get(self.questencounter.get_absolute_url())
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/campaign/questencounter/%d/" % self.questencounter.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_detail_view_logged_in_and_questencounter_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -235,8 +221,6 @@ class QuestEncounterDetailViewTests(TestCase):
 	def test_delete_view_not_logged_in_redirects(self):
 		response = self.client.get(reverse('questencounter-delete', args=[str(self.questencounter.id)]))
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/questencounter/delete/%d/" % self.questencounter.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_delete_view_logged_in_and_questencounter_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -296,8 +280,6 @@ class QuestEncounterLootViewTests(TestCase):
 	def test_delete_view_not_logged_in_redirects(self):
 		response = self.client.get(reverse('questencounterloot-delete', args=[str(self.questencounterloot.id)]))
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/questencounter/encounterloot/delete/%d/" % self.questencounterloot.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_delete_view_logged_in_and_questencounter_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -306,5 +288,7 @@ class QuestEncounterLootViewTests(TestCase):
 	
 	def test_delete_view_encounter_not_in_user_library_view_forbidden(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
-		response = self.client.get(reverse('questencounterloot-delete', args=[str(self.second_questencounterloot.id)]))
+		response = self.client.get(
+			reverse('questencounterloot-delete', args=[str(self.second_questencounterloot.id)])
+		)
 		self.assertEqual(response.status_code, 403)

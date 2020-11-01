@@ -26,8 +26,6 @@ class ItemlistViewTests(TestCase):
 	def test_detail_view_not_logged_in_redirects(self):
 		response = self.client.get(self.itemlist.get_absolute_url())
 		self.assertEqual(response.status_code, 302)
-		expected_url = '/accounts/login/?next=/worldbuilder/itemlist/%d/' % self.itemlist.id
-		self.assertRedirects(response, expected_url)
 	
 	def test_detail_view_logged_in_and_itemlist_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -43,8 +41,6 @@ class ItemlistViewTests(TestCase):
 	def test_delete_view_not_logged_in_redirects(self):
 		response = self.client.get(self.itemlist.get_absolute_url())
 		self.assertEqual(response.status_code, 302)
-		expected_url = '/accounts/login/?next=/worldbuilder/itemlist/%d/' % self.itemlist.id
-		self.assertRedirects(response, expected_url)
 	
 	def test_delete_view_logged_in_and_itemlist_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -76,8 +72,6 @@ class ItemViewTests(TestCase):
 	def test_detail_view_not_logged_in_redirects(self):
 		response = self.client.get(self.item.get_absolute_url())
 		self.assertEqual(response.status_code, 302)
-		expected_url = '/accounts/login/?next=/worldbuilder/itemlist/item/%d/' % self.item.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_detail_view_logged_in_and_item_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -93,8 +87,6 @@ class ItemViewTests(TestCase):
 	def test_delete_view_not_logged_in_redirects(self):
 		response = self.client.get(reverse('item-delete', args=[str(self.item.id)]))
 		self.assertEqual(response.status_code, 302)
-		expected_url = '/accounts/login/?next=/worldbuilder/item/delete/%d/' % self.item.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_delete_view_logged_in_and_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")

@@ -1,0 +1,138 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+  <title>{{ room.name }}</title>
+{% endblock title %}
+
+{% block content %}
+  <div class="page-title">
+    <h1>{{ room.name }}</h1>
+    <a title="Edit" href="{% url 'room-update' in_roomset=room.in_roomset.id pk=room.pk %}">
+      <i class="cil-pencil"></i>
+    </a>
+    <a href="{% url 'room-delete' pk=room.pk %}"><i class="cil-x"></i></a>
+  </div>
+  
+  <hr class="page-title-hr">
+  
+  <div class="row">
+    <div class="col-2">
+    </div> <!-- col-2 -->
+    <div class="col">
+      <p class="flavor-text">{{ room.flavor_text }}</p>
+    </div> <!-- col -->
+    <div class="col-2">
+    </div> <!-- col-2 -->
+  </div> <!-- row -->
+  
+  <hr class="page-title-hr">
+  
+  <p>{{ room.description }}</p>
+  
+  <div class="table-title">
+    <h2>Encounters (World)</h2>
+    <a title="Add" href="{% url 'worldencounter-create' in_dungeon_room=room.id %}"><i class="cil-plus"></i></a>
+  </div> <!-- table-title -->
+  
+  <table class="table table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>#</th>
+        <th>Encounter Title</th>
+        <th>Type</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for encounter in room.worldencounter_set.all %}
+    <tr>
+      <td>{{ encounter.encounter_num }}</td>
+      <td><a href="{{ encounter.get_absolute_url }}">{{ encounter.title }}</a></td>
+      <td>{{ encounter.get_encounter_type_display }}</td>
+    </tr>
+    {% endfor %}
+    </tobdy>
+  </table>
+  
+  <div class="table-title">
+    <h2>Encounters (Quest)</h2>
+  </div> <!-- table-title -->
+  
+  <table class="table table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>#</th>
+        <th>Encounter Title</th>
+        <th>Type</th>
+        <th>Quest</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for encounter in room.questencounter_set.all %}
+    <tr>
+      <td>{{ encounter.encounter_num }}</td>
+      <td><a href="{{ encounter.get_absolute_url }}">{{ encounter.title }}</a></td>
+      <td>{{ encounter.get_encounter_type_display }}</td>
+      <td><a href="{{ encounter.in_quest.get_absolute_url }}">{{ encounter.in_quest }}</a></td>
+    </tr>
+    {% endfor %}
+    </tobdy>
+  </table>
+
+{% endblock content %}
+
+{% block rightsidebar %}
+  <table class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th colspan="2" class="sidebar-table">{{ room.name }}</th>
+      </tr>
+    </thead>
+    <tr>
+      <th>Dungeon</th>
+      <td><a href="{{ room.in_roomset.in_dungeon.get_absolute_url }}">{{ room.in_roomset.in_dungeon }}</a></td>
+    </tr>
+    <tr>
+      <th>Roomset</th>
+      <td>
+        <a href="{{ room.in_roomset.get_absolute_url }}">{{ room.in_roomset }}</a>
+      </td>
+    </tr>
+    <tr>
+      <th>Quests</th>
+      <td>
+        <ul>
+        {% for encounter in room.encounter_set.all %}
+          <li><a href="{{ encounter.in_questlink.get_absolute_url }}">{{ encounter.in_questlink }}</a></li>
+        {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <th>Exits</th>
+      <td>
+        <ul>
+        {% for exit in room.exits.all %}
+          <li><a href="{{ exit.get_absolute_url }}">{{ exit.name }}</a></li>
+        {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <th>Loot
+        <a title="Add" href="{% url 'roomloot-create' in_room=room.id %}">
+          <i class="cil-plus table-icon"></i>
+        </a>
+      </th>
+      <td>
+        <ul>
+        {% for loot in room.roomloot_set.all %}
+          <li>
+            <a href="{{ loot.name.get_absolute_url }}">{{ loot.name }}</a> ({{ loot.quantity }}x)
+              <a href="{% url 'roomloot-delete' pk=loot.pk %}"><i class="cil-x table-icon"></i></a>
+          </li>
+        {% endfor %}
+        <ul>
+      </td>
+    </tr>
+  </table>
+{% endblock rightsidebar %}

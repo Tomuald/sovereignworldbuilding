@@ -30,8 +30,6 @@ class UniverseViewTests(TestCase):
 	def test_detail_view_not_logged_in_redirects(self):
 		response = self.client.get(self.universe.get_absolute_url())
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/universe/%d/" % self.universe.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_detail_view_logged_in_universe_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -47,8 +45,6 @@ class UniverseViewTests(TestCase):
 	def test_delete_view_not_logged_in_redirects(self):
 		response = self.client.get(reverse('universe-delete', args=[str(self.universe.id)]))
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/universe/delete/%d/" % self.universe.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_delete_view_logged_in_universe_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -80,8 +76,6 @@ class RegionViewTests(TestCase):
 	def test_detail_view_not_logged_in_redirects(self):
 		response = self.client.get(self.region.get_absolute_url())
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/universe/region/%d/" % self.region.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_detail_view_logged_in_and_region_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -97,8 +91,6 @@ class RegionViewTests(TestCase):
 	def test_delete_view_not_logged_in_redirects(self):
 		response = self.client.get(reverse('region-delete', args=[str(self.region.id)]))
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/region/delete/%d/" % self.region.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_delete_view_logged_in_and_region_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -132,8 +124,6 @@ class AreaViewTests(TestCase):
 	def test_detail_view_not_logged_in_redirects(self):
 		response = self.client.get(self.area.get_absolute_url())
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/universe/area/%d/" % self.area.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_detail_view_logged_in_and_area_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -149,8 +139,6 @@ class AreaViewTests(TestCase):
 	def test_delete_view_not_logged_in_redirects(self):
 		response = self.client.get(reverse('area-delete', args=[str(self.area.id)]))
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/area/delete/%d/" % self.area.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_delete_view_logged_in_and_area_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -184,8 +172,6 @@ class CityViewTests(TestCase):
 	def test_detail_view_not_logged_in_redirects(self):
 		response = self.client.get(self.city.get_absolute_url())
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/universe/city/%d/" % self.city.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_detail_view_logged_in_and_city_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -201,8 +187,6 @@ class CityViewTests(TestCase):
 	def test_delete_view_not_logged_in_redirects(self):
 		response = self.client.get(reverse('city-delete', args=[str(self.city.id)]))
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/city/delete/%d/" % self.city.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_delete_view_logged_in_and_city_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -238,8 +222,6 @@ class CityQuarterViewTests(TestCase):
 	def test_detail_view_not_logged_in_redirects(self):
 		response = self.client.get(self.cityquarter.get_absolute_url())
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/universe/cityquarter/%d/" % self.cityquarter.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_detail_view_logged_in_and_cityquarter_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -255,8 +237,6 @@ class CityQuarterViewTests(TestCase):
 	def test_delete_view_not_logged_in_redirects(self):
 		response = self.client.get(reverse('cityquarter-delete', args=[str(self.cityquarter.id)]))
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/cityquarter/delete/%d/" % self.cityquarter.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_delete_view_logged_in_and_cityquarter_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -299,14 +279,10 @@ class LocationViewTests(TestCase):
 		# Test for an Area Location
 		response = self.client.get(self.area_location.get_absolute_url())
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/universe/location/%d/" % self.area_location.id
-		self.assertRedirects(response, expected_url)
 		
 		# Test for an CityQuarter Location
 		response = self.client.get(self.cq_location.get_absolute_url())
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/universe/location/%d/" % self.cq_location.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_detail_view_logged_in_and_location_in_user_library_renders(self):
 		# Test for Area Location.
@@ -335,14 +311,10 @@ class LocationViewTests(TestCase):
 		# Test for an Area Location
 		response = self.client.get(reverse('location-delete', args=[str(self.area_location.id)]))
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/location/delete/%d/" % self.area_location.id
-		self.assertRedirects(response, expected_url)
 		
 		# Test for an CityQuarter Location
 		response = self.client.get(reverse('location-delete', args=[str(self.cq_location.id)]))
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/location/delete/%d/" % self.cq_location.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_delete_view_logged_in_and_location_in_user_library_renders(self):
 		# Test for Area Location.
@@ -386,8 +358,6 @@ class EmpireViewTests(TestCase):
 	def test_detail_view_not_logged_in_redirects(self):
 		response = self.client.get(self.empire.get_absolute_url())
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/universe/empire/%d/" % self.empire.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_detail_view_logged_in_and_empire_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -403,8 +373,6 @@ class EmpireViewTests(TestCase):
 	def test_delete_view_not_logged_in_redirects(self):
 		response = self.client.get(reverse('empire-delete', args=[str(self.empire.id)]))
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/empire/delete/%d/" % self.empire.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_delete_view_logged_in_and_empire_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -436,8 +404,6 @@ class FactionViewTests(TestCase):
 	def test_detail_view_not_logged_in_redirects(self):
 		response = self.client.get(self.faction.get_absolute_url())
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/universe/faction/%d/" % self.faction.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_detail_view_logged_in_and_faction_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -453,8 +419,6 @@ class FactionViewTests(TestCase):
 	def test_delete_view_not_logged_in_redirects(self):
 		response = self.client.get(reverse('faction-delete', args=[str(self.faction.id)]))
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/faction/delete/%d/" % self.faction.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_delete_view_logged_in_and_faction_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -486,8 +450,6 @@ class NPCViewTests(TestCase):
 	def test_detail_view_not_logged_in_redirects(self):
 		response = self.client.get(self.npc.get_absolute_url())
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/universe/npc/%d/" % self.npc.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_detail_view_logged_in_and_npc_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -503,8 +465,6 @@ class NPCViewTests(TestCase):
 	def test_delete_view_not_logged_in_redirects(self):
 		response = self.client.get(reverse('npc-delete', args=[str(self.npc.id)]))
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/npc/delete/%d/" % self.npc.id
-		self.assertRedirects(response, expected_url)
 		
 	def test_delete_view_logged_in_and_npc_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")
@@ -565,26 +525,14 @@ class WorldEncounterViewTests(TestCase):
 		# Test for WorldEncounter in Location
 		response = self.client.get(self.loc_worldencounter.get_absolute_url())
 		self.assertEqual(response.status_code, 302)
-		expected_url = (
-			"/accounts/login/?next=/worldbuilder/universe/worldencounter/%d/" % self.loc_worldencounter.id
-		)
-		self.assertRedirects(response, expected_url)
 		
 		# Test for WorldEncounter in CityQuarter Location
 		response = self.client.get(self.cq_worldencounter.get_absolute_url())
 		self.assertEqual(response.status_code, 302)
-		expected_url = (
-			"/accounts/login/?next=/worldbuilder/universe/worldencounter/%d/" % self.cq_worldencounter.id
-		)
-		self.assertRedirects(response, expected_url)
 		
 		# Test for a WorldEncounter in a Dungeon Room
 		response = self.client.get(self.room_worldencounter.get_absolute_url())
 		self.assertEqual(response.status_code, 302)
-		expected_url = (
-			"/accounts/login/?next=/worldbuilder/universe/worldencounter/%d/" % self.room_worldencounter.id
-		)
-		self.assertRedirects(response, expected_url)
 		
 	def test_detail_view_logged_in_and_encounter_in_user_library_renders(self):
 		self.client.login(username="TestUser", password="T3stP4ssword")

@@ -26,7 +26,7 @@ def pantheon_detail(request, pk):
 	
 	context = {'pantheon': pantheon}
 	
-	return render(request, "SovereignWebsite/pantheon_detail.html", context)
+	return render(request, "pantheon_detail.html", context)
 
 @login_required
 @god_in_user_library
@@ -41,7 +41,7 @@ def god_detail(request, pk):
 		'worshipped_by_factions': worshipped_by_factions,
 	}
 	
-	return render(request, "SovereignWebsite/god_detail.html", context)
+	return render(request, "god_detail.html", context)
 	
 	
 ################
@@ -68,7 +68,7 @@ def pantheon_create(request, in_universe, pk=None):
 			form.save()
 			return HttpResponseRedirect(reverse('pantheon-detail', args=[str(pantheon.id)]))
 		
-	return render(request, 'SovereignWebsite/pantheon_form.html', {'form': form})
+	return render(request, 'pantheon_form.html', {'form': form})
 
 @login_required
 @pantheon_in_user_library
@@ -79,7 +79,7 @@ def pantheon_delete(request, pk):
 		pantheon.delete()
 		return HttpResponseRedirect(reverse('universe-detail', args=[str(pantheon.in_universe.id)]))
 	
-	return render(request, "SovereignWebsite/pantheon_confirm_delete.html", context={'pantheon': pantheon})
+	return render(request, "pantheon_confirm_delete.html", context={'pantheon': pantheon})
 
 @login_required	
 def god_create(request, in_pantheon, pk=None):
@@ -102,7 +102,7 @@ def god_create(request, in_pantheon, pk=None):
 			form.save()
 			return HttpResponseRedirect(reverse('god-detail', args=[str(god.id)]))
 	
-	return render(request, 'SovereignWebsite/god_form.html', {'form': form})
+	return render(request, 'god_form.html', {'form': form})
 
 @login_required
 @god_in_user_library
@@ -113,4 +113,4 @@ def god_delete(request, pk):
 		god.delete()
 		return HttpResponseRedirect(reverse('pantheon-detail', args=[str(god.in_pantheon.id)]))
 	
-	return render(request, "SovereignWebsite/god_confirm_delete.html", context={'god': god})
+	return render(request, "god_confirm_delete.html", context={'god': god})

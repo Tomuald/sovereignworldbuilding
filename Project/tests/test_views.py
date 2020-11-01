@@ -28,8 +28,6 @@ class ProjectViewTests(TestCase):
 	def test_list_view_not_logged_in_redirects(self):
 		response = self.client.get(reverse('project-list'))
 		self.assertEqual(response.status_code, 302)
-		expected_url = "/accounts/login/?next=/worldbuilder/"
-		self.assertRedirects(response, expected_url)
 	
 	def test_project_list_only_contains_user_projects(self):
 		# Test if there is only one project in the first user's project list.

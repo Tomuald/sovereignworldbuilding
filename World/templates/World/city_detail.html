@@ -1,0 +1,106 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+  <title>{{ city.name }}</title>
+{% endblock title %}
+
+{% block content %}
+  <div class="page-title">
+    <h1>{{ city.name }}</h1>
+    <a title="Edit" href="{% url 'city-update' in_region=city.in_region.id pk=city.pk %}">
+      <i class="cil-pencil"></i>
+    </a>
+    <a title="Delete" href="{% url 'city-delete' pk=city.pk %}"><i class="cil-x"></i></a>
+  </div> <!-- page-title and icons -->
+  
+  <hr class="page-title-hr">
+  
+  <div class="row">
+    <div class="col-2">
+    </div> <!-- col-2 -->
+    <div class="col">
+      <p class="flavor-text">{{ city.flavor_text }}</p>
+    </div> <!-- col -->
+    <div class="col-2">
+    </div> <!-- col-2 -->
+  </div> <!-- row -->
+  
+  <hr class="page-title-hr">
+  
+  <p>{{ city.description }}</p>
+  
+  <div class="table-title">
+    <h2>City Quarters</h2>
+    <a title="Add" href="{% url 'cityquarter-create' in_city=city.id %}"><i class="cil-plus"></i></a>
+  </div> <!-- table-title -->
+  
+  <table class="table table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Quarter</th>
+        <th>Locations</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for quarter in city_quarters %}
+    <tr>
+      <td><a href="{{ quarter.get_absolute_url }}">{{ quarter.name }}</a></td>
+      <td>{{ quarter.location_set.count }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  
+{% endblock content %}
+
+{% block rightsidebar %}
+  <table class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <th colspan="2" class="sidebar-table">{{ city.name }}</th>
+    </thead>
+    <tbody>
+      {% if city.landscape %}
+      <td colspan="2">
+        <img id="image" src="{{ city.landscape }}" class="img-fluid mx-auto d-block">
+        <div id="imageModal" class="modal">
+          <span class="close">&times;</span>
+          <img class="modal-content" id="modalImage">
+        </div>
+      </td>
+      {% endif %}
+    </tbody>
+    <tr>
+      <th>Region</th>
+      <td><a href="{{ city.in_region.get_absolute_url }}">{{ city.in_region }}</a></td>
+    </tr>
+    <tr>
+      <th>Population</th>
+      <td>{{ city.population }}</td>
+    </tr>
+  </table>
+  
+  <table class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th class="demographics" colspan="2">Demographics
+          <a title="Add/Edit" href="{% url 'citydemographics-create' in_city=city.id %}">
+            <i class="cil-pencil table-icon"></i>
+          </a>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for demographics in city.citydemographics_set.all %}
+      <tr>
+        <td class="race">{{ demographics.race }}</td>
+        <td class="percent">{{ demographics.percent }}%</td>
+      </tr>
+      {% endfor %}
+    </body>
+  </table>
+{% endblock rightsidebar %}
+
+{% block additionalscripts %}
+  {% load static %}
+  <script type="text/javascript" src="{% static 'js/imagemodals.js' %}"></script>
+{% endblock additionalscripts %}  
