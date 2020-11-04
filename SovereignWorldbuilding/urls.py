@@ -27,5 +27,4 @@ urlpatterns = [
     url('worldbuilder/universe/', include('World.urls')),
     path('accounts/', include('accounts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-    url(r'^tinymce/', include('tinymce.urls')),
 ]
