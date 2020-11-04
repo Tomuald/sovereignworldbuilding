@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tinymce',
+    #'tinymce',
     'crispy_forms',
     'Campaign',
     'ItemList',
@@ -148,16 +148,6 @@ STATICFILES_DIRS = [
 
 # Django-Crispy-Forms Configuration
 CRISPY_TEMPLATE_PACK = "bootstrap4"
-
-# TinyMce Configuration
-
-TINYMCE_DEFAULT_CONFIG = {
-	"plugins": "table, lists, link, spellchecker",
-	"toolbar": "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link",
-	'browser_spellcheck': 'true',
-}
-
-TINYMCE_SPELLCHECKER = True
 
 # django_heroku
 django_heroku.settings(locals())

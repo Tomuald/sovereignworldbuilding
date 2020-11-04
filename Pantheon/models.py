@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.urls import reverse
-from tinymce.models import HTMLField
 
 class Pantheon(models.Model):
 	name = models.CharField(max_length=125)

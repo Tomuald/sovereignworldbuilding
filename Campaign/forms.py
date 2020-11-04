@@ -1,7 +1,6 @@
 from django import forms
 from django.forms import ModelForm
 
-from tinymce.widgets import TinyMCE
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Row, Field
 from crispy_forms.bootstrap import InlineCheckboxes
@@ -13,8 +12,6 @@ from Campaign.models import Campaign, Chapter, Quest, QuestEncounter, QuestEncou
 ###############################
 
 class CampaignModelForm(ModelForm):
-	overview = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}, mce_attrs={'relative_urls': False}), required=False)
-	
 	class Meta:
 		model = Campaign
 		fields = '__all__'
@@ -31,13 +28,11 @@ class CampaignModelForm(ModelForm):
 		self.helper.layout = Layout(
 			Field('title'),
 			Field('in_universe'),
-			Field('overview'),
+			Field('overview', id="textarea"),
 			Field('in_project', type="hidden"),
 		)
 		
-class ChapterModelForm(ModelForm):
-	summary = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}, mce_attrs={'relative_urls': False}), required=False)
-	
+class ChapterModelForm(ModelForm):	
 	class Meta:
 		model = Chapter
 		fields = '__all__'
@@ -55,15 +50,13 @@ class ChapterModelForm(ModelForm):
 		self.helper.layout = Layout(
 			Field('title'),
 			Field('chapter_num'),
-			Field('summary'),
+			Field('summary', id="textarea"),
 			InlineCheckboxes('regions'),
 			InlineCheckboxes('involved_npcs'),
 			Field('in_campaign', type="hidden"),
 		)
 		
-class QuestModelForm(ModelForm):
-	summary = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}, mce_attrs={'relative_urls': False}), required=False)
-	
+class QuestModelForm(ModelForm):	
 	class Meta:
 		model = Quest
 		fields = '__all__'
@@ -87,14 +80,12 @@ class QuestModelForm(ModelForm):
 				Field('in_area', wrapper_class="col-md-6"),
 				Field('in_city', wrapper_class="col-md-6"),
 			),
-			Field('summary'),
+			Field('summary', id="textarea"),
 			InlineCheckboxes('involved_npcs'),
 			Field('in_chapter', type="hidden")
 		)
 		
 class QuestEncounterModelForm(ModelForm):
-	summary = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}, mce_attrs={'relative_urls': False}), required=False)
-	
 	class Meta:
 		model = QuestEncounter
 		fields = '__all__'
@@ -121,7 +112,7 @@ class QuestEncounterModelForm(ModelForm):
 				Field('in_dungeon_room', wrapper_class="col-md-6"),
 			),
 			Field('dramatic_question'),
-			Field('summary'),
+			Field('summary', id="textarea"),
 			Field('flavor_text'),
 			InlineCheckboxes('involved_npcs'),
 			Field('in_quest', type="hidden"),

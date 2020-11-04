@@ -212,3 +212,18 @@ caption {
 .img-portrait {
   max-width: 500px;
 }
+
+/* ------------------ */
+/* TINYMCE CSS CONFIG */
+/* ------------------ */
+
+.mce-toc {
+  max-width: 300px;
+  min-width: auto;
+  margin: 10px;
+  padding: 10px;
+  box-shadow: 2.5px 5px 2px #d3d3d3;
+  border: 1px solid #a2a9b1;
+  background-color: #dddddd;
+}
+

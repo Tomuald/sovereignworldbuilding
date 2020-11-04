@@ -2,5 +2,4 @@ django
 gunicorn
 django-heroku
 psycopg2
-django-tinymce
 django-crispy-forms

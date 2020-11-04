@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.urls import reverse
-from tinymce.models import HTMLField
 
 from ItemList.models import Item
 from World.models import Location, NPC, Region, Area, City
@@ -16,7 +15,7 @@ class Campaign(models.Model):
 	in_project = models.OneToOneField(Project, on_delete=models.CASCADE)
 	in_universe = models.ForeignKey(Universe, on_delete=models.CASCADE)
 	
-	overview = HTMLField(blank=True, null=True)
+	overview = models.TextField(blank=True, null=True)
 	
 	def get_absolute_url(self):
 		return reverse('campaign-detail', args=[str(self.id)])
@@ -32,7 +31,7 @@ class Chapter(models.Model):
 	in_campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
 	chapter_num = models.IntegerField()
 	
-	summary = HTMLField(blank=True, null=True)
+	summary = models.TextField(blank=True, null=True)
 	
 	involved_npcs = models.ManyToManyField(NPC, blank=True, related_name="involvednpcs")
 	
@@ -62,7 +61,7 @@ class Quest(models.Model):
 	in_area = models.ForeignKey(Area, on_delete=models.CASCADE, blank=True, null=True)
 	in_city = models.ForeignKey(City, on_delete=models.CASCADE, blank=True, null=True)
 	
-	summary = HTMLField(blank=True, null=True)
+	summary = models.TextField(blank=True, null=True)
 	
 	involved_npcs = models.ManyToManyField(NPC, blank=True)
 	
@@ -90,7 +89,7 @@ class QuestEncounter(models.Model):
 	encounter_type = models.CharField(max_length=5, choices=ENCOUNTER_TYPES, blank=True, null=True)
 	
 	dramatic_question = models.CharField(max_length=255, blank=True, null=True)
-	summary = HTMLField(blank=True, null=True)
+	summary = models.TextField(blank=True, null=True)
 	flavor_text = models.TextField(max_length=2500, blank=True, null=True)
 	
 	involved_npcs = models.ManyToManyField(NPC, blank=True)

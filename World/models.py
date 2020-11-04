@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.urls import reverse
-from tinymce.models import HTMLField
 
 from ItemList.models import Item
 from Pantheon.models import God
@@ -12,7 +11,7 @@ from Project.models import Project
 class Universe(models.Model):
 	name = models.CharField(max_length=125)
 	in_project = models.OneToOneField(Project, on_delete=models.CASCADE)
-	description = HTMLField(blank=True, null=True)
+	description = models.TextField(blank=True, null=True)
 	
 	class Meta:
 		ordering = ['name', ]
@@ -31,7 +30,7 @@ class Empire(models.Model):
 	name = models.CharField(max_length=125)
 	in_universe = models.ForeignKey(Universe, on_delete=models.CASCADE)
 	
-	description = HTMLField(blank=True, null=True)
+	description = models.TextField(blank=True, null=True)
 	
 	regions = models.ManyToManyField('Region', blank=True)
 	
@@ -49,7 +48,7 @@ class Empire(models.Model):
 class Region(models.Model):
 	name = models.CharField(max_length=125)
 	landscape = models.URLField(max_length=255, blank=True, null=True,
-					help_text="Provide a URL to an image file. Preferably, to the actual file, and not a link to a search engine.")
+					help_text="Provide a URL to an image file.")
 	
 	in_universe = models.ForeignKey(Universe, on_delete=models.CASCADE, blank=True, null=True)
 	
@@ -62,7 +61,7 @@ class Region(models.Model):
 	)
 	biome = models.CharField(max_length=2, choices=BIOMES, blank=True, null=True)
 	
-	description = HTMLField(blank=True, null=True)
+	description = models.TextField(blank=True, null=True)
 	
 	class Meta:
 		ordering = ['name', ]
@@ -76,7 +75,7 @@ class Region(models.Model):
 class Area(models.Model):
 	name = models.CharField(max_length=125)
 	landscape = models.URLField(max_length=255, blank=True, null=True,
-					help_text="Provide a URL to an image file. Preferably, to the actual file, and not a link to a search engine.")
+					help_text="Provide a URL to an image file.")
 
 	area_type = models.CharField(max_length=255, blank=True, null=True)
 	
@@ -84,7 +83,7 @@ class Area(models.Model):
 	
 	factions = models.ManyToManyField('Faction', blank=True)
 	
-	description = HTMLField(blank=True, null=True)
+	description = models.TextField(blank=True, null=True)
 	flavor_text = models.TextField(blank=True, null=True)
 	
 	class Meta:
@@ -99,12 +98,12 @@ class Area(models.Model):
 class City(models.Model):
 	name = models.CharField(max_length=125)
 	landscape = models.URLField(max_length=255, blank=True, null=True,
-					help_text="Provide a URL to an image file. Preferably, to the actual file, and not a link to a search engine.")
+					help_text="Provide a URL to an image file.")
 	
 	in_region = models.ForeignKey(Region, on_delete=models.CASCADE)
 	population = models.CharField(max_length=10, blank=True, null=True)
 
-	description = HTMLField(blank=True, null=True)
+	description = models.TextField(blank=True, null=True)
 	flavor_text = models.TextField(blank=True, null=True)
 	
 	class Meta:
@@ -123,7 +122,7 @@ class CityQuarter(models.Model):
 	
 	factions = models.ManyToManyField('Faction', blank=True)
 	
-	description = HTMLField(blank=True, null=True)
+	description = models.TextField(blank=True, null=True)
 	flavor_text = models.TextField(blank=True, null=True)
 	
 	class Meta:
@@ -139,14 +138,14 @@ class CityQuarter(models.Model):
 class Location(models.Model):
 	name = models.CharField(max_length=125)
 	landscape = models.URLField(max_length=255, blank=True, null=True,
-					help_text="URL to an image file. The better the resolution, the longer the loading time.")
+					help_text="Provide a URL to an image file..")
 	
 	location_type = models.CharField(max_length=125, blank=True, null=True)
 	
 	in_area = models.ForeignKey(Area, on_delete=models.CASCADE, blank=True, null=True)
 	in_cityquarter = models.ForeignKey(CityQuarter, on_delete=models.CASCADE, blank=True, null=True)
 	
-	description = HTMLField(blank=True, null=True)
+	description = models.TextField(blank=True, null=True)
 	flavor_text = models.TextField(blank=True, null=True)
 	
 	NPCs = models.ManyToManyField('NPC', blank=True)
@@ -179,7 +178,7 @@ class NPC(models.Model):
 	in_universe = models.ForeignKey(Universe, on_delete=models.CASCADE)
 	in_faction = models.ForeignKey('Faction', on_delete=models.CASCADE, blank=True, null=True)
 	portrait = models.URLField(max_length=255, blank=True, null=True,
-				help_text="Provide a URL to an image file. Preferably, to the actual file, and not a link to a search engine.")
+				help_text="Provide a URL to an image file.")
 	
 	ALIGNMENTS = (
 		('LG', 'Lawful/Good'),
@@ -196,7 +195,7 @@ class NPC(models.Model):
 	alignment = models.CharField(max_length=2, choices=ALIGNMENTS, blank=True, null=True)
 	faiths = models.ManyToManyField(God, blank=True)
 	
-	description = HTMLField(blank=True, null=True)
+	description = models.TextField(blank=True, null=True)
 	
 	class Meta:
 		ordering = ['name', ]
@@ -227,7 +226,7 @@ class Faction(models.Model):
 	alignment = models.CharField(max_length=2, choices=ALIGNMENTS, blank=True, null=True)
 	faiths = models.ManyToManyField(God, blank=True)
 	
-	description = HTMLField(blank=True, null=True)
+	description = models.TextField(blank=True, null=True)
 	leaders = models.ManyToManyField(NPC, blank=True)
 	
 	class Meta:
@@ -273,7 +272,7 @@ class WorldEncounter(models.Model):
 	encounter_type = models.CharField(max_length=5, choices=ENCOUNTER_TYPES, blank=True, null=True)
 	
 	dramatic_question = models.CharField(max_length=255, blank=True, null=True)
-	summary = HTMLField(blank=True, null=True)
+	summary = models.TextField(blank=True, null=True)
 	flavor_text = models.TextField(blank=True, null=True)
 	
 	involved_npcs = models.ManyToManyField(NPC, blank=True)

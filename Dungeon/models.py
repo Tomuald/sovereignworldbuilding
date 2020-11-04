@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.urls import reverse
-from tinymce.models import HTMLField
 from ItemList.models import Item
 from World.models import Area
 
@@ -17,7 +16,7 @@ class Dungeon(models.Model):
 	landscape = models.URLField(max_length=255, blank=True, null=True, help_text="Provide a URL to an image file. Preferably, to the actual file, and not a link to a search engine.")
 	in_area = models.ForeignKey(Area, on_delete=models.CASCADE)
 	
-	description = HTMLField(blank=True, null=True)
+	description = models.TextField(blank=True, null=True)
 	
 	
 	def get_absolute_url(self):
@@ -35,7 +34,7 @@ class Roomset(models.Model):
 	name = models.CharField(max_length=75)
 	in_dungeon = models.ForeignKey(Dungeon, on_delete=models.CASCADE)
 	
-	description = HTMLField(blank=True, null=True)
+	description = models.TextField(blank=True, null=True)
 	# map = 'path/to/file'
 	
 	def get_absolute_url(self):
@@ -53,7 +52,7 @@ class Room(models.Model):
 	in_roomset = models.ForeignKey(Roomset, on_delete=models.CASCADE)
 	exits = models.ManyToManyField('Room', blank=True)
 	
-	description = HTMLField(blank=True, null=True)
+	description = models.TextField(blank=True, null=True)
 	
 	flavor_text = models.TextField(blank=True, null=True)
 

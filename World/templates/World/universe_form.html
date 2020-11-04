@@ -1,5 +1,11 @@
 {% extends 'base_generic.html' %}
 
+{% block additionalstatic %}
+  <script src="https://cdn.tiny.cloud/1/2gcz381i62l40q1b09f9459xib3itxlfnxcb70ye30po1t96/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+  {% load static %}
+  <script src="{% static 'js/tinymce_config.js' %}"></script>
+{% endblock additionalstatic %}
+
 {% block content %}
   
   <h1 class="page-title">Add/Edit Universe</h1>

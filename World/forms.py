@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 
-from tinymce.widgets import TinyMCE
+
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Row, Field
 from crispy_forms.bootstrap import InlineCheckboxes
@@ -10,8 +10,6 @@ from World.models import Universe, Region, Area, City, CityQuarter, Location, Lo
 
 
 class UniverseModelForm(ModelForm):
-	description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}, mce_attrs={'relative_urls': False}), required=False)
-	
 	class Meta:
 		model = Universe
 		fields = '__all__'
@@ -25,13 +23,11 @@ class UniverseModelForm(ModelForm):
 		
 		self.helper.layout = Layout(
         	Field('name'),
-        	Field('description'),
+        	Field('description', id="textarea"),
         	Field('in_project', type="hidden"),
         )
 
 class EmpireModelForm(ModelForm):
-	description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows':30}, mce_attrs={'relative_urls': False}), required=False)
-	
 	class Meta:
 		model = Empire
 		fields = '__all__'
@@ -48,15 +44,13 @@ class EmpireModelForm(ModelForm):
 		
 		self.helper.layout = Layout(
 			Field('name'),
-			Field('description'),
+			Field('description', id="textarea"),
 			InlineCheckboxes('regions'),
 			InlineCheckboxes('faiths'),
 			Field('in_universe', type="hidden"),
 		)
 
 class RegionModelForm(ModelForm):
-	description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}, mce_attrs={'relative_urls': False}), required=False)
-	
 	class Meta:
 		model = Region
 		fields = '__all__'
@@ -73,15 +67,11 @@ class RegionModelForm(ModelForm):
 			Field('name'),
 			Field('landscape'),
 			Field('biome'),
-			Field('description'),
+			Field('description', id="textarea"),
 			Field('in_universe', type="hidden"),
 		)
 
 class AreaModelForm(ModelForm):
-	description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30},
-												 mce_attrs={'relative_urls': False}),
-												 required=False)
-
 	class Meta:
 		model = Area
 		fields = '__all__'
@@ -99,15 +89,13 @@ class AreaModelForm(ModelForm):
 			Field('name'),
 			Field('landscape'),
 			Field('area_type'),
-			Field('description'),
+			Field('description', id="textarea"),
 			Field('flavor_text'),
 			InlineCheckboxes('factions'),
 			Field('in_region', type="hidden"),
 		)
 
 class CityModelForm(ModelForm):
-	description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}, mce_attrs={'relative_urls': False}), required=False)
-	
 	class Meta:
 		model = City
 		fields = '__all__'
@@ -124,14 +112,12 @@ class CityModelForm(ModelForm):
 			Field('name'),
 			Field('landscape'),
 			Field('population'),
-			Field('description'),
+			Field('description', id="textarea"),
 			Field('flavor_text'),
 			Field('in_region', type="hidden"),
 		)
 
 class CityQuarterModelForm(ModelForm):
-	description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}, mce_attrs={'relative_urls': False}), required=False)
-	
 	class Meta:
 		model = CityQuarter
 		fields = '__all__'
@@ -147,15 +133,13 @@ class CityQuarterModelForm(ModelForm):
 		
 		self.helper.layout = Layout(
 			Field('name'),
-			Field('description'),
+			Field('description', id="textarea"),
 			Field('flavor_text'),
 			InlineCheckboxes('factions'),
 			Field('in_city', type="hidden"),			
 		)
 
 class LocationModelForm(ModelForm):
-	description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}, mce_attrs={'relative_urls': False}), required=False)
-	
 	class Meta:
 		model = Location
 		fields = '__all__'
@@ -175,7 +159,7 @@ class LocationModelForm(ModelForm):
 			Field('name'),
 			Field('landscape'),
 			Field('location_type'),
-			Field('description'),
+			Field('description', id="textarea"),
 			Field('flavor_text'),
 			InlineCheckboxes('NPCs'),
 			InlineCheckboxes('exit_points'),
@@ -204,9 +188,6 @@ class LocationLootModelForm(ModelForm):
 		)
 
 class NPCModelForm(ModelForm):
-	description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}, mce_attrs={'relative_urls': False}), required=False)
-	
-
 	class Meta:
 		model = NPC
 		fields = '__all__'
@@ -226,14 +207,12 @@ class NPCModelForm(ModelForm):
 			Field('portrait'),
 			Field('in_faction'),
 			Field('alignment'),
-			Field('description'),
+			Field('description', id="textarea"),
 			InlineCheckboxes('faiths'),
 			Field('in_universe', type="hidden"),
 		)
         
 class FactionModelForm(ModelForm):
-	description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}, mce_attrs={'relative_urls': False}), required=False)
-	
 	class Meta:
 		model = Faction
 		fields = '__all__'
@@ -252,16 +231,14 @@ class FactionModelForm(ModelForm):
 			Field('name'),
 			Field('faction_role'),
 			Field('alignment'),
-			Field('description'),
+			Field('description', id="textarea"),
 			InlineCheckboxes('leaders'),
 			InlineCheckboxes('faiths'),
 			Field('in_universe', type="hidden"),
 		)
 
 		
-class WorldEncounterModelForm(ModelForm):
-	summary = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}, mce_attrs={'relative_urls': False}), required=False)
-	
+class WorldEncounterModelForm(ModelForm):	
 	class Meta:
 		model = WorldEncounter
 		fields = '__all__'
@@ -280,7 +257,7 @@ class WorldEncounterModelForm(ModelForm):
 			Field('encounter_num'),
 			Field('encounter_type'),
 			Field('dramatic_question'),
-			Field('summary'),
+			Field('summary', id="textarea"),
 			Field('flavor_text'),
 			InlineCheckboxes('involved_npcs'),
 			Field('in_location', type="hidden"),

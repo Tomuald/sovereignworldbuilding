@@ -1,7 +1,6 @@
 from django import forms
 from django.forms import ModelForm
 
-from tinymce.widgets import TinyMCE
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Field
 from crispy_forms.bootstrap import InlineCheckboxes
@@ -9,10 +8,6 @@ from crispy_forms.bootstrap import InlineCheckboxes
 from Dungeon.models import Dungeon, Roomset, Room, RoomLoot
 
 class DungeonModelForm(ModelForm):
-	description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30},
-												 mce_attrs={'relative_urls': False}),
-												 required=False
-											)
 	class Meta:
 		model = Dungeon
 		fields = '__all__'
@@ -28,15 +23,11 @@ class DungeonModelForm(ModelForm):
 		self.helper.layout = Layout(
 			Field('title'),
 			Field('landscape'),
-			Field('description'),
+			Field('description', id="textarea"),
 			Field('in_area', type="hidden"),
 		)
 		
 class RoomsetModelForm(ModelForm):
-	description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30},
-												 mce_attrs={'relative_urls': False}),
-												 required=False
-											)
 	class Meta:
 		model = Roomset
 		fields = '__all__'
@@ -51,16 +42,11 @@ class RoomsetModelForm(ModelForm):
 		
 		self.helper.layout = Layout(
 			Field('name'),
-			Field('description'),
+			Field('description', id="textarea"),
 			Field('in_dungeon', type="hidden"),
 		)
 		
 class RoomModelForm(ModelForm):
-	description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30},
-												 mce_attrs={'relative_urls': False}),
-												 required=False
-											)
-
 	class Meta:
 		model = Room
 		fields = '__all__'
@@ -76,7 +62,7 @@ class RoomModelForm(ModelForm):
 		self.helper.layout = Layout(
 			Field('name'),
 			Field('room_number'),
-			Field('description'),
+			Field('description', id="textarea"),
 			Field('flavor_text'),
 			InlineCheckboxes('exits'),
 			Field('in_roomset', type="hidden"),
