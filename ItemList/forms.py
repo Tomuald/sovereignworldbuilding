@@ -3,7 +3,6 @@ from django.forms import ModelForm
 
 from django.core.exceptions import ValidationError
 
-from tinymce.widgets import TinyMCE
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Field
 
