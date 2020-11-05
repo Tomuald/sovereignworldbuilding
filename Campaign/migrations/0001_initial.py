@@ -2,7 +2,6 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import tinymce.models
 
 
 class Migration(migrations.Migration):
@@ -23,7 +22,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=125)),
                 ('min_level', models.IntegerField()),
                 ('max_level', models.IntegerField()),
-                ('overview', tinymce.models.HTMLField(blank=True, null=True)),
+                ('overview', models.TextField(blank=True, null=True)),
                 ('in_universe', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='World.Universe')),
             ],
         ),
@@ -33,7 +32,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=125)),
                 ('chapter_num', models.IntegerField()),
-                ('summary', tinymce.models.HTMLField(blank=True, null=True)),
+                ('summary', models.TextField(blank=True, null=True)),
                 ('in_campaign', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='Campaign.Campaign')),
                 ('involved_npcs', models.ManyToManyField(blank=True, related_name='involvednpcs', to='World.NPC')),
                 ('regions', models.ManyToManyField(blank=True, to='World.Region')),
@@ -47,7 +46,7 @@ class Migration(migrations.Migration):
                 ('encounter_num', models.IntegerField(blank=True, null=True)),
                 ('encounter_type', models.CharField(blank=True, choices=[('gbe', 'Grid-based Encounter'), ('totme', 'Theater-of-the-Mind Encounter'), ('lbe', 'Lore-based Encounter')], max_length=5, null=True)),
                 ('dramatic_question', models.CharField(blank=True, max_length=255, null=True)),
-                ('summary', tinymce.models.HTMLField(blank=True, null=True)),
+                ('summary', models.TextField(blank=True, null=True)),
                 ('entry', models.TextField(blank=True, max_length=2500, null=True)),
                 ('exit', models.TextField(blank=True, max_length=2500, null=True)),
                 ('in_dungeon_room', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='Dungeon.Room')),
@@ -64,7 +63,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=255)),
                 ('quest_type', models.CharField(choices=[('mq', 'Main Quest'), ('sq', 'Side Quest')], max_length=2)),
                 ('quest_num', models.IntegerField()),
-                ('summary', tinymce.models.HTMLField(blank=True, null=True)),
+                ('summary', models.TextField(blank=True, null=True)),
                 ('in_area', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='World.Area')),
                 ('in_chapter', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='Campaign.Chapter')),
                 ('in_city', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='World.City')),

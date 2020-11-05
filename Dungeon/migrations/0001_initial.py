@@ -2,7 +2,6 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import tinymce.models
 
 
 class Migration(migrations.Migration):
@@ -20,7 +19,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=125)),
-                ('description', tinymce.models.HTMLField(blank=True, null=True)),
+                ('description', models.TextField(blank=True, null=True)),
                 ('in_location', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='World.Location')),
             ],
         ),
@@ -30,7 +29,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=75)),
                 ('room_number', models.IntegerField()),
-                ('description', tinymce.models.HTMLField(blank=True, null=True)),
+                ('description', models.TextField(blank=True, null=True)),
                 ('flavor_text', models.TextField(blank=True, max_length=2500, null=True)),
                 ('exits', models.ManyToManyField(blank=True, to='Dungeon.Room')),
             ],
@@ -43,7 +42,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=75)),
-                ('description', tinymce.models.HTMLField(blank=True, null=True)),
+                ('description', models.TextField(blank=True, null=True)),
                 ('in_dungeon', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='Dungeon.Dungeon')),
             ],
         ),
@@ -70,7 +69,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=75)),
                 ('passageway_number', models.IntegerField()),
-                ('description', tinymce.models.HTMLField(blank=True, null=True)),
+                ('description', models.TextField(blank=True, null=True)),
                 ('flavor_text', models.TextField(blank=True, max_length=1500, null=True)),
                 ('in_dungeon', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='Dungeon.Dungeon')),
             ],

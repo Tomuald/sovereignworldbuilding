@@ -105,6 +105,15 @@
       <td>{{ area.area_type }}</td>
     </tr>
     <tr>
+      <th>Quests</th>
+      <td>
+        <ul>
+        {% for quest in area.quest_set.all %}
+          <li><a href="{{ quest.get_absolute_url }}">{{ quest.title }}</a></li>
+        {% endfor %}
+        </ul>
+    </tr>
+    <tr>
       <th>Factions</th>
       <td>
         <ul>

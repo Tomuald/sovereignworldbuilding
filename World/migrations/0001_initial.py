@@ -2,7 +2,6 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import tinymce.models
 
 
 class Migration(migrations.Migration):
@@ -21,7 +20,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=125)),
                 ('area_type', models.CharField(choices=[('Vi', 'Village'), ('Sw', 'Swamp'), ('Fo', 'Forest'), ('Co', 'Coast'), ('Pl', 'Plains'), ('Hi', 'Hills'), ('Mo', 'Mountains'), ('La', 'Lake'), ('Ri', 'River'), ('Ro', 'Road'), ('Se', 'Sea'), ('Is', 'Island')], max_length=3)),
-                ('description', tinymce.models.HTMLField(blank=True, null=True)),
+                ('description', models.TextField(blank=True, null=True)),
                 ('flavor_text', models.TextField(blank=True, max_length=1500, null=True)),
             ],
         ),
@@ -30,7 +29,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=125)),
-                ('description', tinymce.models.HTMLField(blank=True, null=True)),
+                ('description', models.TextField(blank=True, null=True)),
                 ('flavor_text', models.TextField(blank=True, max_length=500, null=True)),
             ],
             options={
@@ -42,7 +41,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=125)),
-                ('description', tinymce.models.HTMLField(blank=True, null=True)),
+                ('description', models.TextField(blank=True, null=True)),
                 ('flavor_text', models.TextField(blank=True, max_length=500, null=True)),
             ],
             options={
@@ -54,7 +53,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=125)),
-                ('description', tinymce.models.HTMLField(blank=True, null=True)),
+                ('description', models.TextField(blank=True, null=True)),
                 ('faiths', models.ManyToManyField(blank=True, to='Pantheon.God')),
             ],
         ),
@@ -65,7 +64,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=125)),
                 ('faction_role', models.CharField(max_length=255)),
                 ('alignment', models.CharField(choices=[('LG', 'Lawful/Good'), ('NG', 'Neutral/Good'), ('CG', 'Chaotic/Good'), ('LN', 'Lawful/Neutral'), ('N', 'True Neutral'), ('CN', 'Chaotic/Neutral'), ('CE', 'Chaotic/Evil'), ('NE', 'Neutral/Evil'), ('LE', 'Lawful/Evil')], default='LG', max_length=2)),
-                ('description', tinymce.models.HTMLField(blank=True, null=True)),
+                ('description', models.TextField(blank=True, null=True)),
                 ('faiths', models.ManyToManyField(blank=True, to='Pantheon.God')),
             ],
         ),
@@ -76,7 +75,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=125)),
                 ('location_type', models.CharField(max_length=125)),
                 ('dungeon_entrance', models.BooleanField(default=False)),
-                ('description', tinymce.models.HTMLField(blank=True, null=True)),
+                ('description', models.TextField(blank=True, null=True)),
                 ('flavor_text', models.TextField(blank=True, max_length=500, null=True)),
             ],
         ),
@@ -85,7 +84,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=125)),
-                ('description', tinymce.models.HTMLField(blank=True, null=True)),
+                ('description', models.TextField(blank=True, null=True)),
             ],
         ),
         migrations.CreateModel(
@@ -94,7 +93,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=125)),
                 ('biome', models.CharField(choices=[('Dr', 'Dry'), ('Tr', 'Tropical'), ('Te', 'Temperate'), ('Co', 'Continental'), ('Po', 'Polar')], max_length=2)),
-                ('description', tinymce.models.HTMLField(blank=True, null=True)),
+                ('description', models.TextField(blank=True, null=True)),
                 ('in_empire', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='World.Empire')),
                 ('in_universe', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='World.Universe')),
             ],
@@ -106,7 +105,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=125)),
                 ('alignment', models.CharField(choices=[('LG', 'Lawful/Good'), ('NG', 'Neutral/Good'), ('CG', 'Chaotic/Good'), ('LN', 'Lawful/Neutral'), ('N', 'True Neutral'), ('CN', 'Chaotic/Neutral'), ('LE', 'Lawful/Evil'), ('NE', 'Neutral/Evil'), ('CE', 'Chaotic/Evil')], max_length=2)),
                 ('npc_type', models.CharField(choices=[('A', 'Ally'), ('F', 'Foe'), ('N', 'Neutral')], max_length=1)),
-                ('description', tinymce.models.HTMLField(blank=True, null=True)),
+                ('description', models.TextField(blank=True, null=True)),
                 ('faiths', models.ManyToManyField(blank=True, to='Pantheon.God')),
                 ('in_faction', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='World.Faction')),
                 ('in_universe', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='World.Universe')),

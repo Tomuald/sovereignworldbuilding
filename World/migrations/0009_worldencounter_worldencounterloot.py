@@ -2,7 +2,6 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import tinymce.models
 
 
 class Migration(migrations.Migration):
@@ -22,7 +21,7 @@ class Migration(migrations.Migration):
                 ('encounter_num', models.IntegerField(blank=True, null=True)),
                 ('encounter_type', models.CharField(blank=True, choices=[('gbe', 'Grid-based'), ('totme', 'Theater-of-the-Mind'), ('lbe', 'Lore-based')], max_length=5, null=True)),
                 ('dramatic_question', models.CharField(blank=True, max_length=255, null=True)),
-                ('summary', tinymce.models.HTMLField(blank=True, null=True)),
+                ('summary', models.TextField(blank=True, null=True)),
                 ('flavor_text', models.TextField(blank=True, max_length=2500, null=True)),
                 ('in_dungeon_room', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='Dungeon.Room')),
                 ('in_location', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='World.Location')),

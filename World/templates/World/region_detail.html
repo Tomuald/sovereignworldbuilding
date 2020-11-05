@@ -87,6 +87,10 @@
       <td><a href="{{ region.in_universe.get_absolute_url }}">{{ region.in_universe }}</a></td>
     </tr> 
     <tr>
+      <th>Biome</th>
+      <td>{{ region.get_biome_display }}</td>
+    </tr>
+    <tr>
       <th>Empire</th>
       <td>
         <ul>
@@ -94,10 +98,6 @@
           <li><a href="{{ empire.get_absolute_url }}">{{ empire.name }}</a></li>
         {% endfor %}
       </td>
-    </tr>
-    <tr>
-      <th>Biome</th>
-      <td>{{ region.get_biome_display }}</td>
     </tr>
   </table>
 {% endblock rightsidebar %}
