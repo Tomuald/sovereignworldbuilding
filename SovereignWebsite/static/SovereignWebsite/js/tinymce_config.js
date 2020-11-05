@@ -27,9 +27,6 @@ tinymce.init({
   		  ]},
   		  { title: 'Blocks', items: [
     		{ title: 'Paragraph', format: 'p' },
-    		{ title: 'Blockquote', format: 'blockquote' },
-    		{ title: 'Div', format: 'div' },
-    		{ title: 'Pre', format: 'pre' }
   		  ]},
   		  { title: 'Align', items: [
     		{ title: 'Left', format: 'alignleft' },
