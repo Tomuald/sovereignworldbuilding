@@ -7,7 +7,6 @@ tinymce.init({
         toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link | table | hr toc ',
         menubar: 'edit view insert format',
         relative_urls: false,
-        content_css: "{% static 'css/basiclayout.css' %}",
         
         style_formats: [
           { title: 'Headings', items: [
