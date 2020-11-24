@@ -7,20 +7,22 @@
 {% block content %}
   <div class="page-title">
     <h1>{{ quest.title }}</h1>
-    <a title="Edit" href="{% url 'quest-update' in_chapter=quest.in_chapter.id pk=quest.pk %}">
+    <a title="Edit" href="{% url 'quest-update' in_project=quest.in_project.id title=quest.title %}">
       <i class="cil-pencil"></i>
     </a>
-    <a title="Delete" href="{% url 'quest-delete' pk=quest.pk %}"><i class="cil-x"></i></a>
+    <a title="Delete" href="{% url 'quest-delete' in_project=quest.in_project.id title=quest.title %}">
+      <i class="cil-x"></i>
+    </a>
   </div> <!-- page-title and icons -->
   <hr class="page-title-hr">
-  
+
   <p>{{ quest.summary }}</p>
-  
+
   <div class="table-title">
     <h2>Encounters</h2>
-    <a title="Add" href="{% url 'questencounter-create' in_quest=quest.id %}"><i class="cil-plus"></i></a>
+    <a title="Add" href="{% url 'questencounter-create' in_project=quest.in_project.id in_quest=quest.title %}"><i class="cil-plus"></i></a>
   </div> <!-- table-title -->
-  
+
   <table class="table table-hover table-striped">
     <thead class="thead-dark">
       <tr>

@@ -4,7 +4,8 @@ from __future__ import unicode_literals
 from django.contrib.auth.decorators import login_required
 
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
+from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
 
@@ -25,49 +26,52 @@ from Campaign import decorators
 
 @login_required
 @decorators.campaign_in_user_library
-def campaign_detail(request, pk):
-	campaign = Campaign.objects.get(pk=pk)
-	chapters = Chapter.objects.filter(in_campaign=campaign.id)
-	
+def campaign_detail(request, in_project, title):
+	project = Project.objects.get(id=in_project)
+	campaigns = project.campaign_set.all()
+	campaign = get_object_or_404(campaigns, title=title)
+
+	chapters = campaign.chapter_set.all()
+
 	context = {
 		'campaign': campaign,
 		'chapters': chapters,
 	}
-	
+
 	return render(request, "campaign_detail.html", context)
-	
-@login_required	
+
+@login_required
 @decorators.campaign_in_user_library
-def campaign_index(request, pk):
-	campaign = Campaign.objects.get(pk=pk)
-	
-	chapters = Chapter.objects.filter(in_campaign=campaign.id)
-	quests = Quest.objects.filter(in_chapter__in_campaign=campaign.id)
-	encounters = QuestEncounter.objects.filter(in_quest__in_chapter__in_campaign=campaign.id)
-	
+def campaign_index(request, in_project, title):
+	project = Project.objects.get(id=in_project)
+	campaigns = project.campaign_set.all()
+	campaign = get_object_or_404(campaigns, title=title)
+
+	chapters = campaign.chapter_set.all()
+	quests = project.quest_set.all()
+	encounters = project.questencounter_set.all()
+
 	context = {
 		'campaign': campaign,
 		'chapters': chapters,
 		'quests': quests,
 		'encounters': encounters,
 	}
-	
+
 	return render(request, "campaign_index.html", context)
-	
+
 @login_required
 @decorators.chapter_in_user_library
-def chapter_detail(request, pk):
-	chapter = Chapter.objects.get(pk=pk)
-	main_quests = Quest.objects.filter(in_chapter=pk, quest_type='mq')
-	side_quests = Quest.objects.filter(in_chapter=pk, quest_type='sq')
-	
-	preceded_by = Chapter.objects.filter(chapter_num=chapter.chapter_num - 1,
-											in_campaign=chapter.in_campaign
-										)
-	followed_by = Chapter.objects.filter(chapter_num=chapter.chapter_num + 1,
-											in_campaign=chapter.in_campaign
-										)
-	
+def chapter_detail(request, in_project, title):
+	project = Project.objects.get(id=in_project)
+	chapters = project.chapter_set.all()
+	chapter = get_object_or_404(chapters, title=title)
+	main_quests = chapter.quest_set.filter(quest_type='mq')
+	side_quests = chapter.quest_set.filter(quest_type='sq')
+
+	preceded_by = chapters.filter(chapter_num=chapter.chapter_num - 1)
+	followed_by = chapters.filter(chapter_num=chapter.chapter_num + 1)
+
 	context = {
 		'chapter': chapter,
 		'main_quests': main_quests,
@@ -75,218 +79,402 @@ def chapter_detail(request, pk):
 		'preceded_by': preceded_by,
 		'followed_by': followed_by,
 	}
-	
+
 	return render(request, "chapter_detail.html", context)
-	
+
 @login_required
 @decorators.quest_in_user_library
-def quest_detail(request, pk):
-	quest = Quest.objects.get(pk=pk)
-	preceded_by = Quest.objects.filter(quest_num=quest.quest_num - 1,
-									   in_chapter=quest.in_chapter,
-									   quest_type=quest.quest_type
-									)
-	followed_by = Quest.objects.filter(quest_num=quest.quest_num + 1,
-									   in_chapter=quest.in_chapter,
-									   quest_type=quest.quest_type
-									)
-	
+def quest_detail(request, in_project, title):
+	project = Project.objects.get(id=in_project)
+	quests = project.quest_set.all()
+	quest = get_object_or_404(quests, title=title)
+	preceded_by = quests.filter(quest_num=quest.quest_num - 1)
+	followed_by = quests.filter(quest_num=quest.quest_num + 1)
+
 	context = {
 		'quest': quest,
 		'preceded_by': preceded_by,
 		'followed_by': followed_by,
 	}
-	
+
 	return render(request, "quest_detail.html", context)
-	
-@login_required	
+
+@login_required
 @decorators.questencounter_in_user_library
-def questencounter_detail(request, pk):
-	questencounter = QuestEncounter.objects.get(pk=pk)
-	
+def questencounter_detail(request, in_project, title):
+	project = Project.objects.get(id=in_project)
+	questencounters = project.questencounter_set.all()
+	questencounter = get_object_or_404(questencounters, title=title)
+
 	context = {
 		'questencounter': questencounter,
 	}
-	
+
 	return render(request, 'questencounter_detail.html', context)
-	
+
 ##################
 ###   #FORMS   ###
 ##################
-	
-@login_required
-def campaign_create(request, in_project, pk=None):
-	in_project = Project.objects.get(id=in_project)
-	universes = Universe.objects.filter(in_project=in_project.id)
 
-	if pk:
-		campaign = get_object_or_404(Campaign, pk=pk)
-	else:
-		campaign = Campaign()
-	
-	form = CampaignModelForm(request.POST or None,
-							 initial={'in_project': in_project},
-							 instance=campaign,
-							 universes=universes,
-							)
-	
+@login_required
+@decorators.create_campaign_in_user_library
+def campaign_create(request, in_project):
+	in_project = Project.objects.get(id=in_project)
+	universes = in_project.universe_set.all()
+	campaigns = in_project.campaign_set.all()
+	campaign = Campaign()
+
+	form = CampaignModelForm(campaigns, universes, request.POST or None, initial={'in_project': in_project}, instance=campaign)
+
 	if request.method == 'POST':
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect(reverse('campaign-detail', args=[str(campaign.id)]))
-	
+			return HttpResponseRedirect(
+					reverse('campaign-detail',
+						args=[
+							str(campaign.in_project.id),
+							str(campaign.title)
+					]))
 	return render(request, 'campaign_form.html', {'form': form})
 
 @login_required
 @decorators.campaign_in_user_library
-def campaign_delete(request, pk):
-	campaign = get_object_or_404(Campaign, pk=pk)
-	
+def campaign_update(request, in_project, title):
+	in_project = Project.objects.get(id=in_project)
+	universes = in_project.universe_set.all()
+	campaigns = in_project.campaign_set.all()
+	campaign = get_object_or_404(campaigns, title=title)
+
+	form = CampaignModelForm(campaigns, universes, request.POST or None, instance=campaign)
+
+	if request.method == 'POST':
+		if form.is_valid():
+			form.save()
+			return HttpResponseRedirect(
+					reverse('campaign-detail',
+						args=[
+							str(campaign.in_project.id),
+							str(campaign.title)])
+					)
+	return render(request, 'campaign_form.html', {'form': form})
+
+@login_required
+@decorators.campaign_in_user_library
+def campaign_delete(request, in_project, title):
+	project = Project.objects.get(id=in_project)
+	campaigns = project.campaign_set.all()
+	campaign = get_object_or_404(campaigns, title=title)
+
 	if request.method == 'POST':
 		campaign.delete()
-		return HttpResponseRedirect(reverse('myshelf'))
-	
+		return HttpResponseRedirect(
+				reverse('project-detail',
+					args=[
+						campaign.in_project.id
+				]))
+
 	return render(request, "campaign_confirm_delete.html", context={'campaign': campaign})
-	
+
 @login_required
-def chapter_create(request, in_campaign, pk=None):
-	in_campaign = Campaign.objects.get(id=in_campaign)
-	campaigns = Campaign.objects.filter(in_project=in_campaign.in_project.id)
-	regions = Region.objects.filter(in_universe=in_campaign.in_universe.id)
-	npcs = NPC.objects.filter(in_universe=in_campaign.in_universe.id)
-	
-	if pk:
-		chapter = get_object_or_404(Chapter, pk=pk)
-	else:
-		chapter = Chapter()
-	
-	form = ChapterModelForm(campaigns,
+@decorators.create_chapter_in_user_library
+def chapter_create(request, in_project, in_campaign):
+	chapter = Chapter()
+
+	project = Project.objects.get(id=in_project)
+	campaign = project.campaign_set.get(title=in_campaign)
+	chapters = project.chapter_set.all()
+	regions = project.region_set.all()
+	npcs = project.npc_set.all()
+
+	form = ChapterModelForm(chapters,
 							regions,
 							npcs,
 							request.POST or None,
-							initial={'in_campaign': in_campaign},
-							instance=chapter
-						)
-	
+							initial={
+								'in_project': project, 'in_campaign': campaign
+							},
+							instance=chapter)
+
 	if request.method == 'POST':
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect(reverse('chapter-detail', args=[str(chapter.id)]))	
-	
-	return render(request, 'chapter_form.html', {'form': form, 'in_campaign': in_campaign})
-	
+			return HttpResponseRedirect(
+					reverse('chapter-detail',
+						args=[
+							str(project.id),
+							str(chapter.title)
+					]))
+	return render(request, 'chapter_form.html', {'form': form})
+
 @login_required
 @decorators.chapter_in_user_library
-def chapter_delete(request, pk):
-	chapter = get_object_or_404(Chapter, pk=pk)
-	
-	if request.method == 'POST':
-		chapter.delete()
-		return HttpResponseRedirect(reverse('campaign-detail', args=[str(chapter.in_campaign.id)]))
-	
-	return render(request, "chapter_confirm_delete.html", context={'chapter': chapter})
-	
-@login_required
-def quest_create(request, in_chapter, pk=None):
-	in_chapter = Chapter.objects.get(id=in_chapter)
-	chapters = Chapter.objects.filter(in_campaign=in_chapter.in_campaign.id)
-	areas = Area.objects.filter(in_region__in_universe__in_project=in_chapter.in_campaign.in_project)
-	cities = City.objects.filter(in_region__in_universe__in_project=in_chapter.in_campaign.in_project)
-	npcs = NPC.objects.filter(in_universe=in_chapter.in_campaign.in_universe)
-	
-	if pk:
-		quest = get_object_or_404(Quest, pk=pk)
-	else:
-		quest = Quest()
-	
-	form = QuestModelForm(chapters,
-						  areas,
-						  cities,
-						  npcs,
-						  request.POST or None,
-						  initial={'in_chapter': in_chapter},
-						  instance=quest
-						)
-	
+def chapter_update(request, in_project, title):
+	project = Project.objects.get(id=in_project)
+	regions = project.region_set.all()
+	npcs = project.npc_set.all()
+	chapters = project.chapter_set.all()
+
+	chapter = get_object_or_404(chapters, title=title)
+
+	form = ChapterModelForm(chapters,
+							regions,
+							npcs,
+							request.POST or None,
+							instance=chapter)
+
 	if request.method == 'POST':
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect(reverse('quest-detail', args=[str(quest.id)]))
-	
-	return render(request, 'quest_form.html', {'form': form, 'in_chapter': in_chapter})
+			return HttpResponseRedirect(
+					reverse('chapter-detail',
+						args=[
+							str(chapter.in_project.id),
+							str(chapter.title),])
+					)
+	return render(request, 'chapter_form.html', {'form': form})
+
+@login_required
+@decorators.chapter_in_user_library
+def chapter_delete(request, in_project, title):
+	project = Project.objects.get(id=in_project)
+	chapters = project.chapter_set.all()
+
+	chapter = get_object_or_404(chapters, title=title)
+
+	if request.method == 'POST':
+		chapter.delete()
+		return HttpResponseRedirect(
+				reverse('campaign-detail',
+					args=[
+						str(chapter.in_project.id),
+						str(chapter.in_campaign.title)
+				]))
+
+	return render(request, "chapter_confirm_delete.html", context={'chapter': chapter})
+
+@login_required
+@decorators.create_quest_in_user_library
+def quest_create(request, in_project, in_chapter):
+	in_project = Project.objects.get(id=in_project)
+	in_chapter = in_project.chapter_set.get(title=in_chapter)
+	areas = in_project.area_set.all()
+	cities = in_project.city_set.all()
+	npcs = in_project.npc_set.all()
+	quests = in_project.quest_set.all()
+
+	quest = Quest()
+
+	form = QuestModelForm(areas,
+						  cities,
+						  npcs,
+						  quests,
+						  request.POST or None,
+						  initial={'in_chapter': in_chapter, 'in_project': in_project},
+						  instance=quest
+						)
+
+	if request.method == 'POST':
+		if form.is_valid():
+			form.save()
+			return HttpResponseRedirect(
+					reverse('quest-detail',
+						args=[
+							str(quest.in_project.id),
+							str(quest.title)
+					]))
+
+	return render(request, 'quest_form.html', {'form': form})
 
 @login_required
 @decorators.quest_in_user_library
-def quest_delete(request, pk):
-	quest = get_object_or_404(Quest, pk=pk)
-	
-	if request.method == 'POST':
-		quest.delete()
-		return HttpResponseRedirect(reverse('chapter-detail', args=[str(quest.in_chapter.id)]))
-	
-	return render(request, "quest_confirm_delete.html", context={'quest': quest})
-	
-@login_required	
-def questencounter_create(request, in_quest, pk=None):
-	quest = Quest.objects.get(id=in_quest)
-	npcs = NPC.objects.filter(in_universe__in_project=quest.in_chapter.in_campaign.in_project)
-	locations = Location.objects.filter(in_area=quest.in_area)
-	dungeonrooms = Room.objects.filter(in_roomset__in_dungeon__in_area=quest.in_area)
-	
-	if pk:
-		questencounter = QuestEncounter.objects.get(pk=pk)
-	else:
-		questencounter = QuestEncounter()
-	
-	form = QuestEncounterModelForm(request.POST or None,
-								   npcs=npcs,
-								   locations=locations,
-								   dungeonrooms=dungeonrooms,
-								   initial={'in_quest': in_quest},
-								   instance=questencounter
-								)
-	
+def quest_update(request, in_project, title):
+	in_project = Project.objects.get(id=in_project)
+	areas = in_project.area_set.all()
+	cities = in_project.city_set.all()
+	npcs = in_project.npc_set.all()
+	quests = in_project.quest_set.all()
+
+	quest = get_object_or_404(quests, title=title)
+
+	form = QuestModelForm(areas,
+						  cities,
+						  npcs,
+						  quests,
+						  request.POST or None,
+						  instance=quest
+						)
+
 	if request.method == 'POST':
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect(reverse('questencounter-detail', args=[str(questencounter.id)]))
-	
+			return HttpResponseRedirect(
+					reverse('quest-detail',
+						args=[
+							str(quest.in_project.id),
+							str(quest.title)])
+					)
+
+	return render(request, 'quest_form.html', {'form': form})
+
+@login_required
+@decorators.quest_in_user_library
+def quest_delete(request, in_project, title):
+	project = Project.objects.get(id=in_project)
+	quests = project.quest_set.all()
+	quest = get_object_or_404(quests, title=title)
+
+	if request.method == 'POST':
+		quest.delete()
+		return HttpResponseRedirect(
+				reverse('chapter-detail',
+						args=[
+							str(quest.in_project.id), str(quest.in_chapter.title)])
+				)
+
+	return render(request, "quest_confirm_delete.html", context={'quest': quest})
+
+@login_required
+@decorators.create_questencounter_in_user_library
+def questencounter_create(request, in_project, in_quest):
+	project = Project.objects.get(id=in_project)
+	quest = project.quest_set.get(title=in_quest)
+	npcs = project.npc_set.all()
+	questencounters = project.questencounter_set.all()
+
+	if quest.in_area:
+		locations = project.location_set.filter(in_area=quest.in_area)
+	elif quest.in_city:
+		locations = project.location_set.filter(
+				in_cityquarter__in_city=quest.in_city)
+	else:
+		locations = project.location_set.all()
+
+	if quest.in_area:
+		dungeonrooms = project.room_set.filter(
+				in_roomset__in_dungeon__in_area=quest.in_area)
+	else:
+		dungeonrooms = project.room_set.none()
+
+	questencounter = QuestEncounter()
+
+	form = QuestEncounterModelForm(questencounters,
+								   npcs,
+								   locations,
+								   dungeonrooms,
+								   request.POST or None,
+								   initial={'in_quest': quest, 'in_project': project},
+								   instance=questencounter
+								)
+
+	if request.method == 'POST':
+		if form.is_valid():
+			form.save()
+			return HttpResponseRedirect(
+					reverse('questencounter-detail',
+						args=[
+							str(questencounter.in_project.id),
+							str(questencounter.title)
+					]))
+
 	return render(request, "questencounter_form.html", {'form': form})
 
 @login_required
 @decorators.questencounter_in_user_library
-def questencounter_delete(request, pk):
-	questencounter = get_object_or_404(QuestEncounter, pk=pk)
-	
-	if request.method == 'POST':
-		questencounter.delete()
-		return HttpResponseRedirect(reverse('quest-detail', args=[str(questencounter.in_quest.id)]))
-	
-	return render(request, "questencounter_confirm_delete.html", context={'questencounter': questencounter})
-	
-@login_required
-def questencounterloot_create(request, in_questencounter):
-	questencounterloot = QuestEncounterLoot()
-	in_questencounter = QuestEncounter.objects.get(id=in_questencounter)
-	items = Item.objects.filter(in_itemlist__in_project=in_questencounter.in_quest.in_chapter.in_campaign.in_project)
-	
-	form = QuestEncounterLootModelForm(request.POST or None, items=items, initial={'in_questencounter': in_questencounter}, instance=questencounterloot)
-	
+def questencounter_update(request, in_project, title):
+	project = Project.objects.get(id=in_project)
+	npcs = project.npc_set.all()
+	questencounters = project.questencounter_set.all()
+
+	questencounter = get_object_or_404(questencounters, title=title)
+	quest = questencounter.in_quest
+
+	if quest.in_area:
+		locations = project.location_set.filter(in_area=quest.in_area)
+	elif quest.in_city:
+		locations = project.location_set.filter(
+				in_cityquarter__in_city=quest.in_city)
+	else:
+		locations = project.location_set.all()
+
+	if quest.in_area:
+		dungeonrooms = project.room_set.filter(
+				in_roomset__in_dungeon__in_area=quest.in_area)
+	else:
+		dungeonrooms = project.room_set.none()
+
+	form = QuestEncounterModelForm(questencounters,
+								   npcs,
+								   locations,
+								   dungeonrooms,
+								   request.POST or None,
+								   instance=questencounter
+								)
+
 	if request.method == 'POST':
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect(reverse('questencounter-detail', args=[str(in_questencounter.id)]))
-	
+			return HttpResponseRedirect(
+					reverse('questencounter-detail',
+						args=[
+							questencounter.in_project.id,
+							questencounter.title,
+						]))
+	return render(request, 'questencounter_form.html', {'form': form})
+
+@login_required
+@decorators.questencounter_in_user_library
+def questencounter_delete(request, in_project, title):
+	project = Project.objects.get(id=in_project)
+	questencounters = project.questencounter_set.all()
+	questencounter = get_object_or_404(questencounters, title=title)
+
+	if request.method == 'POST':
+		questencounter.delete()
+		return HttpResponseRedirect(
+				reverse('quest-detail',
+					args=[
+						str(questencounter.in_project.id), str(questencounter.in_quest.title)])
+				)
+
+	return render(request, "questencounter_confirm_delete.html", context={'questencounter': questencounter})
+
+@login_required
+@decorators.create_questencounterloot_in_user_library
+def questencounterloot_create(request, in_project, in_questencounter):
+	project = Project.objects.get(id=in_project)
+	questencounters = project.questencounter_set.all()
+
+	in_questencounter = get_object_or_404(questencounters, title=in_questencounter)
+	items = project.item_set.all()
+
+	questencounterloot = QuestEncounterLoot()
+
+	form = QuestEncounterLootModelForm(request.POST or None, items=items, initial={'in_questencounter': in_questencounter, 'in_project': project}, instance=questencounterloot)
+
+	if request.method == 'POST':
+		if form.is_valid():
+			form.save()
+			return HttpResponseRedirect(
+					reverse('questencounter-detail',
+						args=[
+							str(project.id),
+							str(in_questencounter.title)
+					]))
+
 	return render(request, "questencounterloot_form.html", {'form': form})
 
 @login_required
 @decorators.questencounterloot_in_user_library
-def questencounterloot_delete(request, pk):
+def questencounterloot_delete(request, in_project, pk):
 	questencounterloot = get_object_or_404(QuestEncounterLoot, pk=pk)
 	questencounter = questencounterloot.in_questencounter
-	
+
 	if request.method == 'POST':
 		questencounterloot.delete()
-		return HttpResponseRedirect(reverse('questencounter-detail', args=[str(questencounter.id)]))
-	
+		return HttpResponseRedirect(
+				reverse('questencounter-detail',
+					args=[
+						str(questencounter.in_project.id), str(questencounter.title)])
+				)
+
 	return render(request, "questencounterloot_confirm_delete.html", context={'questencounterloot': questencounterloot})

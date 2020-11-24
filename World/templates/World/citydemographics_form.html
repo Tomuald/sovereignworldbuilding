@@ -1,33 +1,18 @@
 {% extends "base_generic.html" %}
 
+{% block additionalstatic %}
+  <script src="https://cdn.tiny.cloud/1/2gcz381i62l40q1b09f9459xib3itxlfnxcb70ye30po1t96/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+  {% load static %}
+  <script src="{% static 'js/tinymce_config.js' %}"></script>
+{% endblock additionalstatic %}
+
 {% block content %}
-  <form action="" method="post">
-    {% csrf_token %}
-    {% load crispy_forms_tags %}
-    <table class="table table-sm">
-      {{ formset.management_form|crispy }}
 
-      {% for form in formset.forms %}
-        <tr>
-          {% for field in form.visible_fields %}
-            <td>
-              {% if forloop.first %}
-                {% for hidden in form.hidden_fields %}
-                  {{ hidden }}
-                {% endfor %}
-              {% endif %}
-              {{ fields.errors.as_ul }}
-              {{ field|as_crispy_field }}
-          </td>
-          {% endfor %}
-        </tr>
-      {% endfor %}
-    </table>
+  <h1 class="page-title">Add City Demographics</h1>
+  <hr class="page-title-hr">
 
-    <input class="btn btn-secondary" type="submit" value="Back" onclick="window.history.go(-1)">
-    <input class="btn btn-success float-right" type="submit" value="Create">
-  </form>
+  {% csrf_token %}
+  {% load crispy_forms_tags %}
+  {% crispy form form.helper %}
+
 {% endblock content %}
-
-{% block footer %}
-{% endblock footer%}

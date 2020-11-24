@@ -3,38 +3,44 @@ from __future__ import unicode_literals
 
 from django.contrib.auth.decorators import login_required
 
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseRedirect, Http404
 from django.urls import reverse
-from django.shortcuts import get_object_or_404
 
 from ItemList.forms import ItemlistModelForm, ItemModelForm
 
 from ItemList.models import Itemlist, Item
 from Project.models import Project
 
-from ItemList.decorators import itemlist_in_user_library, item_in_user_library
+from ItemList import decorators
+
+from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
+from django.http import Http404
 
 ##################
 ###   #VIEWS   ###
 ##################
 
 @login_required
-@itemlist_in_user_library
-def itemlist_detail(request, pk):
-	itemlist = Itemlist.objects.get(pk=pk)
-	
+@decorators.itemlist_in_user_library
+def itemlist_detail(request, in_project, name):
+	project = Project.objects.get(id=in_project)
+	itemlists = project.itemlist_set.all()
+	itemlist = get_object_or_404(itemlists, name=name)
+
 	context = {'itemlist': itemlist}
-	
+
 	return render(request, 'itemlist_detail.html', context)
 
 @login_required
-@item_in_user_library
-def item_detail(request, pk):
-	item = Item.objects.get(pk=pk)
-	
+@decorators.item_in_user_library
+def item_detail(request, in_project, in_itemlist, name):
+	project = Project.objects.get(id=in_project)
+	items = project.item_set.all()
+	item = get_object_or_404(items, name=name)
+
 	context = {'item': item}
-	
+
 	return render(request, 'item_detail.html', context)
 
 ##################
@@ -42,59 +48,131 @@ def item_detail(request, pk):
 ##################
 
 @login_required
-def itemlist_create(request, in_project, pk=None):
+@decorators.create_itemlist_in_user_library
+def itemlist_create(request, in_project):
 	in_project = Project.objects.get(id=in_project)
-	
-	if pk:
-		itemlist = Itemlist.objects.get(pk=pk)
-	else:
-		itemlist = Itemlist()
-	
-	form = ItemlistModelForm(request.POST or None, initial={'in_project': in_project}, instance=itemlist)
-	
+	itemlists = in_project.itemlist_set.all()
+
+	itemlist = Itemlist()
+
+	form = ItemlistModelForm(itemlists, request.POST or None, initial={'in_project': in_project}, instance=itemlist)
+
 	if request.method == 'POST':
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect(reverse('itemlist-detail', args=[str(itemlist.id)]))
-		
+			itemlist_name = form.cleaned_data['name']
+			return HttpResponseRedirect(
+					reverse('itemlist-detail',
+						args=[
+							str(itemlist.in_project.id),
+							itemlist_name])
+					)
+
 	return render(request, 'itemlist_form.html', {'form': form})
 
 @login_required
-@itemlist_in_user_library
-def itemlist_delete(request, pk):
-	itemlist = get_object_or_404(Itemlist, pk=pk)
-	
-	if request.method == 'POST':
-		itemlist.delete()
-		return HttpResponseRedirect(reverse('project-detail', args=[str(itemlist.in_project.id)]))
-	
-	return render(request, "itemlist_confirm_delete.html", context={'itemlist': itemlist})
+@decorators.itemlist_in_user_library
+def itemlist_update(request, in_project, name):
+	in_project = Project.objects.get(id=in_project)
+	itemlists = in_project.itemlist_set.all()
+	itemlist = get_object_or_404(itemlists, name=name)
 
-@login_required	
-def item_create(request, in_itemlist, pk=None):
-	in_itemlist = Itemlist.objects.get(id=in_itemlist)
-	
-	if pk:
-		item = get_object_or_404(Item, pk=pk)
-	else:
-		item = Item()
-	
-	form = ItemModelForm(in_itemlist, request.POST or None, initial={'in_itemlist': in_itemlist}, instance=item)
-	
+	form = ItemlistModelForm(itemlists, request.POST or None, instance=itemlist)
+
 	if request.method == 'POST':
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect(reverse('item-detail', args=[str(item.id)]))
-	
+			return HttpResponseRedirect(
+					reverse('itemlist-detail',
+						args=[
+							str(itemlist.in_project.id),
+							str(itemlist.name)
+					]))
+
+	return render(request, 'itemlist_form.html', {'form': form})
+
+@login_required
+@decorators.itemlist_in_user_library
+def itemlist_delete(request, in_project, name):
+	in_project = Project.objects.get(id=in_project)
+	itemlists = in_project.itemlist_set.all()
+	itemlist = get_object_or_404(itemlists, name=name)
+
+	if request.method == 'POST':
+		itemlist.delete()
+		return HttpResponseRedirect(
+				reverse('project-detail',
+					args=[
+						str(itemlist.in_project.id)
+				]))
+
+	return render(request, "itemlist_confirm_delete.html", context={'itemlist': itemlist})
+
+@login_required
+@decorators.create_item_in_user_library
+def item_create(request, in_project, in_itemlist):
+	in_project = Project.objects.get(id=in_project)
+	itemlists = in_project.itemlist_set.all()
+	in_itemlist = get_object_or_404(itemlists, name=in_itemlist)
+	items = in_itemlist.item_set.all()
+
+	item = Item()
+
+	form = ItemModelForm(items, request.POST or None, initial={'in_itemlist': in_itemlist, 'in_project': in_project}, instance=item)
+
+	if request.method == 'POST':
+		if form.is_valid():
+			form.save()
+			return HttpResponseRedirect(
+					reverse('item-detail',
+						args=[
+							str(item.in_project.id),
+							str(item.in_itemlist.name),
+							str(item.name)
+					]))
+
 	return render(request, 'item_form.html', {'form': form})
 
 @login_required
-@item_in_user_library
-def item_delete(request, pk):
-	item = get_object_or_404(Item, pk=pk)
-	
+@decorators.item_in_user_library
+def item_update(request, in_project, in_itemlist, name):
+	in_project = Project.objects.get(id=in_project)
+	itemlists = in_project.itemlist_set.all()
+
+	in_itemlist = get_object_or_404(itemlists, name=in_itemlist)
+	items = in_itemlist.item_set.all()
+	item = get_object_or_404(items, name=name)
+
+	form = ItemModelForm(items, request.POST or None, instance=item)
+
+	if request.method == 'POST':
+		if form.is_valid():
+			form.save()
+			return HttpResponseRedirect(
+					reverse('item-detail',
+							args=[
+								str(item.in_project.id), str(item.in_itemlist.name),
+								str(item.name)])
+					)
+	return render(request, 'item_form.html', {'form': form})
+
+@login_required
+@decorators.item_in_user_library
+def item_delete(request, in_project, in_itemlist, name):
+	in_project = Project.objects.get(id=in_project)
+	itemlists = in_project.itemlist_set.all()
+
+	in_itemlist = get_object_or_404(itemlists, name=in_itemlist)
+	items = in_itemlist.item_set.all()
+	item = get_object_or_404(items, name=name)
+
 	if request.method == 'POST':
 		item.delete()
-		return HttpResponseRedirect(reverse('itemlist-detail', args=[str(item.in_itemlist.id)]))
-	
+		return HttpResponseRedirect(
+				reverse('itemlist-detail',
+					args=[
+						str(item.in_project.id),
+						str(item.in_itemlist.name)
+				]))
+
 	return render(request, "item_confirm_delete.html", context={'item': item})

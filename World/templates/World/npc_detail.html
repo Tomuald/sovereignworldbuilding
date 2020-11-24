@@ -8,19 +8,21 @@
   <div class="page-title">
     <h1>{{ npc.name }}</h1>
     {% if npc.in_faction %}
-      <a title="Edit" href="{% url 'npc-update' in_universe=npc.in_universe.id in_faction=npc.in_faction.id pk=npc.pk %}">
+      <a title="Edit" href="{% url 'npc-update' in_project=npc.in_project.id in_faction=npc.in_faction.name name=npc.name %}">
         <i class="cil-pencil"></i>
       </a>
     {% else %}
-      <a title="Edit" href="{% url 'npc-update' in_universe=npc.in_universe.id pk=npc.pk %}">
+      <a title="Edit" href="{% url 'npc-update' in_project=npc.in_project.id name=npc.name %}">
         <i class="cil-pencil"></i>
       </a>
     {% endif %}
-    <a title="Delete" href="{% url 'npc-delete' pk=npc.pk %}"><i class="cil-x"></i></a>
+    <a title="Delete" href="{% url 'npc-delete' in_project=npc.in_project.id name=npc.name %}">
+      <i class="cil-x"></i>
+    </a>
   </div> <!-- page-title and icons -->
-  
+
   <hr class="page-title-hr">
-  
+
   <p>{{ npc.description }}</p>
 
 {% endblock content %}
@@ -83,4 +85,4 @@
 {% block additionalscripts %}
   {% load static %}
   <script type="text/javascript" src="{% static 'js/imagemodals.js' %}"></script>
-{% endblock additionalscripts %} 
+{% endblock additionalscripts %}

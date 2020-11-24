@@ -7,14 +7,16 @@
 {% block content %}
   <div class="page-title">
     <h1>{{ cityquarter.name }}</h1>
-    <a title="Edit" href="{% url 'cityquarter-update' in_city=cityquarter.in_city.id pk=cityquarter.pk %}">
+    <a title="Edit" href="{% url 'cityquarter-update' in_project=cityquarter.in_project.id name=cityquarter.name %}">
       <i class="cil-pencil"></i>
     </a>
-    <a title="Delete" href="{% url 'cityquarter-delete' pk=cityquarter.pk %}"><i class="cil-x"></i></a>
+    <a title="Delete" href="{% url 'cityquarter-delete' in_project=cityquarter.in_project.id name=cityquarter.name %}">
+      <i class="cil-x"></i>
+    </a>
   </div> <!-- page-title and icons -->
-  
+
   <hr class="page-title-hr">
-  
+
   <div class="row">
     <div class="col-2">
     </div> <!-- col-2 -->
@@ -24,16 +26,16 @@
     <div class="col-2">
     </div> <!-- col-2 -->
   </div> <!-- row -->
-  
+
   <hr class="page-title-hr">
-  
+
   <p>{{ cityquarter.description }}</p>
-  
+
   <div class="table-title">
     <h2>Locations</h2>
-    <a title="Add" href="{% url 'location-create' in_cityquarter=cityquarter.id %}"><i class="cil-plus"></i></a>
+    <a title="Add" href="{% url 'location-create' in_project=cityquarter.in_project.id in_cityquarter=cityquarter.name %}"><i class="cil-plus"></i></a>
   </div> <!-- table-title -->
-  
+
   <table class="table table-hover table-striped">
     <thead class="thead-dark">
       <tr>

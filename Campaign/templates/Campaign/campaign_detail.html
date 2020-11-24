@@ -10,20 +10,22 @@
       <i class="cil-storage"></i>
     </a>
     <h1>{{ campaign.title }}</h1>
-    <a title="Edit" href="{% url 'campaign-update' in_project=campaign.in_project.id pk=campaign.pk %}">
+    <a title="Edit" href="{% url 'campaign-update' in_project=campaign.in_project.id title=campaign.title %}">
       <i class="cil-pencil"></i>
     </a>
-    <a title="Delete" href="{% url 'campaign-delete' pk=campaign.pk %}"><i class="cil-x"></i></a>
+    <a title="Delete" href="{% url 'campaign-delete' in_project=campaign.in_project.id title=campaign.title %}">
+      <i class="cil-x"></i>
+    </a>
   </div> <!-- page-title and icons -->
   <hr class="page-title-hr">
-  
+
   <p>{{ campaign.overview }}</p>
 
   <div class="table-title">
       <h2>Chapters</h2>
-      <a title="Add" href="{% url 'chapter-create' in_campaign=campaign.pk %}"><i class="cil-plus"></i></a>
+      <a title="Add" href="{% url 'chapter-create' in_project=campaign.in_project.id in_campaign=campaign.title %}"><i class="cil-plus"></i></a>
   </div> <!-- table-title -->
-  
+
   <table class="table table-hover table-striped">
     <thead class="thead-dark">
       <tr>
@@ -39,7 +41,7 @@
         <td><a href="{{ chapter.get_absolute_url}}">{{ chapter.title }}</a></td>
         <td>
           {% for region in chapter.regions.all %}
-            <a href="{{ region.get_absolute_url }}">{{ region.name }}</a> | 
+            <a href="{{ region.get_absolute_url }}">{{ region.name }}</a> |
           {% endfor %}
         </td>
       </tr>

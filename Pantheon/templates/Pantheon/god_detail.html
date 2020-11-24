@@ -7,14 +7,16 @@
 {% block content %}
   <div class="page-title">
     <h1>{{ god.name }}</h1>
-    <a title="Edit" href="{% url 'god-update' in_pantheon=god.in_pantheon.id pk=god.pk %}">
+    <a title="Edit" href="{% url 'god-update' in_project=god.in_project.id name=god.name %}">
       <i class="cil-pencil"></i>
     </a>
-    <a title="Delete" href="{% url 'god-delete' pk=god.pk %}"><i class="cil-x"></i></a>
+    <a title="Delete" href="{% url 'god-delete' in_project=god.in_project.id name=god.name %}">
+      <i class="cil-x"></i>
+    </a>
   </div> <!-- page-title and icons -->
-  
+
   <hr class="page-title-hr">
-  
+
   <p>{{ god.background }}</p>
 
 {% endblock content %}

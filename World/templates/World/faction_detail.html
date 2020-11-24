@@ -7,23 +7,25 @@
 {% block content %}
   <div class="page-title">
     <h1>{{ faction.name }}</h1>
-    <a title="Edit" href="{% url 'faction-update' in_universe=faction.in_universe.id pk=faction.pk %}">
-      <i title="Delete" class="cil-pencil"></i>
+    <a title="Edit" href="{% url 'faction-update' in_project=faction.in_project.id name=faction.name %}">
+      <i title="Edit" class="cil-pencil"></i>
     </a>
-    <a title="Delete" href="{% url 'faction-delete' pk=faction.pk %}"><i class="cil-x"></i></a>
+    <a title="Delete" href="{% url 'faction-delete' in_project=faction.in_project.id name=faction.name %}">
+      <i class="cil-x"></i>
+    </a>
   </div> <!-- page-title and icons -->
-  
+
   <hr class="page-title-hr">
-  
+
   <p>{{ faction.description }}</p>
-  
+
   <div class="table-title">
     <h2>Members</h2>
-    <a title="Add" href="{% url 'npc-create' in_universe=faction.in_universe.id in_faction=faction.id %}">
+    <a title="Add" href="{% url 'npc-create' in_project=faction.in_project.id in_universe=faction.in_universe.name in_faction=faction.name %}">
       <i class="cil-plus"></i>
     </a>
   </div>
-  
+
   <table class="table table-hover table-striped">
     <thead class="thead-dark">
       <tr>
@@ -31,7 +33,7 @@
         <th>Alignment</th>
       </tr>
     </thead>
-    </tbody>
+    <tbody>
     {% for npc in faction.npc_set.all %}
       <tr>
         <td><a href="{{ npc.get_absolute_url }}">{{ npc.name }}</a></td>
@@ -40,7 +42,7 @@
     {% endfor %}
     </tbody>
   </table>
-  
+
 {% endblock content %}
 
 {% block rightsidebar %}

@@ -7,14 +7,16 @@
 {% block content %}
   <div class="page-title">
     <h1>{{ empire.name }}</h1>
-    <a title="Edit" href="{% url 'empire-update' in_universe=empire.in_universe.id pk=empire.pk %}">
+    <a title="Edit" href="{% url 'empire-update' in_project=empire.in_project.id name=empire.name %}">
       <i class="cil-pencil"></i>
     </a>
-    <a title="Delete" href="{% url 'empire-delete' pk=empire.pk %}"><i class="cil-x"></i></a>
+    <a title="Delete" href="{% url 'empire-delete' in_project=empire.in_project.id name=empire.name %}">
+      <i class="cil-x"></i>
+    </a>
   </div> <!-- page-title and icons -->
-  
+
   <hr class="page-title-hr">
-  
+
   <p>{{ empire.description }}</p>
 
 {% endblock content %}

@@ -7,21 +7,23 @@
 {% block content %}
   <div class="page-title">
     <h1>{{ pantheon.name }}</h1>
-    <a title="Edit" href="{% url 'pantheon-update' in_universe=pantheon.in_universe.id pk=pantheon.pk %}">
+    <a title="Edit" href="{% url 'pantheon-update' in_project=pantheon.in_project.id name=pantheon.name %}">
       <i class="cil-pencil"></i>
     </a>
-    <a title="Delete" href="{% url 'pantheon-delete' pk=pantheon.pk %}"><i class="cil-x"></i></a>
+    <a title="Delete" href="{% url 'pantheon-delete' in_project=pantheon.in_project.id name=pantheon.name %}">
+      <i class="cil-x"></i>
+    </a>
   </div> <!-- page-title and icons -->
-  
+
   <hr class="page-title-hr">
-  
+
   <p>{{ pantheon.background }}</p>
-  
+
   <div class="table-title">
     <h2>Gods</h2>
-    <a title="Add" href="{% url 'god-create' in_pantheon=pantheon.id %}"><i class="cil-plus"></i></a>
+    <a title="Add" href="{% url 'god-create' in_project=pantheon.in_project.id in_pantheon=pantheon.name %}"><i class="cil-plus"></i></a>
   </div>
-  
+
   <table class="table table-hover table-striped">
     <thead class="thead-dark">
       <tr>

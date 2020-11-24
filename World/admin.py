@@ -65,7 +65,7 @@ class AreaAdmin(admin.ModelAdmin):
 	inlines = [LocationInline, ]
 	filter_horizontal = ['factions', ]
 	
-	fields = ('name', 'area_type', ('in_region', 'in_city'), ('description', 'flavor_text'), 'factions')
+	fields = ('name', 'area_type', 'in_project', 'in_region', ('description', 'flavor_text'), 'factions')
 	
 @admin.register(City)
 class CityAdmin(admin.ModelAdmin):

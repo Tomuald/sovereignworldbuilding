@@ -6,30 +6,32 @@
 
 {% block content %}
   <div class="page-title">
-    <a title="Index" class="storage-icon" href="{% url 'universe-index' pk=universe.id%}">
+    <a title="Index" class="storage-icon" href="{{ universe.get_absolute_index_url }}">
       <i class="cil-storage"></i>
     </a>
     <h1>{{ universe.name }}</h1>
-    <a title="Edit" href="{% url 'universe-update' in_project=universe.in_project.id pk=universe.pk %}">
+    <a title="Edit" href="{% url 'universe-update' in_project=universe.in_project.id name=universe.name %}">
       <i class="cil-pencil"></i>
     </a>
-    <a title="Delete" href="{% url 'universe-delete' pk=universe.pk %}"><i class="cil-x"></i></a>
+    <a title="Delete" href="{% url 'universe-delete' in_project=universe.in_project.id name=universe.name %}">
+      <i class="cil-x"></i>
+    </a>
   </div> <!-- page-title and icons -->
-    
+
   <hr class="page-title-hr">
-  
+
   <p>{{ universe.description }}</p>
-  
+
   <hr>
-  
+
   <div class="row">
   <!-- #EMPIRES -->
     <div class="col-6">
       <div class="section-title">
         <h2>Empires</h2>
-        <a title="Add" href="{% url 'empire-create' in_universe=universe.id %}"><i class="cil-plus"></i></a>
+        <a title="Add" href="{% url 'empire-create' in_project=universe.in_project.id in_universe=universe.name %}"><i class="cil-plus"></i></a>
       </div> <!-- section-title -->
-      
+
       <ul>
       {% for empire in empires %}
         <li><a href="{{ empire.get_absolute_url }}">{{ empire.name }}</a></li>
@@ -37,14 +39,14 @@
       </ul>
     </div> <!-- col-6 -->
   <!-- #END EMPIRES -->
-  
-  <!-- #REGIONS -->  
+
+  <!-- #REGIONS -->
     <div class="col-6">
       <div class="section-title">
         <h2>Regions</h2>
-        <a title="Add" href="{% url 'region-create' in_universe=universe.id %}"><i class="cil-plus"></i></a>
+        <a title="Add" href="{% url 'region-create' in_project=universe.in_project.id in_universe=universe.name %}"><i class="cil-plus"></i></a>
       </div> <!-- section-title -->
-      
+
       <ul>
         {% for region in regions %}
           <li><a href="{{ region.get_absolute_url }}">{{ region.name }}</a></li>
@@ -53,15 +55,15 @@
     </div> <!-- col-6 -->
   <!-- #END REGIONS -->
   </div> <!-- row -->
-    
+
   <!-- #FACTIONS -->
   <div class="row">
     <div class="col-6">
       <div class="section-title">
         <h2>Factions</h2>
-        <a title="Add" href="{% url 'faction-create' in_universe=universe.id %}"><i class="cil-plus"></i></a>
+        <a title="Add" href="{% url 'faction-create' in_project=universe.in_project.id in_universe=universe.name %}"><i class="cil-plus"></i></a>
       </div> <!-- section-title -->
-      
+
       <ul>
       {% for faction in factions %}
         <li><a href="{{ faction.get_absolute_url }}">{{ faction.name }}</a></li>
@@ -69,14 +71,14 @@
       </ul>
     </div> <!-- col-6 -->
   <!-- #END FACTioNS -->
-  
+
   <!-- #NPCs -->
     <div class="col-6">
       <div class="section-title">
         <h2>Unaligned NPCs</h2>
-        <a title="Add" href="{% url 'npc-create' in_universe=universe.id %}"><i class="cil-plus"></i></a>
+        <a title="Add" href="{% url 'npc-create' in_project=universe.in_project.id in_universe=universe.name %}"><i class="cil-plus"></i></a>
       </div> <!-- section-title -->
-      
+
       <ul>
       {% for npc in unaligned_npcs %}
         <li><a href="{{ npc.get_absolute_url }}">{{ npc.name }}</a></li>
@@ -85,14 +87,14 @@
     </div> <!-- col-6 -->
   <!-- #END NPCs -->
   </div> <!-- row -->
-  
+  <!-- #PANTHEONS -->
   <div class="row">
     <div class="col-6">
       <div class="section-title">
         <h2>Pantheons & Gods</h2>
-        <a title="Add" href="{% url 'pantheon-create' in_universe=universe.id %}"><i class="cil-plus"></i></a>
+        <a title="Add" href="{% url 'pantheon-create' in_project=universe.in_project.id in_universe=universe.name %}"><i class="cil-plus"></i></a>
       </div> <!-- section-title -->
-      
+
       <ul>
       {% for pantheon in pantheons %}
         <li><a href="{{ pantheon.get_absolute_url }}">{{ pantheon.name }}</a></li>
@@ -101,7 +103,7 @@
     </div> <!-- col-6 -->
   <!-- #END PANTHEONS -->
   </div> <!-- row -->
-    
+
 {% endblock content%}
 
 {% block rightsidebar %}

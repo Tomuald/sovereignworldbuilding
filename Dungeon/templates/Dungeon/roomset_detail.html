@@ -7,21 +7,23 @@
 {% block content %}
   <div class="page-title">
     <h1>{{ roomset.name }}</h1>
-    <a title="Edit" href="{% url 'roomset-update' in_dungeon=roomset.in_dungeon.id pk=roomset.pk %}">
+    <a title="Edit" href="{% url 'roomset-update' in_project=roomset.in_project.id name=roomset.name %}">
       <i class="cil-pencil"></i>
     </a>
-    <a title="Delete" href="{% url 'roomset-delete' pk=roomset.pk %}"><i class="cil-x"></i></a>
+    <a title="Delete" href="{% url 'roomset-delete' in_project=roomset.in_project.id name=roomset.name %}">
+      <i class="cil-x"></i>
+    </a>
   </div>
-  
+
   <hr class="page-title-hr">
-  
+
   <p>{{ roomset.description }}</p>
-  
+
   <div class="table-title">
     <h2>Rooms</h2>
-    <a href="{% url 'room-create' in_roomset=roomset.id %}"><i class="cil-plus"></i></a>
+    <a href="{% url 'room-create' in_project=roomset.in_project.id in_roomset=roomset.name %}"><i class="cil-plus"></i></a>
   </div>
-  
+
   <table class="table table-hover table-striped">
     <thead class="thead-dark">
       <tr>

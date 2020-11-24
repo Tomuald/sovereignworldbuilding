@@ -10,9 +10,9 @@
     <a href="{% url 'project-update' pk=project.pk %}"><i class="cil-pencil"></i></a>
     <a title="Delete" href="{% url 'project-delete' pk=project.pk %}"><i class="cil-x"></i></a>
   </div> <!-- page-title and icons -->
-  
+
   <hr class="page-title-hr">
-    
+
   <div class="row">
     <div class="col-6">
       <div class="section-title">
@@ -29,7 +29,7 @@
       {% endfor %}
       </ul>
     </div> <!-- col-6 -->
-    
+
     <div class="col-6">
       <div class="section-title">
         <h2>Universe</h2>
@@ -43,7 +43,7 @@
       {% endfor %}
       </ul>
     </div> <!-- col-6 -->
-    
+
     <div class="col-6">
       <div class="section-title">
         <h2>Itemlists</h2>
@@ -57,6 +57,5 @@
     </div> <!-- col-6 -->
   </div> <!-- row -->
 
-  
-{% endblock content %}
 
+{% endblock content %}

@@ -7,22 +7,24 @@
 {% block content %}
   <div class="page-title">
     <h1>{{ region.name }}</h1>
-    <a title="Edit" href="{% url 'region-update' in_universe=region.in_universe.id pk=region.pk %}">
+    <a title="Edit" href="{% url 'region-update' in_project=region.in_project.id name=region.name %}">
       <i class="cil-pencil"></i>
     </a>
-    <a title="Delete" href="{% url 'region-delete' pk=region.pk %}"><i class="cil-x"></i></a>
+    <a title="Delete" href="{% url 'region-delete' in_project=region.in_project.id name=region.name %}">
+      <i class="cil-x"></i>
+    </a>
   </div> <!-- page-title and icons -->
-  
+
   <hr class="page-title-hr">
-  
+
   <p>{{ region.description }}</p>
-  
-  
+
+
   <div class="table-title">
     <h2>Areas</h2>
-    <a title="Add" href="{% url 'area-create' in_region=region.id %}"><i class="cil-plus"></i></a>
+    <a title="Add" href="{% url 'area-create' in_project=region.in_project.id in_region=region.name %}"><i class="cil-plus"></i></a>
   </div> <!-- table-title -->
-  
+
   <table class="table table-hover table-striped">
     <thead class="thead-dark">
       <tr>
@@ -41,12 +43,12 @@
     {% endfor %}
     </tbody>
   </table>
-  
+
   <div class="table-title">
     <h2>Cities</h2>
-    <a title="Add" href="{% url 'city-create' in_region=region.id%}"><i class="cil-plus"></i></a>
+    <a title="Add" href="{% url 'city-create' in_project=region.in_project.id in_region=region.name %}"><i class="cil-plus"></i></a>
   </div> <!-- table-title -->
-  
+
   <table class="table table-hover table-striped">
     <thead class="thead-dark">
       <tr>
@@ -63,7 +65,7 @@
     {% endfor %}
     </tbody>
   </table>
-   
+
 {% endblock content %}
 
 {% block rightsidebar %}
@@ -85,7 +87,7 @@
     <tr>
       <th>Universe</th>
       <td><a href="{{ region.in_universe.get_absolute_url }}">{{ region.in_universe }}</a></td>
-    </tr> 
+    </tr>
     <tr>
       <th>Biome</th>
       <td>{{ region.get_biome_display }}</td>
@@ -105,4 +107,4 @@
 {% block additionalscripts %}
   {% load static %}
   <script type="text/javascript" src="{% static 'js/imagemodals.js' %}"></script>
-{% endblock additionalscripts %} 
+{% endblock additionalscripts %}

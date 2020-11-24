@@ -1,104 +1,103 @@
 from django.urls import path
 
-from World.views import universe_detail, universe_index, universe_create, universe_delete
-from World.views import region_detail, region_create, region_delete
-from World.views import area_detail, area_create, area_delete
-from World.views import city_detail, city_create, city_delete
-from World.views import cityquarter_detail, cityquarter_create, cityquarter_delete
-from World.views import citydemographics_create
-from World.views import location_detail, location_create, location_delete
+from World.views import universe_detail, universe_index, universe_create, universe_update, universe_delete
+from World.views import region_detail, region_create, region_update, region_delete
+from World.views import area_detail, area_create, area_update, area_delete
+from World.views import city_detail, city_create, city_update, city_delete
+from World.views import cityquarter_detail, cityquarter_create, cityquarter_update, cityquarter_delete
+from World.views import citydemographics_create, citydemographics_delete
+from World.views import location_detail, location_create, location_update, location_delete
 from World.views import locationloot_create, locationloot_delete
-from World.views import worldencounter_detail, worldencounter_create, worldencounter_delete
+from World.views import worldencounter_detail, worldencounter_create, worldencounter_update, worldencounter_delete
 from World.views import worldencounterloot_create, worldencounterloot_delete
 
-from World.views import empire_detail, empire_create, empire_delete
-from World.views import faction_detail, faction_create, faction_delete
-from World.views import npc_detail, npc_create, npc_delete
+from World.views import empire_detail, empire_create, empire_update, empire_delete
+from World.views import faction_detail, faction_create, faction_update, faction_delete
+from World.views import npc_detail, npc_create, npc_update, npc_delete
 
 urlpatterns = []
 
 # Detail Views
 urlpatterns += [
-	path('<int:pk>/', universe_detail, name="universe-detail"),
-	path('<int:pk>/index/', universe_index, name="universe-index"),
-	path('region/<int:pk>/', region_detail, name="region-detail"),
-	path('empire/<int:pk>/', empire_detail, name="empire-detail"),
-	path('area/<int:pk>/', area_detail, name="area-detail"),
-	path('city/<int:pk>/', city_detail, name="city-detail"),
-	path('cityquarter/<int:pk>/', cityquarter_detail, name="cityquarter-detail"),
-	path('location/<int:pk>/', location_detail, name="location-detail"),
-	path('worldencounter/<int:pk>/', worldencounter_detail, name="worldencounter-detail"),
-	path('faction/<int:pk>/', faction_detail, name="faction-detail"),
-	path('npc/<int:pk>/', npc_detail, name="npc-detail"),
+	path('<int:in_project>/u/<str:name>/', universe_detail, name="universe-detail"),
+	path('<int:in_project>/u/<str:name>/index/', universe_index, name="universe-index"),
+	path('<int:in_project>/r/<str:name>/', region_detail, name="region-detail"),
+	path('<int:in_project>/a/<str:name>/', area_detail, name="area-detail"),
+	path('<int:in_project>/ct/<str:name>/', city_detail, name="city-detail"),
+	path('<int:in_project>/cq/<str:name>/', cityquarter_detail, name="cityquarter-detail"),
+	path('<int:in_project>/l/<str:name>/', location_detail, name="location-detail"),
+	path('<int:in_project>/we/<str:title>/', worldencounter_detail, name="worldencounter-detail"),
+	path('<int:in_project>/e/<str:name>/', empire_detail, name="empire-detail"),
+	path('<int:in_project>/f/<str:name>/', faction_detail, name="faction-detail"),
+	path('<int:in_project>/n/<str:name>/', npc_detail, name="npc-detail"),
 ]
 
 # Create, Update and Delete Views
 urlpatterns += [
 	# Universes
-	path('project/<int:in_project>/create/universe/', universe_create, name="universe-create"),
-	path('project/<int:in_project>/update/universe/<int:pk>/', universe_create, name="universe-update"),
-	path('delete/<int:pk>/', universe_delete, name="universe-delete"),
-	
+	path('<int:in_project>/u/create/new/', universe_create, name="universe-create"),
+	path('<int:in_project>/u/<str:name>/update/', universe_update, name="universe-update"),
+	path('<int:in_project>/u/<str:name>/delete/', universe_delete, name="universe-delete"),
+
 	# Regions
-	path('<int:in_universe>/create/region/', region_create, name="region-create"),
-	path('<int:in_universe>/update/region/<int:pk>', region_create, name="region-update"),
-	path('region/delete/<int:pk>/', region_delete, name="region-delete"),
-	
-	# Empires
-	path('<int:in_universe>/create/empire/', empire_create, name="empire-create"),
-	path('<int:in_universe>/update/empire/<int:pk>/', empire_create, name="empire-update"),
-	path('empire/delete/<int:pk>/', empire_delete, name="empire-delete"),
-	
-	# NPCs
-	path('<int:in_universe>/create/npc/', npc_create, name="npc-create"),
-	path('<int:in_universe>/update/npc/<int:pk>/', npc_create, name="npc-update"),
-	path('<int:in_universe>/faction/<int:in_faction>/create/npc/', npc_create, name="npc-create"),
-	path('<int:in_universe>/faction/<int:in_faction>/update/npc/<int:pk>/', npc_create, name="npc-update"),
-	path('npc/delete/<int:pk>/', npc_delete, name="npc-delete"),
-	
-	# Factions
-	path('<int:in_universe>/create/faction/', faction_create, name="faction-create"),
-	path('<int:in_universe>/update/faction/<int:pk>/', faction_create, name="faction-update"),
-	path('faction/delete/<int:pk>/', faction_delete, name="faction-delete"),
-	
-	# Cities
-	path('region/<int:in_region>/create/city/', city_create, name="city-create"),
-	path('region/<int:in_region>/update/city/<int:pk>/', city_create, name="city-update"),
-	path('city/delete/<int:pk>/', city_delete, name="city-delete"),
-	
+	path('<int:in_project>/u/<str:in_universe>/r/create/new/', region_create, name="region-create"),
+	path('<int:in_project>/r/<str:name>/update/', region_update, name="region-update"),
+	path('<int:in_project>/r/<str:name>/delete/', region_delete, name="region-delete"),
+
 	# Areas
-	path('region/<int:in_region>/create/location/', area_create, name="area-create"),
-	path('region/<int:in_region>/update/location/<int:pk>/', area_create, name="area-update"),
-	path('area/delete/<int:pk>/', area_delete, name="area-delete"),
-	
+	path('<int:in_project>/r/<str:in_region>/a/create/new/', area_create, name="area-create"),
+	path('<int:in_project>/a/<str:name>/update/', area_update, name="area-update"),
+	path('<int:in_project>/a/<str:name>/delete/', area_delete, name="area-delete"),
+
+	# Cities
+	path('<int:in_project>/r/<str:in_region>/ct/create/new/', city_create, name="city-create"),
+	path('<int:in_project>/ct/<str:name>/update/', city_update, name="city-update"),
+	path('<int:in_project>/ct/<str:name>/delete/', city_delete, name="city-delete"),
+
 	# City Quarters
-	path('region/<int:in_city>/create/cityquarter/', cityquarter_create, name="cityquarter-create"),
-	path('region/<int:in_city>/update/cityquarter/<int:pk>/', cityquarter_create, name="cityquarter-update"),
-	path('cityquarter/delete/<int:pk>/', cityquarter_delete, name="cityquarter-delete"),
-	
+	path('<int:in_project>/c/<str:in_city>/cq/create/new/', cityquarter_create, name="cityquarter-create"),
+	path('<int:in_project>/cq/<str:name>/update/', cityquarter_update, name="cityquarter-update"),
+	path('<int:in_project>/cq/<str:name>/delete/', cityquarter_delete, name="cityquarter-delete"),
+
 	# City Demographics
-	path('region/<int:in_city>/create/citydemographics/', citydemographics_create, name="citydemographics-create"),
-	
+	path('<int:in_project>/ct/<str:in_city>/ctd/create/new/', citydemographics_create, name="citydemographics-create"),
+	path('<int:in_project>/ctd/<int:pk>/delete/', citydemographics_delete, name="citydemographics-delete"),
+
 	# Locations
-	path('area/<int:in_area>/create/location/', location_create, name="location-create"),
-	path('area/<int:in_area>/update/location/<int:pk>/', location_create, name="location-update"),
-	path('cityquarter/<int:in_cityquarter>/create/location/', location_create, name="location-create"),
-	path('cityquarter/<int:in_cityquarter>/update/location/<int:pk>/', location_create, name="location-update"),
-	path('location/delete/<int:pk>/', location_delete, name="location-delete"),
-	
+	path('<int:in_project>/a/<str:in_area>/l/create/new/', location_create, name="location-create"),
+	path('<int:in_project>/l/<str:name>/update/', location_update, name="location-update"),
+	path('<int:in_project>/cq/<str:in_cityquarter>/l/create/new/', location_create, name="location-create"),
+	path('<int:in_project>/l/<str:name>/update/', location_update, name="location-update"),
+	path('<int:in_project>/l/<str:name>/delete/', location_delete, name="location-delete"),
+
 	# Location Loot
-	path('location/<int:in_location>/loot/create/', locationloot_create, name="locationloot-create"),
-	path('locationloot/delete/<int:pk>/', locationloot_delete, name="locationloot-delete"),
-	
+	path('<int:in_project>/l/<str:in_location>/ll/create/new/', locationloot_create, name="locationloot-create"),
+	path('<int:in_project>/ll/<int:pk>/delete/', locationloot_delete, name="locationloot-delete"),
+
 	# World Encounter
-	path('dungeon/room/<int:in_dungeon_room>/worldencounter/create/', worldencounter_create, name="worldencounter-create"),
-	path('dungeon/room/<int:in_dungeon_room>/worldencounter/update/<int:pk>/', worldencounter_create, name="worldencounter-update"),
-	path('location/<int:in_location>/worldencounter/create/', worldencounter_create, name="worldencounter-create"),
-	path('location/<int:in_location>/worldencounter/update/<int:pk>/', worldencounter_create, name="worldencounter-update"),
-	path('worldencounter/delete/<int:pk>/', worldencounter_delete, name="worldencounter-delete"),
-	
+	path('<int:in_project>/rm/<str:in_dungeon_room>/we/create/new/', worldencounter_create, name="worldencounter-create"),
+	path('<int:in_project>/l/<str:in_location>/we/create/new/', worldencounter_create, name="worldencounter-create"),
+	path('<int:in_project>/we/<str:title>/update/', worldencounter_update, name="worldencounter-update"),
+	path('<int:in_project>/we/<str:title>/delete/', worldencounter_delete, name="worldencounter-delete"),
+
 	# World Encounter Loot
-	path('encounter/<int:in_worldencounter>/encounterloot/create/', worldencounterloot_create, name="worldencounterloot-create"),
-	path('encounter/<int:in_worldencounter>/encounterloot/update/<int:pk>/', worldencounterloot_create, name="worldencounterloot-update"),
-	path('worldencounterloot/delete/<int:pk>/', worldencounterloot_delete, name="worldencounterloot-delete"),
+	path('<int:in_project>/we/<str:in_worldencounter>/wel/create/new/', worldencounterloot_create, name="worldencounterloot-create"),
+	path('<int:in_project>/wel/<int:pk>/delete/', worldencounterloot_delete, name="worldencounterloot-delete"),
+
+	# Empires
+	path('<int:in_project>/u/<str:in_universe>/e/create/new/', empire_create, name="empire-create"),
+	path('<int:in_project>/e/<str:name>/update/', empire_update, name="empire-update"),
+	path('<int:in_project>/e/<str:name>/delete/', empire_delete, name="empire-delete"),
+
+	# Factions
+	path('<int:in_project>/u/<str:in_universe>/f/create/new/', faction_create, name="faction-create"),
+	path('<int:in_project>/f/<str:name>/update/', faction_update, name="faction-update"),
+	path('<int:in_project>/f/<str:name>/delete/', faction_delete, name="faction-delete"),
+
+	# NPCs
+	path('<int:in_project>/u/<str:in_universe>/n/create/new/', npc_create, name="npc-create"),
+	path('<int:in_project>/n/<str:name>/update/', npc_update, name="npc-update"),
+	path('<int:in_project>/u/<str:in_universe>/f/<str:in_faction>/n/create/new/', npc_create, name="npc-create"),
+	path('<int:in_project>/f/<str:in_faction>/n/<str:name>/update/', npc_update, name="npc-update"),
+	path('<int:in_project>/n/<str:name>/delete/', npc_delete, name="npc-delete"),
 ]

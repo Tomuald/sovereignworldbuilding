@@ -19,12 +19,12 @@ from django.urls import path
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url('worldbuilder/', include('Project.urls')),
-    url('worldbuilder/itemlist/', include('ItemList.urls')),
-    url('worldbuilder/universe/pantheon/', include('Pantheon.urls')),
-    url('worldbuilder/universe/dungeon/', include('Dungeon.urls')),
-    url('worldbuilder/campaign/', include('Campaign.urls')),
-    url('worldbuilder/universe/', include('World.urls')),
+    url('worldbuilder/p/', include('Project.urls')),
+    url('worldbuilder/p/', include('ItemList.urls')),
+    url('worldbuilder/p/', include('Pantheon.urls')),
+    url('worldbuilder/p/', include('Dungeon.urls')),
+    url('worldbuilder/p/', include('Campaign.urls')),
+    url('worldbuilder/p/', include('World.urls')),
     path('accounts/', include('accounts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
 ]

@@ -16,20 +16,20 @@ class PantheonModelTests(TestCase):
 		project = Project.objects.create(title="Test Project", created_by=user)
 		universe = Universe.objects.create(name="Test Universe", in_project=project)
 		
-		self.pantheon = Pantheon.objects.create(name="Test Pantheon", in_universe=universe)
+		self.pantheon = Pantheon.objects.create(name="Test Pantheon", in_universe=universe, in_project=project)
 	
 	def test_pantheon_get_absolute_url(self):
-		self.assertEqual(self.pantheon.get_absolute_url(), reverse('pantheon-detail', args=[str(self.pantheon.id)]))
+		self.assertEqual(self.pantheon.get_absolute_url(), reverse('pantheon-detail', args=[str(self.pantheon.in_project.id), str(self.pantheon.name)]))
 
 class GodModelTests(TestCase):
 	def setUp(self):
 		user = CustomUser.objects.create_user(username="Test User", password="T3stP4ssword")
 		project = Project.objects.create(title="Test Project", created_by=user)
 		universe = Universe.objects.create(name="Test Universe", in_project=project)
-		pantheon = Pantheon.objects.create(name="Test Pantheon", in_universe=universe)
+		pantheon = Pantheon.objects.create(name="Test Pantheon", in_universe=universe, in_project=project)
 		
-		self.god = God.objects.create(name="Test God", in_pantheon=pantheon)
+		self.god = God.objects.create(name="Test God", in_pantheon=pantheon, in_project=project)
 
 	def test_god_get_absolute_url(self):
-		self.assertEqual(self.god.get_absolute_url(), reverse('god-detail', args=[str(self.god.id)]))
+		self.assertEqual(self.god.get_absolute_url(), reverse('god-detail', args=[str(self.god.in_project.id), str(self.god.name)]))
 		
