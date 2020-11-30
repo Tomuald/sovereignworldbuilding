@@ -31,28 +31,6 @@
 
   <p>{{ city.description }}</p>
 
-  <div class="table-title">
-    <h2>City Quarters</h2>
-    <a title="Add" href="{% url 'cityquarter-create' in_project=city.in_project.id in_city=city.name %}"><i class="cil-plus"></i></a>
-  </div> <!-- table-title -->
-
-  <table class="table table-hover table-striped">
-    <thead class="thead-dark">
-      <tr>
-        <th>Quarter</th>
-        <th>Locations</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for quarter in city_quarters %}
-    <tr>
-      <td><a href="{{ quarter.get_absolute_url }}">{{ quarter.name }}</a></td>
-      <td>{{ quarter.location_set.count }}</td>
-    </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-
 {% endblock content %}
 
 {% block rightsidebar %}
@@ -102,12 +80,37 @@
           </a>
         </td>
       </tr>
-      {% endfor %}
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="table-title">
+    <h4>City Quarters</h4>
+    <a title="Add" href="{% url 'cityquarter-create' in_project=city.in_project.id in_city=city.name %}">
+      <i class="cil-plus"></i>
+    </a>
+  </div> <!-- table-title -->
+
+  <table class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Quarter</th>
+        <th>Locations</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for quarter in city_quarters %}
+    <tr>
+      <td><a href="{{ quarter.get_absolute_url }}">{{ quarter.name }}</a></td>
+      <td>{{ quarter.location_set.count }}</td>
+    </tr>
+    {% endfor %}
     </tbody>
   </table>
 {% endblock rightsidebar %}
 
 {% block additionalscripts %}
-  {% load static %}
-  <script type="text/javascript" src="{% static 'js/imagemodals.js' %}"></script>
+  <!-- {% load static %} -->
+  <script type="text/javascript" src="{% static 'js/imagemodals.js' %}">
+  </script>
 {% endblock additionalscripts %}

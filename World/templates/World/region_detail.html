@@ -19,53 +19,6 @@
 
   <p>{{ region.description }}</p>
 
-
-  <div class="table-title">
-    <h2>Areas</h2>
-    <a title="Add" href="{% url 'area-create' in_project=region.in_project.id in_region=region.name %}"><i class="cil-plus"></i></a>
-  </div> <!-- table-title -->
-
-  <table class="table table-hover table-striped">
-    <thead class="thead-dark">
-      <tr>
-        <th>Area</th>
-        <th>Type</th>
-        <th>Locations</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for area in region.area_set.all %}
-      <tr>
-        <td><a href="{{ area.get_absolute_url }}">{{ area.name }}</a></td>
-        <td>{{ area.area_type }}</td>
-        <td>{{ area.location_set.all.count }}</td>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-
-  <div class="table-title">
-    <h2>Cities</h2>
-    <a title="Add" href="{% url 'city-create' in_project=region.in_project.id in_region=region.name %}"><i class="cil-plus"></i></a>
-  </div> <!-- table-title -->
-
-  <table class="table table-hover table-striped">
-    <thead class="thead-dark">
-      <tr>
-        <th>City</th>
-        <th>Quarters</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for city in region.city_set.all %}
-      <tr>
-        <td><a href="{{ city.get_absolute_url }}">{{ city.name }}</a></td>
-        <td class="num">{{ city.cityquarter_set.all.count }}</td>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-
 {% endblock content %}
 
 {% block rightsidebar %}
@@ -102,6 +55,57 @@
       </td>
     </tr>
   </table>
+  
+  <div class="table-title">
+    <h4>Areas</h4>
+    <a title="Add" href="{% url 'area-create' in_project=region.in_project.id in_region=region.name %}">
+      <i class="cil-plus"></i>
+    </a>
+  </div> <!-- table-title -->
+
+  <table class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Area</th>
+        <th>Type</th>
+        <th>Locations</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for area in region.area_set.all %}
+      <tr>
+        <td><a href="{{ area.get_absolute_url }}">{{ area.name }}</a></td>
+        <td>{{ area.area_type }}</td>
+        <td>{{ area.location_set.all.count }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="table-title">
+    <h4>Cities</h4>
+    <a title="Add" href="{% url 'city-create' in_project=region.in_project.id in_region=region.name %}">
+      <i class="cil-plus"></i>
+    </a>
+  </div> <!-- table-title -->
+
+  <table class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>City</th>
+        <th>Quarters</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for city in region.city_set.all %}
+      <tr>
+        <td><a href="{{ city.get_absolute_url }}">{{ city.name }}</a></td>
+        <td class="num">{{ city.cityquarter_set.all.count }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  
 {% endblock rightsidebar %}
 
 {% block additionalscripts %}

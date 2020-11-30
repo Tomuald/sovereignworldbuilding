@@ -31,57 +31,6 @@
 
   <p>{{ room.description }}</p>
 
-  <div class="table-title">
-    <h2>Encounters (World)</h2>
-    <a title="Add" href="{% url 'worldencounter-create' in_project=room.in_project.id in_dungeon_room=room.name %}">
-      <i class="cil-plus"></i>
-    </a>
-  </div> <!-- table-title -->
-
-  <table class="table table-hover table-striped">
-    <thead class="thead-dark">
-      <tr>
-        <th>#</th>
-        <th>Encounter Title</th>
-        <th>Type</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for encounter in room.worldencounter_set.all %}
-    <tr>
-      <td>{{ encounter.encounter_num }}</td>
-      <td><a href="{{ encounter.get_absolute_url }}">{{ encounter.title }}</a></td>
-      <td>{{ encounter.get_encounter_type_display }}</td>
-    </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-
-  <div class="table-title">
-    <h2>Encounters (Quest)</h2>
-  </div> <!-- table-title -->
-
-  <table class="table table-hover table-striped">
-    <thead class="thead-dark">
-      <tr>
-        <th>#</th>
-        <th>Encounter Title</th>
-        <th>Type</th>
-        <th>Quest</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for encounter in room.questencounter_set.all %}
-    <tr>
-      <td>{{ encounter.encounter_num }}</td>
-      <td><a href="{{ encounter.get_absolute_url }}">{{ encounter.title }}</a></td>
-      <td>{{ encounter.get_encounter_type_display }}</td>
-      <td><a href="{{ encounter.in_quest.get_absolute_url }}">{{ encounter.in_quest }}</a></td>
-    </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-
 {% endblock content %}
 
 {% block rightsidebar %}
@@ -141,4 +90,57 @@
       </td>
     </tr>
   </table>
+
+  <div class="table-title">
+    <h4>Encounters (World)</h4>
+    <a title="Add" href="{% url 'worldencounter-create' in_project=room.in_project.id in_dungeon_room=room.name %}">
+      <i class="cil-plus"></i>
+    </a>
+  </div> <!-- table-title -->
+
+  <table class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>#</th>
+        <th>Encounter Title</th>
+        <th>Type</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for encounter in room.worldencounter_set.all %}
+    <tr>
+      <td>{{ encounter.encounter_num }}</td>
+      <td><a href="{{ encounter.get_absolute_url }}">{{ encounter.title }}</a></td>
+      <td>{{ encounter.get_encounter_type_display }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  {% if room.questencounter_set.count > 0 %}
+  <div class="table-title">
+    <h4>Encounters (Quest)</h4>
+  </div> <!-- table-title -->
+
+  <table class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>#</th>
+        <th>Encounter Title</th>
+        <th>Type</th>
+        <th>Quest</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for encounter in room.questencounter_set.all %}
+    <tr>
+      <td>{{ encounter.encounter_num }}</td>
+      <td><a href="{{ encounter.get_absolute_url }}">{{ encounter.title }}</a></td>
+      <td>{{ encounter.get_encounter_type_display }}</td>
+      <td><a href="{{ encounter.in_quest.get_absolute_url }}">{{ encounter.in_quest }}</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
 {% endblock rightsidebar %}

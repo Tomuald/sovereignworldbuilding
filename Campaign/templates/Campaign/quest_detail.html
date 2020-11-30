@@ -18,40 +18,6 @@
 
   <p>{{ quest.summary }}</p>
 
-  <div class="table-title">
-    <h2>Encounters</h2>
-    <a title="Add" href="{% url 'questencounter-create' in_project=quest.in_project.id in_quest=quest.title %}"><i class="cil-plus"></i></a>
-  </div> <!-- table-title -->
-
-  <table class="table table-hover table-striped">
-    <thead class="thead-dark">
-      <tr>
-        <th>#</th>
-        <th>Encounter Title</th>
-        <th>Type</th>
-        <th>Location</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for encounter in quest.questencounter_set.all %}
-    <tr>
-      <td>{{ encounter.encounter_num }}</td>
-      <td><a href="{{ encounter.get_absolute_url }}">{{ encounter.title }}</td>
-      <td>{{ encounter.get_encounter_type_display }}</td>
-      {% if encounter.in_location %}
-        <td>
-          <a href="{{ encounter.in_location.get_absolute_url }}">{{ encounter.in_location }}
-          </a>
-        </td>
-      {% elif encounter.in_dungeon_room %}
-        <td>
-          <a href="{{ encounter.in_dungeon_room.get_absolute_url}}">{{ encounter.in_dungeon_room }}</a>
-        </td>
-      {% endif %}
-    </tr>
-    {% endfor %}
-    </tbody>
-  </table>
 {% endblock content %}
 
 {% block rightsidebar %}
@@ -114,5 +80,42 @@
         </ul>
       </td>
     </tr>
+  </table>
+
+  <div class="table-title">
+    <h4>Encounters</h4>
+    <a title="Add" href="{% url 'questencounter-create' in_project=quest.in_project.id in_quest=quest.title %}">
+      <i class="cil-plus"></i>
+    </a>
+  </div> <!-- table-title -->
+
+  <table class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>#</th>
+        <th>Encounter Title</th>
+        <th>Type</th>
+        <th>Location</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for encounter in quest.questencounter_set.all %}
+    <tr>
+      <td>{{ encounter.encounter_num }}</td>
+      <td><a href="{{ encounter.get_absolute_url }}">{{ encounter.title }}</td>
+      <td>{{ encounter.get_encounter_type_display }}</td>
+      {% if encounter.in_location %}
+        <td>
+          <a href="{{ encounter.in_location.get_absolute_url }}">{{ encounter.in_location }}
+          </a>
+        </td>
+      {% elif encounter.in_dungeon_room %}
+        <td>
+          <a href="{{ encounter.in_dungeon_room.get_absolute_url}}">{{ encounter.in_dungeon_room }}</a>
+        </td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+    </tbody>
   </table>
 {% endblock rightsidebar %}

@@ -31,54 +31,7 @@
 
   <p>{{ area.description }}</p>
 
-  <div class="table-title">
-    <h2>Locations</h2>
-    <a title="Add" href="{% url 'location-create' in_project=area.in_project.id in_area=area.name %}"><i class="cil-plus"></i></a>
-  </div> <!-- table-title -->
 
-  <table class="table table-hover table-striped">
-    <thead class="thead-dark">
-      <tr>
-        <th>Name</th>
-        <th>Encounters</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for location in area.location_set.all %}
-      <tr>
-        <td>
-          <a href="{{ location.get_absolute_url }}">{{ location.name }}</a>
-            {% if location.dungeon_entrance %}(Dungeon){% endif %}
-          </td>
-        <td class="num">{{ location.encounter_set.all.count }}</td>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-
-  <div class="table-title">
-    <h2>Dungeons</h2>
-    <a title="Add" href="{% url 'dungeon-create' in_project=area.in_project.id in_area=area.name %}"><i class="cil-plus"></i></a>
-  </div> <!-- table-title -->
-
-  <table class="table table-hover table-striped">
-    <thead class="thead-dark">
-      <tr>
-        <th>Name</th>
-        <th>Roomsets</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for dungeon in area.dungeon_set.all %}
-      <tr>
-        <td>
-          <a href="{{ dungeon.get_absolute_url }}">{{ dungeon.title }}</a>
-        </td>
-        <td>{{ dungeon.roomset_set.all.count }}</td>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
 
 {% endblock content %}
 
@@ -135,8 +88,61 @@
         </ul>
       </td>
     </tr>
-
   </table>
+
+  <div class="table-title">
+    <h4>Locations</h4>
+    <a title="Add" href="{% url 'location-create' in_project=area.in_project.id in_area=area.name %}">
+      <i class="cil-plus"></i>
+    </a>
+  </div> <!-- table-title -->
+
+  <table class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Name</th>
+        <th>Encounters</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for location in area.location_set.all %}
+      <tr>
+        <td>
+          <a href="{{ location.get_absolute_url }}">{{ location.name }}</a>
+            {% if location.dungeon_entrance %}(Dungeon){% endif %}
+          </td>
+        <td class="num">{{ location.encounter_set.all.count }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="table-title">
+    <h4>Dungeons</h4>
+    <a title="Add" href="{% url 'dungeon-create' in_project=area.in_project.id in_area=area.name %}">
+      <i class="cil-plus"></i>
+    </a>
+  </div> <!-- table-title -->
+
+  <table class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Name</th>
+        <th>Roomsets</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for dungeon in area.dungeon_set.all %}
+      <tr>
+        <td>
+          <a href="{{ dungeon.get_absolute_url }}">{{ dungeon.title }}</a>
+        </td>
+        <td>{{ dungeon.roomset_set.all.count }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
 {% endblock rightsidebar %}
 
 {% block additionalscripts %}

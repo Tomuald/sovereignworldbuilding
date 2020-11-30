@@ -21,12 +21,31 @@
 
   <p>{{ campaign.overview }}</p>
 
+{% endblock content %}
+
+{% block rightsidebar %}
+  <table class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <th colspan="2" class="sidebar-table">{{ campaign.title }}</th>
+    </thead>
+    <tr>
+      <th>Project</th>
+      <td><a href="{{ campaign.in_project.get_absolute_url }}">{{ campaign.in_project.title }}</a></td>
+    </tr>
+    <tr>
+      <th>Universe</th>
+      <td><a href="{{ campaign.in_universe.get_absolute_url }}">{{ campaign.in_universe }}</a></td>
+    </tr>
+  </table>
+
   <div class="table-title">
-      <h2>Chapters</h2>
-      <a title="Add" href="{% url 'chapter-create' in_project=campaign.in_project.id in_campaign=campaign.title %}"><i class="cil-plus"></i></a>
+      <h4>Chapters</h4>
+      <a title="Add" href="{% url 'chapter-create' in_project=campaign.in_project.id in_campaign=campaign.title %}">
+        <i class="cil-plus"></i>
+      </a>
   </div> <!-- table-title -->
 
-  <table class="table table-hover table-striped">
+  <table class="table table-sm table-hover table-striped">
     <thead class="thead-dark">
       <tr>
         <th>#</th>
@@ -47,22 +66,5 @@
       </tr>
     {% endfor %}
     </tbody>
-  </table>
-
-{% endblock content %}
-
-{% block rightsidebar %}
-  <table class="table table-sm table-hover table-striped">
-    <thead class="thead-dark">
-      <th colspan="2" class="sidebar-table">{{ campaign.title }}</th>
-    </thead>
-    <tr>
-      <th>Project</th>
-      <td><a href="{{ campaign.in_project.get_absolute_url }}">{{ campaign.in_project.title }}</a></td>
-    </tr>
-    <tr>
-      <th>Universe</th>
-      <td><a href="{{ campaign.in_universe.get_absolute_url }}">{{ campaign.in_universe }}</a></td>
-    </tr>
   </table>
 {% endblock rightsidebar %}

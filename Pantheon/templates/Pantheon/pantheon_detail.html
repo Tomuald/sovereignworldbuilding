@@ -19,12 +19,27 @@
 
   <p>{{ pantheon.background }}</p>
 
+{% endblock content %}
+
+{% block rightsidebar %}
+  <table class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <th colspan="2" class="sidebar-table">{{ pantheon.name }}</th>
+    </thead>
+    <tr>
+      <th>Universe</th>
+      <td><a href="{{ pantheon.in_universe.get_absolute_url }}">{{ pantheon.in_universe }}</a></td>
+    </tr>
+  </table>
+
   <div class="table-title">
-    <h2>Gods</h2>
-    <a title="Add" href="{% url 'god-create' in_project=pantheon.in_project.id in_pantheon=pantheon.name %}"><i class="cil-plus"></i></a>
+    <h4>Gods</h4>
+    <a title="Add" href="{% url 'god-create' in_project=pantheon.in_project.id in_pantheon=pantheon.name %}">
+      <i class="cil-plus"></i>
+    </a>
   </div>
 
-  <table class="table table-hover table-striped">
+  <table class="table table-sm table-hover table-striped">
     <thead class="thead-dark">
       <tr>
         <th>God</th>
@@ -39,17 +54,5 @@
       </tr>
     {% endfor %}
     </tbody>
-  </table>
-{% endblock content %}
-
-{% block rightsidebar %}
-  <table class="table table-sm table-hover table-striped">
-    <thead class="thead-dark">
-      <th colspan="2" class="sidebar-table">{{ pantheon.name }}</th>
-    </thead>
-    <tr>
-      <th>Universe</th>
-      <td><a href="{{ pantheon.in_universe.get_absolute_url }}">{{ pantheon.in_universe }}</a></td>
-    </tr>
   </table>
 {% endblock rightsidebar %}

@@ -18,54 +18,6 @@
 
   <p>{{ chapter.summary }}</p>
 
-  <div class="table-title">
-      <h2>Main Quests</h2>
-      <a title="Add" href="{% url 'quest-create' in_project=chapter.in_project.id in_chapter=chapter.title %}"><i class="cil-plus"></i></a>
-  </div> <!-- table-title -->
-
-  <table class="table table-hover table-striped">
-    <thead class="thead-dark">
-      <tr>
-        <th>#</th>
-        <th>Title</th>
-        <th>Encounters</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for quest in main_quests %}
-      <tr>
-        <td>{{ quest.quest_num }}</td>
-        <td><a href="{{ quest.get_absolute_url }}">{{ quest.title}}</a></td>
-        <td>{{ quest.questencounter_set.all.count }}</td>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-
-  <div class="table-title">
-      <h2>Side Quests</h2>
-      <a title="Add" href="{% url 'quest-create' in_project=chapter.in_project.id in_chapter=chapter.title %}"><i class="cil-plus"></i></a>
-  </div> <!-- table-title -->
-
-  <table class="table table-hover table-striped">
-    <thead class="thead-dark">
-      <tr>
-        <th>#</th>
-        <th>Title</th>
-        <th>Encounters</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for quest in side_quests %}
-      <tr>
-        <td>{{ quest.quest_num }}</td>
-        <td><a href="{{ quest.get_absolute_url }}">{{ quest.title}}</a></td>
-        <td>{{ quest.questencounter_set.all.count }}</td>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-
 {% endblock content %}
 
 {% block rightsidebar %}
@@ -119,5 +71,57 @@
         </ul>
       </td>
     </tr>
+  </table>
+
+  <div class="table-title">
+      <h4>Main Quests</h4>
+      <a title="Add" href="{% url 'quest-create' in_project=chapter.in_project.id in_chapter=chapter.title %}">
+        <i class="cil-plus"></i>
+      </a>
+  </div> <!-- table-title -->
+
+  <table class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>#</th>
+        <th>Title</th>
+        <th>Encounters</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for quest in main_quests %}
+      <tr>
+        <td>{{ quest.quest_num }}</td>
+        <td><a href="{{ quest.get_absolute_url }}">{{ quest.title}}</a></td>
+        <td>{{ quest.questencounter_set.all.count }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="table-title">
+      <h4>Side Quests</h4>
+      <a title="Add" href="{% url 'quest-create' in_project=chapter.in_project.id in_chapter=chapter.title %}">
+        <i class="cil-plus"></i>
+      </a>
+  </div> <!-- table-title -->
+
+  <table class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>#</th>
+        <th>Title</th>
+        <th>Encounters</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for quest in side_quests %}
+      <tr>
+        <td>{{ quest.quest_num }}</td>
+        <td><a href="{{ quest.get_absolute_url }}">{{ quest.title}}</a></td>
+        <td>{{ quest.questencounter_set.all.count }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
   </table>
 {% endblock rightsidebar %}
