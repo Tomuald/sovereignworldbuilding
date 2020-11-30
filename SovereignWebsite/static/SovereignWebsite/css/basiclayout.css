@@ -84,15 +84,22 @@ caption {
 /* #TITLES AND ICONS */
 /* ----------------- */
 
-.page-title > h1 {
-  display: inline;
+.page-title, .table-title {
   text-align: center;
-  font-weight: bold;
 }
 
-.table-title > h4, h2 {
+.table-title {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.page-title > h1 {
   display: inline;
-  text-align: center;
+  font-weight: bold;
+}
+.table-title > h4,
+.table-title > h2 {
+  display: inline;
   font-weight: bold;
 }
 
@@ -104,10 +111,6 @@ caption {
   display: inline;
 }
 
-.table-title {
-  padding-top: 15px;
-  padding-bottom: 15px;}
-
 .page-title-hr {
   width: 50%;
 }
@@ -116,6 +119,7 @@ caption {
 .cil-plus,
 .cil-pencil,
 .cil-x {
+  display: inline;
   padding-left: 10px;
   font-size: 1.25em;
   font-weight: bold;

@@ -88,19 +88,8 @@ caption {
   text-align: center;
 }
 
-.table-title {
-  padding-top: 15px;
-  padding-bottom: 15px;
-}
-
-.page-title > h1 {
+.table-title > h4 {
   display: inline;
-  font-weight: bold;
-}
-.table-title > h4,
-.table-title > h2 {
-  display: inline;
-  font-weight: bold;
 }
 
 .section-title {
