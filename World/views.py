@@ -62,6 +62,8 @@ def universe_index(request, in_project, name):
 	npcs = project.npc_set.all()
 	pantheons = project.pantheon_set.all()
 	gods = project.god_set.all()
+	cities = project.city_set.all()
+	cityquarters = project.cityquarter_set.all()
 
 	context = {
 		'universe': universe,
@@ -74,6 +76,8 @@ def universe_index(request, in_project, name):
 		'npcs': npcs,
 		'pantheons': pantheons,
 		'gods': gods,
+		'cities': cities,
+		'cityquarters': cityquarters,
 	}
 
 	return render(request, "universe_index.html", context=context)

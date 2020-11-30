@@ -91,6 +91,30 @@ $('#areas').DataTable( {
 } );
 
 $(document).ready( function () {
+    $('#cities').DataTable();
+} );
+
+$('#cities').DataTable( {
+	"paging": false,
+	"bInfo": false,
+	"columnDefs": [
+		{ "orderable": true, "targets": [0, 1] },
+	]
+} );
+
+$(document).ready( function () {
+    $('#cityquarters').DataTable();
+} );
+
+$('#cityquarters').DataTable( {
+	"paging": false,
+	"bInfo": false,
+	"columnDefs": [
+		{ "orderable": true, "targets": [0, 1] },
+	]
+} );
+
+$(document).ready( function () {
     $('#locations').DataTable();
 } );
 

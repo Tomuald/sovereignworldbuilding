@@ -80,6 +80,49 @@
     </tbody>
   </table>
 
+  <h2 class="table-title">Cities</h2>
+
+  <table id="cities" class="table table-sm table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th>Cities</th>
+        <th>In Region</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for city in cities %}
+      <tr>
+        <td>
+          <a href="{{ city.get_absolute_url }}">{{ city.name }}</a>
+        </td>
+        <td>{{ city.in_region }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <h2 class="table-title">City Quarters</h2>
+
+  <table id="cityquarters" class="table table-sm table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th>City Quarters</th>
+        <th>In City</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for cityquarter in cityquarters %}
+      <tr>
+        <td>
+          <a href="{{ cityquarter.get_absolute_url }}">{{ cityquarter.name }}</a>
+        </td>
+        <td>{{ cityquarter.in_city }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+
   <h2 class="table-title">Locations</h2>
 
   <table id="locations" class="table table-sm table-hover">
