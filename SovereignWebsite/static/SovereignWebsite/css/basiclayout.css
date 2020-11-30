@@ -88,7 +88,11 @@ caption {
   text-align: center;
 }
 
-.page-title > h1,
+.page-title > h1 {
+  display: inline;
+  font-weight: bold;
+}
+
 .table-title > h4, h2 {
   display: inline;
   font-weight: bold;
