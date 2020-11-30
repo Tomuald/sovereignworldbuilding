@@ -89,7 +89,8 @@ caption {
 }
 
 .page-title > h1,
-.table-title > h4 {
+.table-title > h4
+.table-title > h2 {
   display: inline;
   font-weight: bold;
 }
