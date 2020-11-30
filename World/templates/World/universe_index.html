@@ -14,13 +14,13 @@
 {% block content %}
 
   <h1 class="page-title">Universe Index</h1>
-  
+
   <hr class="page-title-hr">
-  
-  <!-- EMPIRES --> 
-  
+
+  <!-- EMPIRES -->
+
   <h2 class="table-title">Empires</h2>
-  
+
   <table id="empires" class="table table-sm table-hover">
     <thead class="thead-dark">
       <tr>
@@ -43,9 +43,9 @@
     {% endfor %}
     </tbody>
   </table>
-  
+
   <h2 class="table-title">Regions</h2>
-  
+
   <table id="regions" class="table table-sm table-hover">
     <thead class="thead-dark">
       <tr>
@@ -60,9 +60,9 @@
     {% endfor %}
     </tbody>
   </table>
-  
+
   <h2 class="table-title">Areas</h2>
-  
+
   <table id="areas" class="table table-sm table-hover">
     <thead class="thead-dark">
       <tr>
@@ -79,28 +79,34 @@
     {% endfor %}
     </tbody>
   </table>
-  
+
   <h2 class="table-title">Locations</h2>
-  
+
   <table id="locations" class="table table-sm table-hover">
     <thead class="thead-dark">
       <tr>
         <th>Location</th>
-        <th>In Area</th>
+        <th>In Area / In City Quarter</th>
       </tr>
     </thead>
     <tbody>
     {% for location in locations %}
       <tr>
-        <td><a href="{{ location.get_absolute_url }}">{{ location.name }}</a></td>
-        <td>{{ location.in_area }}</td>
+        <td>
+          <a href="{{ location.get_absolute_url }}">{{ location.name }}</a>
+        </td>
+        {% if location.in_area%}
+          <td>{{ location.in_area }}</td>
+        {% elif location.in_cityquarter %}
+          <td>{{ location.in_cityquarter }}</td>
+        {% endif %}
       </tr>
     {% endfor %}
     </tbody>
   </table>
-  
+
   <h2 class="table-title">Dungeons</h2>
-  
+
   <table id="dungeons" class="table table-sm table-hover">
     <thead class="thead-dark">
       <tr>
@@ -117,9 +123,9 @@
     {% endfor %}
     </tbody>
   </table>
-  
+
   <h2 class="table-title">Factions</h2>
-  
+
   <table id="factions" class="table table-sm table-hover">
     <thead class="thead-dark">
       <tr>
@@ -136,7 +142,7 @@
   </table>
 
   <h2 class="table-title">NPCs</h2>
-  
+
   <table id="npcs" class="table table-sm table-hover">
     <thead class="thead-dark">
       <tr>
@@ -153,9 +159,9 @@
     {% endfor %}
     </tbody>
   </table>
-  
+
   <h2 class="table-title">Pantheons</h2>
-  
+
   <table id="pantheons" class="table table-sm table-hover">
     <thead class="thead-dark">
       <tr>
@@ -170,9 +176,9 @@
     {% endfor %}
     </tbody>
   </table>
-  
+
   <h2 class="table-title">Gods</h2>
-  
+
   <table id="gods" class="table table-sm table-hover">
     <thead class="thead-dark">
       <tr>
