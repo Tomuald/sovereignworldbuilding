@@ -101,6 +101,7 @@
     <thead class="thead-dark">
       <tr>
         <th>Name</th>
+        <th>Type</th>
         <th>Encounters</th>
       </tr>
     </thead>
@@ -110,8 +111,10 @@
         <td>
           <a href="{{ location.get_absolute_url }}">{{ location.name }}</a>
             {% if location.dungeon_entrance %}(Dungeon){% endif %}
-          </td>
+        </td>
+        <td>{{ location.location_type }}</td>
         <td class="num">{{ location.encounter_set.all.count }}</td>
+
       </tr>
     {% endfor %}
     </tbody>

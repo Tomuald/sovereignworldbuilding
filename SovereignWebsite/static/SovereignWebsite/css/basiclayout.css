@@ -4,11 +4,12 @@
 
 body {
   background-color: #E4E3E3;
+  padding-bottom: 50px;
 }
 
 main {
   padding-top: 50px;
-  padding-bottom: 50px;
+  padding-bottom: 25px;
 }
 
 aside {
@@ -102,7 +103,7 @@ caption {
 }
 
 .table-title {
-  padding-top: 15px; 
+  padding-top: 15px;
   padding-bottom: 15px;}
 
 .page-title-hr {
@@ -226,4 +227,3 @@ caption {
   border: 1px solid #a2a9b1;
   background-color: #dddddd;
 }
-
