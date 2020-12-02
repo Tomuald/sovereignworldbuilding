@@ -88,8 +88,16 @@ def quest_detail(request, in_project, title):
 	project = Project.objects.get(id=in_project)
 	quests = project.quest_set.all()
 	quest = get_object_or_404(quests, title=title)
-	preceded_by = quests.filter(quest_num=quest.quest_num - 1)
-	followed_by = quests.filter(quest_num=quest.quest_num + 1)
+	preceded_by = quests.filter(
+			in_chapter=quest.in_chapter
+				).filter(quest_type=quest.quest_type
+					).filter(quest_num=quest.quest_num - 1
+			)
+	followed_by = quests.filter(
+			in_chapter=quest.in_chapter
+				).filter(quest_type=quest.quest_type
+					).filter(quest_num=quest.quest_num + 1
+			)
 
 	context = {
 		'quest': quest,
