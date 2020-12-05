@@ -25,6 +25,7 @@ urlpatterns = [
     url('worldbuilder/p/', include('Dungeon.urls')),
     url('worldbuilder/p/', include('Campaign.urls')),
     url('worldbuilder/p/', include('World.urls')),
+    url('thelodge/', include('theLodge.urls')),
     path('accounts/', include('accounts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
 ]

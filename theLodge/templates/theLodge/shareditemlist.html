@@ -1,0 +1,16 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}
+  <title>{{ itemlist.name }}</title>
+{% endblock title %}
+
+{% block content %}
+  <div class="page-title">
+    <h1>{{ itemlist.name }}</h1>
+    <p><a href="">Import this!</a></p>
+  </div>
+
+  <hr class="page-title-hr">
+
+  <p>{{ itemlist.description }}</p>
+{% endblock content %}

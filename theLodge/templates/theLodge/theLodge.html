@@ -1,0 +1,20 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}
+  <title>The Lodge</title>
+{% endblock title %}
+
+{% block content %}
+  <div class="page-title">
+    <h1>The Lodge</h1>
+  </div>
+
+  <hr class="page-title-hr"
+
+  <ul>
+    {% for itemlist in itemlists %}
+      <li><a href="{{ itemlist.get_absolute_url }}">{{ itemlist.name }} ({{ itemlist.shared_at }})</a></li>
+    {% endfor %}
+  </ul>
+
+{% endblock content %}
