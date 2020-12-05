@@ -11,7 +11,7 @@ class Pantheon(models.Model):
 	in_project = models.ForeignKey(Project, on_delete=models.CASCADE, blank=True, null=True)
 	in_universe = models.ForeignKey('World.Universe', on_delete=models.CASCADE)
 
-	background = models.TextField(max_length=2500, blank=True, null=True)
+	background = models.TextField(blank=True, null=True)
 
 	def get_absolute_url(self):
 		return reverse('pantheon-detail', args=[str(self.in_project.id), str(self.name)])
@@ -42,7 +42,7 @@ class God(models.Model):
 	in_project = models.ForeignKey(Project, on_delete=models.CASCADE, blank=True, null=True)
 	in_pantheon = models.ForeignKey(Pantheon, on_delete=models.CASCADE)
 
-	background = models.TextField(max_length=2500, blank=True, null=True)
+	background = models.TextField(blank=True, null=True)
 
 	class Meta:
 		ordering = ['name', ]
