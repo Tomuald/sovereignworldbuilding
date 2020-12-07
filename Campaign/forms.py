@@ -99,8 +99,8 @@ class QuestModelForm(ModelForm):
 	def __init__(self, areas, cities, npcs, quests, *args, **kwargs):
 		super(QuestModelForm, self).__init__(*args, **kwargs)
 		self.quests = quests
-		self.fields['in_area'].queryset = areas
-		self.fields['in_city'].queryset = cities
+		self.fields['in_areas'].queryset = areas
+		self.fields['in_cities'].queryset = cities
 		self.fields['involved_npcs'].queryset = npcs
 
 		self.helper = FormHelper()
@@ -112,8 +112,8 @@ class QuestModelForm(ModelForm):
 			Field('quest_type'),
 			Field('quest_num'),
 			Row(
-				Field('in_area', wrapper_class="col-md-6"),
-				Field('in_city', wrapper_class="col-md-6"),
+				InlineCheckboxes('in_areas', wrapper_class="col-md-6"),
+				InlineCheckboxes('in_cities', wrapper_class="col-md-6"),
 			),
 			Field('summary', id="textarea"),
 			InlineCheckboxes('involved_npcs'),

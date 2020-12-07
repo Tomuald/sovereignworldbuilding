@@ -60,8 +60,8 @@ class Quest(models.Model):
 	quest_num = models.IntegerField()
 
 	in_chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
-	in_area = models.ForeignKey(Area, on_delete=models.SET_NULL, blank=True, null=True)
-	in_city = models.ForeignKey(City, on_delete=models.SET_NULL, blank=True, null=True)
+	in_areas = models.ManyToManyField(Area, blank=True)
+	in_cities = models.ManyToManyField(City, blank=True)
 
 	summary = models.TextField(blank=True, null=True)
 

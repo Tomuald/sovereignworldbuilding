@@ -35,21 +35,21 @@
       <th>Type</th>
       <td>{{ quest.get_quest_type_display }}
     </tr>
-    {% if quest.in_area %}
-      <tr>
-        <th>Area</th>
-        <td>
-          <a href="{{ quest.in_area.get_absolute_url }}">{{ quest.in_area }}</a>
-        </td>
-      </tr>
-    {% elif quest.in_city %}
-      <tr>
-        <th>City</th>
-        <td>
-          <a href="{{ quest.in_city.get_absolute_url }}">{{ quest.in_city }}</a>
-        </td>
-      </tr>
-    {% endif %}
+
+    <tr>
+      <th>Areas & Cities</th>
+      <td>
+        <p>
+        {% for area in quest.in_areas.all %}
+          <a href="{{ area.get_absolute_url }}">{{ area.name }}</a> |
+        {% endfor %}
+        {% for city in quest.in_cities.all %}
+          <a href="{{ city.get_absolute_url }}">{{ city.name }}</a> |
+        {% endfor %}
+        </p>
+      </td>
+    </tr>
+
     <tr>
       <th>Preceded By</th>
       <td>

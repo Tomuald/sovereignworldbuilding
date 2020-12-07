@@ -265,8 +265,8 @@ def chapter_delete(request, in_project, title):
 def quest_create(request, in_project, in_chapter):
 	in_project = Project.objects.get(id=in_project)
 	in_chapter = in_project.chapter_set.get(title=in_chapter)
-	areas = in_project.area_set.all()
-	cities = in_project.city_set.all()
+	areas = in_project.area_set.filter(in_region__in=in_chapter.regions.all())
+	cities = in_project.city_set.filter(in_region__in=in_chapter.regions.all())
 	npcs = in_project.npc_set.all()
 	quests = in_project.quest_set.all()
 
@@ -297,12 +297,15 @@ def quest_create(request, in_project, in_chapter):
 @decorators.quest_in_user_library
 def quest_update(request, in_project, title):
 	in_project = Project.objects.get(id=in_project)
-	areas = in_project.area_set.all()
-	cities = in_project.city_set.all()
+
 	npcs = in_project.npc_set.all()
 	quests = in_project.quest_set.all()
 
 	quest = get_object_or_404(quests, title=title)
+	in_chapter = quest.in_chapter
+
+	areas = in_project.area_set.filter(in_region__in=in_chapter.regions.all())
+	cities = in_project.city_set.filter(in_region__in=in_chapter.regions.all())
 
 	form = QuestModelForm(areas,
 						  cities,
@@ -349,19 +352,17 @@ def questencounter_create(request, in_project, in_quest):
 	npcs = project.npc_set.all()
 	questencounters = project.questencounter_set.all()
 
-	if quest.in_area:
-		locations = project.location_set.filter(in_area=quest.in_area)
-	elif quest.in_city:
-		locations = project.location_set.filter(
-				in_cityquarter__in_city=quest.in_city)
-	else:
-		locations = project.location_set.all()
+	locations = project.location_set.all()
+	locations_a = locations.filter(in_area__in=quest.in_areas.all())
+	locations_c = locations.filter(
+			in_cityquarter__in_city__in=quest.in_cities.all()
+		)
 
-	if quest.in_area:
-		dungeonrooms = project.room_set.filter(
-				in_roomset__in_dungeon__in_area=quest.in_area)
-	else:
-		dungeonrooms = project.room_set.none()
+	locations = locations_a | locations_c
+
+	dungeonrooms = project.room_set.filter(
+			in_roomset__in_dungeon__in_area__in=quest.in_areas.all()
+		)
 
 	questencounter = QuestEncounter()
 
@@ -396,19 +397,17 @@ def questencounter_update(request, in_project, title):
 	questencounter = get_object_or_404(questencounters, title=title)
 	quest = questencounter.in_quest
 
-	if quest.in_area:
-		locations = project.location_set.filter(in_area=quest.in_area)
-	elif quest.in_city:
-		locations = project.location_set.filter(
-				in_cityquarter__in_city=quest.in_city)
-	else:
-		locations = project.location_set.all()
+	locations = project.location_set.all()
+	locations_a = locations.filter(in_area__in=quest.in_areas.all())
+	locations_c = locations.filter(
+			in_cityquarter__in_city__in=quest.in_cities.all()
+		)
 
-	if quest.in_area:
-		dungeonrooms = project.room_set.filter(
-				in_roomset__in_dungeon__in_area=quest.in_area)
-	else:
-		dungeonrooms = project.room_set.none()
+	locations = locations_a | locations_c
+
+	dungeonrooms = project.room_set.filter(
+			in_roomset__in_dungeon__in_area__in=quest.in_areas.all()
+		)
 
 	form = QuestEncounterModelForm(questencounters,
 								   npcs,
