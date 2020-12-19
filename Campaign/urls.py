@@ -9,7 +9,7 @@ from Campaign.views import questencounterloot_create, questencounterloot_delete
 urlpatterns = []
 
 # Detail Views
-urlpatterns = [
+urlpatterns += [
 	path('<int:in_project>/c/<str:title>/index/', campaign_index, name="campaign-index"),
 	path('<int:in_project>/c/<str:title>/', campaign_detail, name="campaign-detail"),
 	path('<int:in_project>/ch/<str:title>/', chapter_detail, name="chapter-detail"),

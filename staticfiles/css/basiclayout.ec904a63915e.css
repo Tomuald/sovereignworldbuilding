@@ -139,21 +139,15 @@ caption {
   text-shadow: 0.5px 1px 15px red;
 }
 
-.cil-storage {
+.cil-storage,
+.cil-data-transfer-up,
+.cil-data-transfer-down {
   font-size: 1.5em;
   padding-right: 15px;
   text-shadow: 0.5px 1px 15px gray;
 }
 
-.cil-data-transfer-up,
-.cil-data-transfer-down {
-  font-size: 1.25em;
-  padding-right: 15px;
-  text-shadow: 0.5px 1px 15px gray;
-}
-
-.storage-icon:link,
-.importexport-icon:link {
+.storage-icon:link {
   text-decoration: none;
 }
 

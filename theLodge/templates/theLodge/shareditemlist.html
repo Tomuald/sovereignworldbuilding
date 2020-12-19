@@ -5,12 +5,42 @@
 {% endblock title %}
 
 {% block content %}
+
   <div class="page-title">
+    <a title="Import" class="importexport-icon" href="{% url 'import-itemlist' pk=itemlist.pk %}">
+      <i class="cil-data-transfer-down"></i>
+    </a>
     <h1>{{ itemlist.name }}</h1>
-    <p><a href="">Import this!</a></p>
+    {% if itemlist.shared_by == request.user %}
+      <a href="{% url 'delete-shareditemlist' pk=itemlist.pk %}">
+        <i class="cil-x"></i>
+      </a>
+    {% endif %}
   </div>
 
   <hr class="page-title-hr">
 
   <p>{{ itemlist.description }}</p>
 {% endblock content %}
+
+{% block rightsidebar %}
+  <table class="table table-sm table-striped table-hover">
+    <thead class="thead-dark">
+      <th colspan="2" class="sidebar-table">{{ itemlist.name }}</th>
+    </thead>
+    <tbody>
+      <tr>
+        <th>Shared by</th>
+        <td><a href="">{{ itemlist.shared_by }}</a></td>
+      </tr>
+      <tr>
+        <th>Shared on</th>
+        <td>{{ itemlist.shared_at }}</td>
+      </tr>
+      <tr>
+        <th>Game System</th>
+        <td>{{ itemlist.game_system }}</td>
+      </tr>
+    </tbody>
+  </table>
+{% endblock rightsidebar %}

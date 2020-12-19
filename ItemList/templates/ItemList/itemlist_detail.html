@@ -12,8 +12,15 @@
   <title>{{ itemlist.name }}</title>
 {% endblock title %}
 
+{% block leftsidebar %}
+
+{% endblock leftsidebar %}
+
 {% block content %}
   <div class="page-title">
+    <a title="Export to the Lodge" class="importexport-icon" href="{% url 'export-itemlist' user_id=request.user.id pk=itemlist.id %}">
+      <i class="cil-data-transfer-up"></i>
+    </a>
     <h1>{{ itemlist.name }}</h1>
     <a title="Edit" href="{% url 'itemlist-update' in_project=itemlist.in_project.id name=itemlist.name %}">
       <i class="cil-pencil"></i>

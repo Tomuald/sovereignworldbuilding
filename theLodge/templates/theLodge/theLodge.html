@@ -5,16 +5,32 @@
 {% endblock title %}
 
 {% block content %}
+
   <div class="page-title">
     <h1>The Lodge</h1>
   </div>
 
-  <hr class="page-title-hr"
+  <hr class="page-title-hr">
 
-  <ul>
-    {% for itemlist in itemlists %}
-      <li><a href="{{ itemlist.get_absolute_url }}">{{ itemlist.name }} ({{ itemlist.shared_at }})</a></li>
-    {% endfor %}
-  </ul>
+<table class="table table-sm table-hover table-striped">
+  <thead class="thead-dark">
+    <th>Name</th>
+    <th>Game System</th>
+    <th>Shared By</th>
+    <th>Description</th>
+  </thead>
+  <tbody>
+  {% for itemlist in itemlists %}
+    <td>
+      <a href="{{ itemlist.get_absolute_url}}">{{ itemlist.name }}</a>
+    </td>
+    <td>{{ itemlist.game_system }}</td>
+    <td>{{ itemlist.shared_by }}</td>
+    <td style="width: 50%;">{{ itemlist.description|truncatechars:150 }}</td>
+  {% endfor %}
+  </tbody>
+</table>
+
+
 
 {% endblock content %}

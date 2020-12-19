@@ -1,9 +1,22 @@
+import datetime
+
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
-from theLodge.models import SharedItemlist
+from django.core.exceptions import PermissionDenied
 
+from theLodge.models import SharedItemlist
+from Project.models import Project
+from ItemList.models import Itemlist
+from accounts.models import CustomUser
+
+from theLodge.forms import ImportItemlistForm, ExportItemlistForm
+from theLodge.save_functions import save_itemlist
+
+# Views
 @login_required
 def theLodge_list_view(request):
     itemlists = SharedItemlist.objects.all()
@@ -19,3 +32,61 @@ def shareditemlist_detail(request, pk):
     context = {'itemlist': itemlist}
 
     return render(request, 'shareditemlist.html', context)
+
+
+# Form Views
+@login_required
+def import_itemlist(request, pk):
+    user = request.user
+    projects = user.user_library.all()
+    shared_itemlist = get_object_or_404(SharedItemlist, pk=pk)
+    itemlist = shared_itemlist.itemlist
+    il_name = itemlist.name
+    items = itemlist.item_set.all()
+
+    form = ImportItemlistForm(projects, il_name, request.POST or None)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            proj_id = request.POST.get('to_project')
+            to_project = get_object_or_404(Project, id=proj_id)
+
+            save_itemlist(itemlist, to_project, items)
+
+            return HttpResponseRedirect(reverse('project-list'))
+
+    return render(request, 'importitemlist.html', {'form': form})
+
+@login_required
+def export_itemlist(request, user_id, pk):
+    itemlist = get_object_or_404(Itemlist, id=pk)
+    requesting_user = request.user
+    user = get_object_or_404(CustomUser, id=user_id)
+
+    if user != requesting_user:
+        raise PermissionDenied
+
+    form = ExportItemlistForm(
+            request.POST or None,
+            initial={'name': itemlist.name, 'itemlist': itemlist, 'shared_by': user}
+        )
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('theLodge'))
+
+    return render(request, 'exportitemlist.html', {'form': form})
+
+@login_required
+def delete_shared_itemlist(request, pk):
+    shared_itemlist = get_object_or_404(SharedItemlist, id=pk)
+
+    if shared_itemlist.shared_by != request.user:
+        raise PermissionDenied
+
+    if request.method == 'POST':
+        shared_itemlist.delete()
+        return HttpResponseRedirect(reverse('theLodge'))
+
+    return render(request, 'shared_itemlist_confirm_delete.html', context={'shared_itemlist': shared_itemlist})

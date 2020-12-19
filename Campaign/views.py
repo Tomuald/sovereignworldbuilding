@@ -15,10 +15,9 @@ from Campaign.models import Campaign, Chapter, Quest, QuestEncounter, QuestEncou
 from Project.models import Project
 from World.models import Universe, Region, Area, City, Location, NPC
 from Dungeon.models import Room
-from ItemList.models import Item
+from ItemList.models import Item, Itemlist
 
 from Campaign import decorators
-
 
 ##################
 ###   #VIEWS   ###
@@ -454,6 +453,7 @@ def questencounterloot_create(request, in_project, in_questencounter):
 	in_questencounter = get_object_or_404(questencounters, title=in_questencounter)
 	items = project.item_set.all()
 
+	itemlists = set([item.in_itemlist for item in items])
 	questencounterloot = QuestEncounterLoot()
 
 	form = QuestEncounterLootModelForm(request.POST or None, items=items, initial={'in_questencounter': in_questencounter, 'in_project': project}, instance=questencounterloot)
@@ -468,7 +468,7 @@ def questencounterloot_create(request, in_project, in_questencounter):
 							str(in_questencounter.title)
 					]))
 
-	return render(request, "questencounterloot_form.html", {'form': form})
+	return render(request, "questencounterloot_form.html", {'form': form, 'itemlists': itemlists})
 
 @login_required
 @decorators.questencounterloot_in_user_library

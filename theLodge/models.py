@@ -5,10 +5,10 @@ from accounts.models import CustomUser
 from ItemList.models import Itemlist
 
 class AbstractSharedObject(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     game_system = models.CharField(max_length=255)
 
-    description = models.TextField(max_length=500)
+    description = models.TextField()
 
     shared_at = models.DateField(auto_now_add=True)
     shared_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

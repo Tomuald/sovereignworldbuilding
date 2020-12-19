@@ -36,7 +36,8 @@ def itemlist_detail(request, in_project, name):
 @decorators.item_in_user_library
 def item_detail(request, in_project, in_itemlist, name):
 	project = Project.objects.get(id=in_project)
-	items = project.item_set.all()
+	itemlist = project.itemlist_set.get(name=in_itemlist)
+	items = project.item_set.filter(in_itemlist=itemlist)
 	item = get_object_or_404(items, name=name)
 
 	context = {'item': item}

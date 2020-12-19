@@ -115,7 +115,6 @@ caption {
   width: 50%;
 }
 
-
 .cil-plus,
 .cil-pencil,
 .cil-x {
@@ -146,7 +145,15 @@ caption {
   text-shadow: 0.5px 1px 15px gray;
 }
 
-.storage-icon:link {
+.cil-data-transfer-up,
+.cil-data-transfer-down {
+  font-size: 1.25em;
+  padding-right: 15px;
+  text-shadow: 0.5px 1px 15px gray;
+}
+
+.storage-icon:link,
+.importexport-icon:link {
   text-decoration: none;
 }
 
