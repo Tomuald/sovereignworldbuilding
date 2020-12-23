@@ -6,6 +6,9 @@
 
 {% block content %}
   <div class="page-title">
+    <a title="Export to the Lodge" class="importexport-icon" href="{% url 'export-universe' user_id=request.user.id pk=universe.id %}">
+      <i class="cil-data-transfer-up"></i>
+    </a>
     <a title="Index" class="storage-icon" href="{{ universe.get_absolute_index_url }}">
       <i class="cil-storage"></i>
     </a>

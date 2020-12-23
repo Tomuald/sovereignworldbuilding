@@ -1,0 +1,46 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}
+  <title>{{ universe.name }}</title>
+{% endblock title %}
+
+{% block content %}
+
+  <div class="page-title">
+    <a title="Import" class="importexport-icon" href="{% url 'import-universe' pk=universe.pk %}">
+      <i class="cil-data-transfer-down"></i>
+    </a>
+    <h1>{{ universe.name }}</h1>
+    {% if universe.shared_by == request.user %}
+      <a href="">
+        <i class="cil-x"></i>
+      </a>
+    {% endif %}
+  </div>
+
+  <hr class="page-title-hr">
+
+  <p>{{ universe.description }}</p>
+{% endblock content %}
+
+{% block rightsidebar %}
+  <table class="table table-sm table-striped table-hover">
+    <thead class="thead-dark">
+      <th colspan="2" class="sidebar-table">{{ universe.name }}</th>
+    </thead>
+    <tbody>
+      <tr>
+        <th>Shared by</th>
+        <td><a href="">{{ universe.shared_by }}</a></td>
+      </tr>
+      <tr>
+        <th>Shared on</th>
+        <td>{{ universe.shared_at }}</td>
+      </tr>
+      <tr>
+        <th>Game System</th>
+        <td>{{ universe.game_system }}</td>
+      </tr>
+    </tbody>
+  </table>
+{% endblock rightsidebar %}

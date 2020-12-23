@@ -3,6 +3,7 @@ from django.urls import reverse
 
 from accounts.models import CustomUser
 from ItemList.models import Itemlist
+from World.models import Universe
 
 class AbstractSharedObject(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -16,11 +17,20 @@ class AbstractSharedObject(models.Model):
     class Meta:
         abstract = True
 
+class SharedItemlist(AbstractSharedObject):
+    itemlist = models.ForeignKey(Itemlist, on_delete=models.CASCADE)
+
     def get_absolute_url(self):
         return reverse('shared-itemlist', args=[str(self.id)])
 
-class SharedItemlist(AbstractSharedObject):
-    itemlist = models.ForeignKey(Itemlist, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.name
+
+class SharedUniverse(AbstractSharedObject):
+    universe = models.ForeignKey(Universe, on_delete=models.CASCADE)
+
+    def get_absolute_url(self):
+        return reverse('shared-universe', args=[str(self.id)])
 
     def __str__(self):
         return self.name
