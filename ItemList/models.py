@@ -28,7 +28,7 @@ class Item(models.Model):
 	description = models.TextField(blank=True, null=True)
 
 	class Meta:
-		ordering = ['name', ]
+		ordering = ['name']
 
 	def get_absolute_url(self):
 		return reverse('item-detail', args=[str(self.in_project.id), str(self.in_itemlist.name), str(self.name)])
