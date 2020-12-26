@@ -110,10 +110,9 @@
       <tr>
         <td>
           <a href="{{ location.get_absolute_url }}">{{ location.name }}</a>
-            {% if location.dungeon_entrance %}(Dungeon){% endif %}
         </td>
         <td>{{ location.location_type }}</td>
-        <td class="num">{{ location.encounter_set.all.count }}</td>
+        <td class="num">{{ location.worldencounter_set.count|add:location.questencounter_set.count }}</td>
 
       </tr>
     {% endfor %}

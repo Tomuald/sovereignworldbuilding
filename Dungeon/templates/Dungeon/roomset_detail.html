@@ -56,7 +56,9 @@
       <tr>
         <td>{{ room.room_number }}</td>
         <td><a href="{{ room.get_absolute_url }}">{{ room.name }}</a></td>
-        <td>{{ room.encounter_set.all.count }}</td>
+        <td>
+          {{ room.worldencounter_set.count|add:room.questencounter_set.count }}
+        </td>
       </tr>
       {% endfor %}
     </tbody>
