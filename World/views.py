@@ -173,9 +173,10 @@ def faction_detail(request, in_project, name):
 	project = get_object_or_404(Project, id=in_project)
 	factions = project.faction_set.all()
 	faction = get_object_or_404(factions, name=name)
+	members = project.npc_set.filter(in_faction=faction)
 	leaders = project.npc_set.filter(leader_of=faction)
 
-	context = {'faction': faction, 'leaders': leaders}
+	context = {'faction': faction, 'leaders': leaders, 'members': members}
 
 	return render(request, 'faction_detail.html', context)
 

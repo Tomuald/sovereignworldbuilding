@@ -79,7 +79,7 @@
       </tr>
     </thead>
     <tbody>
-    {% for npc in faction.npc_set.all %}
+    {% for npc in members %}
       <tr>
         <td><a href="{{ npc.get_absolute_url }}">{{ npc.name }}</a></td>
         <td>{{ npc.get_alignment_display }}</td>
