@@ -12,3 +12,7 @@ class SignUpView(CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'registration/signup.html'
+
+def sign_up_or_in(request):
+    pass
+    #form =

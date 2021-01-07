@@ -28,8 +28,8 @@ from World import decorators
 @login_required
 @decorators.universe_in_user_library
 def universe_detail(request, in_project, name):
-	project = Project.objects.get(id=in_project)
-	universe = project.universe_set.get(name=name)
+	project = get_object_or_404(Project, id=in_project)
+	universe = get_object_or_404(project.universe_set.all(), name=name)
 	empires = universe.empire_set.all()
 	regions = universe.region_set.all()
 	factions = universe.faction_set.all()
@@ -50,8 +50,8 @@ def universe_detail(request, in_project, name):
 @login_required
 @decorators.universe_in_user_library
 def universe_index(request, in_project, name):
-	project = Project.objects.get(id=in_project)
-	universe = project.universe_set.get(name=name)
+	project = get_object_or_404(Project, id=in_project)
+	universe = get_object_or_404(project.universe_set.all(), name=name)
 
 	regions = universe.region_set.all()
 	areas = project.area_set.all()
@@ -85,7 +85,7 @@ def universe_index(request, in_project, name):
 @login_required
 @decorators.region_in_user_library
 def region_detail(request, in_project, name):
-	project = Project.objects.get(id=in_project)
+	project = get_object_or_404(Project, id=in_project)
 	regions = project.region_set.all()
 	region = get_object_or_404(regions, name=name)
 
@@ -96,7 +96,7 @@ def region_detail(request, in_project, name):
 @login_required
 @decorators.area_in_user_library
 def area_detail(request, in_project, name):
-	project = Project.objects.get(id=in_project)
+	project = get_object_or_404(Project, id=in_project)
 	areas = project.area_set.all()
 	area = get_object_or_404(areas, name=name)
 	npcs = project.npc_set.filter(location__in_area=area).distinct()
@@ -111,7 +111,7 @@ def area_detail(request, in_project, name):
 @login_required
 @decorators.city_in_user_library
 def city_detail(request, in_project, name):
-	project = Project.objects.get(id=in_project)
+	project = get_object_or_404(Project, id=in_project)
 	cities = project.city_set.all()
 	city = get_object_or_404(cities, name=name)
 	city_quarters = city.cityquarter_set.all()
@@ -126,7 +126,7 @@ def city_detail(request, in_project, name):
 @login_required
 @decorators.cityquarter_in_user_library
 def cityquarter_detail(request, in_project, name):
-	project = Project.objects.get(id=in_project)
+	project = get_object_or_404(Project, id=in_project)
 	cityquarters = project.cityquarter_set.all()
 	cityquarter = get_object_or_404(cityquarters, name=name)
 
@@ -137,7 +137,7 @@ def cityquarter_detail(request, in_project, name):
 @login_required
 @decorators.location_in_user_library
 def location_detail(request, in_project, name):
-	project = Project.objects.get(id=in_project)
+	project = get_object_or_404(Project, id=in_project)
 	locations = project.location_set.all()
 	location = get_object_or_404(locations, name=name)
 
@@ -148,7 +148,7 @@ def location_detail(request, in_project, name):
 @login_required
 @decorators.worldencounter_in_user_library
 def worldencounter_detail(request, in_project, title):
-	project = Project.objects.get(id=in_project)
+	project = get_object_or_404(Project, id=in_project)
 	worldencounters = project.worldencounter_set.all()
 	worldencounter = get_object_or_404(worldencounters, title=title)
 
@@ -159,7 +159,7 @@ def worldencounter_detail(request, in_project, title):
 @login_required
 @decorators.empire_in_user_library
 def empire_detail(request, in_project, name):
-	project = Project.objects.get(id=in_project)
+	project = get_object_or_404(Project, id=in_project)
 	empires = project.empire_set.all()
 	empire = get_object_or_404(empires, name=name)
 
@@ -170,18 +170,19 @@ def empire_detail(request, in_project, name):
 @login_required
 @decorators.faction_in_user_library
 def faction_detail(request, in_project, name):
-	project = Project.objects.get(id=in_project)
+	project = get_object_or_404(Project, id=in_project)
 	factions = project.faction_set.all()
 	faction = get_object_or_404(factions, name=name)
+	leaders = project.npc_set.filter(leader_of=faction)
 
-	context = {'faction': faction}
+	context = {'faction': faction, 'leaders': leaders}
 
 	return render(request, 'faction_detail.html', context)
 
 @login_required
 @decorators.npc_in_user_library
 def npc_detail(request, in_project, name):
-	project = Project.objects.get(id=in_project)
+	project = get_object_or_404(Project, id=in_project)
 	npcs = project.npc_set.all()
 	npc = get_object_or_404(npcs, name=name)
 	locations = project.location_set.filter(NPCs__id=npc.id)
@@ -200,7 +201,7 @@ def npc_detail(request, in_project, name):
 @login_required
 @decorators.create_universe_in_user_library
 def universe_create(request, in_project):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	universes = in_project.universe_set.all()
 
 	universe = Universe()
@@ -222,7 +223,7 @@ def universe_create(request, in_project):
 @login_required
 @decorators.universe_in_user_library
 def universe_update(request, in_project, name):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	universes = in_project.universe_set.all()
 
 	universe = get_object_or_404(universes, name=name)
@@ -244,7 +245,7 @@ def universe_update(request, in_project, name):
 @login_required
 @decorators.universe_in_user_library
 def universe_delete(request, in_project, name):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	universes = in_project.universe_set.all()
 
 	universe = get_object_or_404(universes, name=name)
@@ -262,7 +263,7 @@ def universe_delete(request, in_project, name):
 @login_required
 @decorators.create_region_in_user_library
 def region_create(request, in_project, in_universe):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	regions = in_project.region_set.all()
 	universes = in_project.universe_set.all()
 	in_universe = get_object_or_404(universes, name=in_universe)
@@ -290,7 +291,7 @@ def region_create(request, in_project, in_universe):
 @login_required
 @decorators.region_in_user_library
 def region_update(request, in_project, name):
-		in_project = Project.objects.get(id=in_project)
+		in_project = get_object_or_404(Project, id=in_project)
 		regions = in_project.region_set.all()
 		region = get_object_or_404(regions, name=name)
 
@@ -315,7 +316,7 @@ def region_update(request, in_project, name):
 @login_required
 @decorators.region_in_user_library
 def region_delete(request, in_project, name):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	regions = in_project.region_set.all()
 	region = get_object_or_404(regions, name=name)
 
@@ -333,7 +334,7 @@ def region_delete(request, in_project, name):
 @login_required
 @decorators.create_area_in_user_library
 def area_create(request, in_project, in_region):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	regions = in_project.region_set.all()
 	in_region = get_object_or_404(regions, name=in_region)
 	factions = in_project.faction_set.all()
@@ -363,7 +364,7 @@ def area_create(request, in_project, in_region):
 @login_required
 @decorators.area_in_user_library
 def area_update(request, in_project, name):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	factions = in_project.faction_set.all()
 	areas = in_project.area_set.all()
 
@@ -390,7 +391,7 @@ def area_update(request, in_project, name):
 @login_required
 @decorators.area_in_user_library
 def area_delete(request, in_project, name):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	areas = in_project.area_set.all()
 
 	area = get_object_or_404(areas, name=name)
@@ -409,7 +410,7 @@ def area_delete(request, in_project, name):
 @login_required
 @decorators.create_city_in_user_library
 def city_create(request, in_project, in_region):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	regions = in_project.region_set.all()
 	in_region = get_object_or_404(regions, name=in_region)
 	cities = in_project.city_set.all()
@@ -433,7 +434,7 @@ def city_create(request, in_project, in_region):
 @login_required
 @decorators.city_in_user_library
 def city_update(request, in_project, name):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	cities = City.objects.filter(in_project=in_project)
 	city = get_object_or_404(cities, name=name)
 
@@ -454,7 +455,7 @@ def city_update(request, in_project, name):
 @login_required
 @decorators.city_in_user_library
 def city_delete(request, in_project, name):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	cities = City.objects.filter(in_project=in_project)
 	city = get_object_or_404(cities, name=name)
 
@@ -471,7 +472,7 @@ def city_delete(request, in_project, name):
 @login_required
 @decorators.create_cityquarter_in_user_library
 def cityquarter_create(request, in_project, in_city):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	cities = in_project.city_set.all()
 	in_city = get_object_or_404(cities, name=in_city)
 	factions = in_project.faction_set.all()
@@ -500,7 +501,7 @@ def cityquarter_create(request, in_project, in_city):
 @login_required
 @decorators.cityquarter_in_user_library
 def cityquarter_update(request, in_project, name):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	factions = in_project.faction_set.all()
 	cityquarters = in_project.cityquarter_set.all()
 	cityquarter = get_object_or_404(cityquarters, name=name)
@@ -525,7 +526,7 @@ def cityquarter_update(request, in_project, name):
 @login_required
 @decorators.cityquarter_in_user_library
 def cityquarter_delete(request, in_project, name):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	cityquarters = in_project.cityquarter_set.all()
 	cityquarter = get_object_or_404(cityquarters, name=name)
 
@@ -543,7 +544,7 @@ def cityquarter_delete(request, in_project, name):
 @login_required
 @decorators.create_citydemographics_in_user_library
 def citydemographics_create(request, in_project, in_city):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	cities = in_project.city_set.all()
 	in_city = get_object_or_404(cities, name=in_city)
 
@@ -566,7 +567,7 @@ def citydemographics_create(request, in_project, in_city):
 @login_required
 @decorators.citydemographics_in_user_library
 def citydemographics_delete(request, in_project, pk):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	citydemography = in_project.citydemographics_set.all()
 	citydemographics = get_object_or_404(citydemography, pk=pk)
 
@@ -582,7 +583,7 @@ def citydemographics_delete(request, in_project, pk):
 
 @login_required
 def location_create(request, in_project, in_area=None, in_cityquarter=None):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	locations = in_project.location_set.all()
 	npcs = in_project.npc_set.all()
 
@@ -623,7 +624,7 @@ def location_create(request, in_project, in_area=None, in_cityquarter=None):
 @login_required
 @decorators.location_in_user_library
 def location_update(request, in_project, name):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	locations = in_project.location_set.all()
 	npcs = in_project.npc_set.all()
 
@@ -661,7 +662,7 @@ def location_update(request, in_project, name):
 @login_required
 @decorators.location_in_user_library
 def location_delete(request, in_project, name):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	locations = in_project.location_set.all()
 
 	location = get_object_or_404(locations, name=name)
@@ -687,7 +688,7 @@ def location_delete(request, in_project, name):
 @login_required
 @decorators.create_empire_in_user_library
 def empire_create(request, in_project, in_universe):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	in_universe = in_project.universe_set.get(name=in_universe)
 	regions = in_project.region_set.all()
 	faiths = in_project.god_set.all()
@@ -717,7 +718,7 @@ def empire_create(request, in_project, in_universe):
 @login_required
 @decorators.empire_in_user_library
 def empire_update(request, in_project, name):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	regions = in_project.region_set.all()
 	faiths = in_project.god_set.all()
 	empires = in_project.empire_set.all()
@@ -745,7 +746,7 @@ def empire_update(request, in_project, name):
 @login_required
 @decorators.empire_in_user_library
 def empire_delete(request, in_project, name):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	empires = in_project.empire_set.all()
 
 	empire = get_object_or_404(empires, name=name)
@@ -764,17 +765,15 @@ def empire_delete(request, in_project, name):
 @login_required
 @decorators.create_faction_in_user_library
 def faction_create(request, in_project, in_universe):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	in_universe = in_project.universe_set.get(name=in_universe)
 
 	faction = Faction()
 
-	leaders = in_project.npc_set.filter(in_faction=faction.id)
 	faiths = in_project.god_set.all()
 	factions = in_project.faction_set.all()
 
-	form = FactionModelForm(leaders,
-							factions,
+	form = FactionModelForm(factions,
 							faiths,
 							request.POST or None,
 							initial={'in_project': in_project, 'in_universe': in_universe},
@@ -796,17 +795,14 @@ def faction_create(request, in_project, in_universe):
 @login_required
 @decorators.faction_in_user_library
 def faction_update(request, in_project, name):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 
 	faiths = in_project.god_set.all()
 	factions = in_project.faction_set.all()
 
 	faction = get_object_or_404(factions, name=name)
 
-	leaders = in_project.npc_set.filter(in_faction=faction.id)
-
-	form = FactionModelForm(leaders,
-							factions,
+	form = FactionModelForm(factions,
 							faiths,
 							request.POST or None,
 							instance=faction
@@ -827,7 +823,7 @@ def faction_update(request, in_project, name):
 @login_required
 @decorators.faction_in_user_library
 def faction_delete(request, in_project, name):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	factions = in_project.faction_set.all()
 
 	faction = get_object_or_404(factions, name=name)
@@ -846,7 +842,7 @@ def faction_delete(request, in_project, name):
 @login_required
 @decorators.create_npc_in_user_library
 def npc_create(request, in_project, in_universe, in_faction=None):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	in_universe = in_project.universe_set.get(name=in_universe)
 	factions = in_project.faction_set.all()
 	faiths = in_project.god_set.all()
@@ -880,7 +876,7 @@ def npc_create(request, in_project, in_universe, in_faction=None):
 @login_required
 @decorators.npc_in_user_library
 def npc_update(request, in_project, name, in_faction=None):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	faiths = in_project.god_set.all()
 	factions = in_project.faction_set.all()
 	npcs = in_project.npc_set.all()
@@ -912,7 +908,7 @@ def npc_update(request, in_project, name, in_faction=None):
 @login_required
 @decorators.npc_in_user_library
 def npc_delete(request, in_project, name):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	npcs = in_project.npc_set.all()
 
 	npc = get_object_or_404(npcs, name=name)
@@ -937,7 +933,7 @@ def npc_delete(request, in_project, name):
 
 @login_required
 def locationloot_create(request, in_project, in_location):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	locations = in_project.location_set.all()
 	in_location = get_object_or_404(locations, name=in_location)
 	items = in_project.item_set.all()
@@ -961,7 +957,7 @@ def locationloot_create(request, in_project, in_location):
 @login_required
 @decorators.locationloot_in_user_library
 def locationloot_delete(request, in_project, pk):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	locationloots = in_project.locationloot_set.all()
 	locationloot = get_object_or_404(locationloots, pk=pk)
 	in_location = locationloot.in_location
@@ -979,7 +975,7 @@ def locationloot_delete(request, in_project, pk):
 @login_required
 @decorators.create_worldencounter_in_user_library
 def worldencounter_create(request, in_project, in_dungeon_room=None, in_location=None):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	npcs = in_project.npc_set.all()
 	worldencounters = in_project.worldencounter_set.all()
 
@@ -1014,7 +1010,7 @@ def worldencounter_create(request, in_project, in_dungeon_room=None, in_location
 @login_required
 @decorators.worldencounter_in_user_library
 def worldencounter_update(request, in_project, title):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	npcs = in_project.npc_set.all()
 	worldencounters = in_project.worldencounter_set.all()
 
@@ -1046,7 +1042,7 @@ def worldencounter_update(request, in_project, title):
 @login_required
 @decorators.worldencounter_in_user_library
 def worldencounter_delete(request, in_project, title):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	worldencounters = in_project.worldencounter_set.all()
 	worldencounter = get_object_or_404(worldencounters, title=title)
 
@@ -1071,7 +1067,7 @@ def worldencounter_delete(request, in_project, title):
 @login_required
 @decorators.create_worldencounterloot_in_user_library
 def worldencounterloot_create(request, in_project, in_worldencounter):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	worldencounters = in_project.worldencounter_set.all()
 	in_worldencounter = get_object_or_404(
 			worldencounters, title=in_worldencounter)
@@ -1101,7 +1097,7 @@ def worldencounterloot_create(request, in_project, in_worldencounter):
 @login_required
 @decorators.worldencounterloot_in_user_library
 def worldencounterloot_delete(request, in_project, pk):
-	in_project = Project.objects.get(id=in_project)
+	in_project = get_object_or_404(Project, id=in_project)
 	worldencounterloots = in_project.worldencounterloot_set.all()
 
 	worldencounterloot = get_object_or_404(worldencounterloots, pk=pk)

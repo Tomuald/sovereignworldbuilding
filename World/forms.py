@@ -288,10 +288,9 @@ class FactionModelForm(ModelForm):
 				raise forms.ValidationError(msg)
 		return data
 
-	def __init__(self, leaders, factions, faiths, *args, **kwargs):
+	def __init__(self, factions, faiths, *args, **kwargs):
 		super(FactionModelForm, self).__init__(*args, **kwargs)
 		self.factions = factions
-		self.fields['leaders'].queryset = leaders
 		self.fields['faiths'].queryset = faiths
 
 		self.helper = FormHelper()
@@ -303,7 +302,6 @@ class FactionModelForm(ModelForm):
 			Field('faction_role'),
 			Field('alignment'),
 			Field('description', id="textarea"),
-			InlineCheckboxes('leaders'),
 			InlineCheckboxes('faiths'),
 			Field('in_project', type="hidden"),
 			Field('in_universe', type="hidden"),
@@ -329,6 +327,7 @@ class NPCModelForm(ModelForm):
 		super(NPCModelForm, self).__init__(*args, **kwargs)
 		self.fields['in_faction'].queryset = factions
 		self.fields['faiths'].queryset = faiths
+		self.fields['leader_of'].queryset = factions
 		self.npcs = npcs
 
 		self.helper = FormHelper()
@@ -339,6 +338,7 @@ class NPCModelForm(ModelForm):
 			Field('name'),
 			Field('portrait'),
 			Field('in_faction'),
+			Field('leader_of'),
 			Field('alignment'),
 			Field('description', id="textarea"),
 			InlineCheckboxes('faiths'),

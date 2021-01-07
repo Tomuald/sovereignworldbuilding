@@ -6,6 +6,9 @@
 
 {% block content %}
   <div class="page-title">
+    <a title="Export to the Lodge" class="importexport-icon" href="{% url 'export-project' user_id=request.user.id pk=project.id %}">
+      <i class="cil-data-transfer-up"></i>
+    </a>
     <h1>{{ project.title }}</h1>
     <a href="{% url 'project-update' pk=project.pk %}"><i class="cil-pencil"></i></a>
     <a title="Delete" href="{% url 'project-delete' pk=project.pk %}"><i class="cil-x"></i></a>

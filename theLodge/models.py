@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 
 from accounts.models import CustomUser
+from Project.models import Project
 from ItemList.models import Itemlist
 from World.models import Universe
 
@@ -22,6 +23,15 @@ class SharedItemlist(AbstractSharedObject):
 
     def get_absolute_url(self):
         return reverse('shared-itemlist', args=[str(self.id)])
+
+    def __str__(self):
+        return self.name
+
+class SharedProject(AbstractSharedObject):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+
+    def get_absolute_url(self):
+        return reverse('shared-project', args=[str(self.id)])
 
     def __str__(self):
         return self.name

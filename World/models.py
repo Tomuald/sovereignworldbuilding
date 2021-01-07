@@ -246,7 +246,6 @@ class Faction(models.Model):
 	faiths = models.ManyToManyField(God, blank=True)
 
 	description = models.TextField(blank=True, null=True)
-	leaders = models.ManyToManyField('NPC', blank=True)
 
 	class Meta:
 		ordering = ['name', ]
@@ -261,7 +260,8 @@ class NPC(models.Model):
 	name = models.CharField(max_length=125)
 	in_project = models.ForeignKey(Project, on_delete=models.CASCADE, blank=True, null=True)
 	in_universe = models.ForeignKey(Universe, on_delete=models.CASCADE)
-	in_faction = models.ForeignKey('Faction', on_delete=models.CASCADE, blank=True, null=True)
+	in_faction = models.ForeignKey('Faction', on_delete=models.CASCADE, blank=True, null=True, related_name="faction")
+	leader_of = models.ForeignKey('Faction', on_delete=models.CASCADE, blank=True, null=True, related_name="leader")
 	portrait = models.URLField(max_length=255, blank=True, null=True,
 				help_text="Provide a URL to an image file.")
 

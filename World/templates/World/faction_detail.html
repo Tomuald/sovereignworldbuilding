@@ -39,16 +39,16 @@
       <td>{{ faction.get_alignment_display }}</td>
     </tr>
     <tr>
-      {% if faction.leaders.all.count > 1 %}
+      {% if leaders.count > 1%}
         <th>Leaders</th>
       {% else %}
         <th>Leader</th>
       {% endif %}
       <td>
         <ul>
-        {% for npc in faction.leaders.all %}
-          <li><a href="{{ npc.get_absolute_url }}">{{ npc.name }}</a></li>
-        {% endfor %}
+          {% for leader in leaders %}
+            <li><a href="{{ leader.get_absolute_url }}">{{ leader }}</a></li>
+          {% endfor %}
         </ul>
       </td>
     </tr>

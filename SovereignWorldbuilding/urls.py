@@ -19,6 +19,7 @@ from django.urls import path
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url('homepage/', include('SovereignWebsite.urls')),
     url('worldbuilder/p/', include('Project.urls')),
     url('worldbuilder/p/', include('ItemList.urls')),
     url('worldbuilder/p/', include('Pantheon.urls')),

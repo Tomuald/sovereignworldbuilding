@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '8(l8yny60b*f_qi+lw^m6(v@sm^*nto$a=b=aytvy41&6nzv*3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['.herokuapp.com', ]
 
@@ -78,6 +78,7 @@ TEMPLATES = [
         	os.path.join(BASE_DIR, 'Campaign', 'templates', 'Campaign'),
         	os.path.join(BASE_DIR, 'World', 'templates', 'World'),
             os.path.join(BASE_DIR, 'theLodge', 'templates', 'theLodge'),
+            os.path.join(BASE_DIR, 'SovereignWebsite', 'templates', 'SovereignWebsite'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {

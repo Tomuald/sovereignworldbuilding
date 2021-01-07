@@ -5,6 +5,7 @@ from crispy_forms.layout import Submit, Layout, Field
 
 from theLodge.models import SharedItemlist
 from theLodge.models import SharedUniverse
+from theLodge.models import SharedProject
 
 class ExportItemlistForm(forms.ModelForm):
     class Meta:
@@ -53,6 +54,48 @@ class ImportItemlistForm(forms.Form):
             Field('itemlist_name', readonly=True),
             Field('to_project'),
         )
+
+class ExportProjectForm(forms.ModelForm):
+    class Meta:
+        model = SharedProject
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(ExportProjectForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.add_input(Submit('submit', 'Export', css_class="btn-success float-right"))
+
+        self.helper.layout = Layout(
+            Field('name', readonly=True),
+            Field('game_system'),
+            Field('description'),
+            Field('shared_by', type="hidden"),
+            Field('project', type="hidden"),
+        )
+
+class ImportProjectForm(forms.Form):
+    project = forms.CharField()
+
+    def clean(self):
+        data = self.cleaned_data['project']
+        if self.projects.filter(title=data).exists():
+            msg = "%s already exists in your library." % data
+            self.add_error('project', msg)
+
+    def __init__(self, projects, *args, **kwargs):
+        super(ImportProjectForm, self).__init__(*args, **kwargs)
+        self.projects = projects
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.add_input(Submit('submit', 'Import', css_class="btn-success float-right"))
+
+        self.helper.layout = Layout(
+            Field('project', readonly=True),
+        )
+
 class ExportUniverseForm(forms.ModelForm):
     class Meta:
         model = SharedUniverse

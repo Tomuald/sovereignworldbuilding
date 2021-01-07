@@ -10,6 +10,7 @@ from .models import *
 
 class NPCInline(admin.TabularInline):
 	model = NPC
+	fk_name = "in_faction"
 	extra = 0
 
 class LocationInline(admin.TabularInline):
@@ -31,7 +32,7 @@ class CityInline(admin.TabularInline):
 class LocationLootInline(admin.TabularInline):
 	model = LocationLoot
 	extra = 0
-	
+
 class RegionInline(admin.TabularInline):
 	model = Region
 	extra = 0
@@ -64,9 +65,9 @@ class RegionAdmin(admin.ModelAdmin):
 class AreaAdmin(admin.ModelAdmin):
 	inlines = [LocationInline, ]
 	filter_horizontal = ['factions', ]
-	
+
 	fields = ('name', 'area_type', 'in_project', 'in_region', ('description', 'flavor_text'), 'factions')
-	
+
 @admin.register(City)
 class CityAdmin(admin.ModelAdmin):
 	inlines = [CityDemographicsInline, CityQuarterInline, ]
@@ -87,21 +88,20 @@ class NPCAdmin(admin.ModelAdmin):
 @admin.register(Faction)
 class FactionAdmin(admin.ModelAdmin):
 	inlines = [NPCInline, ]
-	filter_horizontal = ['faiths', 'leaders', ]
-	
+	filter_horizontal = ['faiths', ]
+
 @admin.register(CityDemographics)
 class CityDemographics(admin.ModelAdmin):
 	list_display = ['race', 'percent', ]
-	
+
 @admin.register(LocationLoot)
 class LocationLootAdmin(admin.ModelAdmin):
 	pass
-	
+
 @admin.register(WorldEncounter)
 class WorldEncounterAdmin(admin.ModelAdmin):
 	inlines = [WorldEncounterLootInline, ]
-	
+
 @admin.register(WorldEncounterLoot)
 class WorldEncounterLootAdmin(admin.ModelAdmin):
 	pass
-

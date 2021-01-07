@@ -9,9 +9,7 @@ from Project.models import Project
 
 class Dungeon(models.Model):
 	"""A dungeon is a collection of rooms of varying sizes. These rooms form
-	Roomsets which are connected by Passageways. Roomsets are designed for
-	encounters, while passageways represent a break in player interaction.
-	Dungeons are basically well-defined locations."""
+	Roomsets."""
 
 	title = models.CharField(max_length=125)
 	landscape = models.URLField(max_length=255, blank=True, null=True, help_text="Provide a URL to an image file.")
@@ -30,8 +28,7 @@ class Dungeon(models.Model):
 class Roomset(models.Model):
 	"""A Roomset is a series of adjacent rooms that share an aesthetic theme.
 	Typically, a dungeon will have a few Roomsets, represented by levels of a
-	dungeon, or different locales. These roomsets are interconnected by
-	passageways linking room-to-room. Roomsets have maps."""
+	dungeon, or different locales."""
 
 	name = models.CharField(max_length=75)
 	in_project = models.ForeignKey(Project, on_delete=models.CASCADE, blank=True, null=True)
