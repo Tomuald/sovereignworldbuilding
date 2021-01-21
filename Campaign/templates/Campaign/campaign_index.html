@@ -60,11 +60,16 @@
       <tr>
         <td><a href="{{ quest.get_absolute_url }}">{{ quest.title }}</a></td>
         <td>{{ quest.in_chapter }}</td>
-        {% if quest.in_area %}
-          <td>{{ quest.in_area }}</td>
-        {% else %}
-          <td>{{ quest.in_city }}</td>
-        {% endif %}
+        <td>
+          <ul>
+       	  {% for a in quest.in_areas.all %}
+       	    <li>{{ a.name }}</li>
+       	  {% endfor %}
+       	  {% for c in quest.in_cities.all %}
+       	    <li>{{ c.name }}</li>
+       	  {% endfor %}
+       	  </ul>
+        </td>
       </tr>
     {% endfor %}
     </tbody>
