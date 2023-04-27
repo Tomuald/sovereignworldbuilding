@@ -1,4 +1,4 @@
-#+title: Readme
+#+title: README
 
 * SovereignWorldbuilding
 SovereignWorldbuilding is a personal project built using Django. It
