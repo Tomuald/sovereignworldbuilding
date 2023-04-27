@@ -1,0 +1,9 @@
+#+title: Readme
+
+* SovereignWorldbuilding
+SovereignWorldbuilding is a personal project built using Django. It
+aims to replicate the structure of the Infinity Engine games in a
+text-based, wiki format.
+
+It provides interfaces to create Projects, write Campaigns, Worlds, Items,
+... and displays your pages in a friendly, easy to navigate way.
