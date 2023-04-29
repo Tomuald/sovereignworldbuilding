@@ -7,3 +7,5 @@ text-based, wiki format.
 
 It provides interfaces to create Projects, write Campaigns, Worlds, Items,
 ... and displays your pages in a friendly, easy to navigate way.
+
+It was intended to be deployed to a Heroku server, but can be launched locally ("python manage.py runserver").
